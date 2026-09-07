@@ -1,0 +1,30 @@
+version: "3.7"
+
+services:
+
+  app_proxy:
+    environment:
+      # The format here is: <app-id>_<docker-service-name>_1
+      APP_HOST: kunas-kokoro-fastapi_server_1
+      APP_PORT: 8880
+      PROXY_AUTH_ADD: "false"
+
+  server:
+    image: ghcr.io/remsky/kokoro-fastapi-gpu:v0.1.4
+    init: true
+    restart: on-failure
+    runtime: nvidia
+    environment:
+      HOST: 0.0.0.0
+      PORT: 8880
+      USE_GPU: "true"
+      API_LOG_LEVEL: INFO
+      NVIDIA_VISIBLE_DEVICES: all
+      NVIDIA_DRIVER_CAPABILITIES: compute,utility
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
