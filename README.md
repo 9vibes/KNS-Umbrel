@@ -1,21 +1,25 @@
-# KUNAS Umbrel App Store
+# KUNAS Umbrel Store
 
 Community Umbrel app store for KUNAS apps.
 
-## Apps
+## Add this store to Umbrel
 
-- `kunas-qobuz-sync` — Qobuz Sync app package for umbrelOS. The application source code lives in [`9vibes/qobuz-sync`](https://github.com/9vibes/qobuz-sync).
-- `kunas-kokoro-fastapi` — Kokoro GPU text-to-speech API package for umbrelOS.
-
-## Repo split
-
-- [`9vibes/qobuz-sync`](https://github.com/9vibes/qobuz-sync): developed application source, CI, container publishing, assets, and release work.
-- [`9vibes/KNS-Umbrel`](https://github.com/9vibes/KNS-Umbrel): Umbrel community app store metadata consumed by umbrelOS.
-
-## Add this store to umbrelOS
-
-Use this URL in the umbrelOS Community App Store UI:
+Use this URL in umbrelOS:
 
 ```text
 https://github.com/9vibes/KNS-Umbrel
 ```
+
+## Apps
+
+- **Qobuz Sync** (`kunas-qobuz-sync`)  
+  Sync purchased Qobuz music to `Downloads/QobuzSync`.  
+  App source: [`9vibes/qobuz-sync`](https://github.com/9vibes/qobuz-sync)
+
+- **Kokoro GPU** (`kunas-kokoro-fastapi`)  
+  GPU-enabled Kokoro FastAPI text-to-speech server for Umbrel/Open WebUI.
+
+## Repository purpose
+
+This repo contains only Umbrel app-store metadata and installable app packages.
+Application source code lives in each app's own repo.
