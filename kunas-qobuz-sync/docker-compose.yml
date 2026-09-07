@@ -1,0 +1,25 @@
+version: "3.7"
+
+services:
+
+  app_proxy:
+    environment:
+      # The format here is: <app-id>_<docker-service-name>_1
+      APP_HOST: kunas-qobuz-sync_server_1
+      APP_PORT: 8080
+      PROXY_AUTH_ADD: "false"
+
+  server:
+    image: ghcr.io/9vibes/qobuz-sync:0.1.44
+    user: "0:0"
+    init: true
+    restart: on-failure
+    environment:
+      QOBUZ_SYNC_DATA_DIR: /data
+      QOBUZ_SYNC_BACKGROUND: "1"
+      WEB_HOST: 0.0.0.0
+      WEB_PORT: 8080
+      QOBUZ_SYNC_DRY_RUN: "0"
+    volumes:
+      - ${APP_DATA_DIR}/data:/data
+      - ${UMBREL_ROOT}/data/storage/downloads/QobuzSync:/downloads
