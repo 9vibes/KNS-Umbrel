@@ -5,6 +5,7 @@ Community Umbrel app store for KUNAS apps.
 ## Apps
 
 - `kunas-qobuz-sync` — Qobuz Sync app package for umbrelOS. The application source code lives in [`9vibes/qobuz-sync`](https://github.com/9vibes/qobuz-sync).
+- `kunas-kokoro-fastapi` — Kokoro GPU text-to-speech API package for umbrelOS.
 
 ## Repo split
 
