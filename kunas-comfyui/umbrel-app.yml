@@ -1,0 +1,39 @@
+manifestVersion: 1
+id: kunas-comfyui
+name: ComfyUI GPU
+tagline: Node-based AI image, video, and audio generation with NVIDIA GPU acceleration
+icon: https://raw.githubusercontent.com/Comfy-Org/ComfyUI_frontend/main/public/assets/images/comfy-icon-512.png
+category: ai
+version: "0.1.0"
+# Keep this outside umbrelOS 2.0's 40000-49999 Machines reserved range.
+port: 28188
+description: >-
+  ComfyUI is a powerful node-based interface for Stable Diffusion, Flux,
+  video generation, image editing, upscaling, and other generative AI
+  workflows. This KUNAS package runs ComfyUI behind Umbrel's app proxy with
+  NVIDIA GPU acceleration enabled for hosts with a compatible NVIDIA driver.
+
+
+  The package persists ComfyUI models, custom nodes, inputs, outputs, user
+  settings, Hugging Face cache, and Torch cache in the app data directory so
+  workflows and downloaded models survive app restarts and updates.
+
+
+  The image is based on yanwk/comfyui-boot and is pinned to a CUDA 12.4 slim
+  tag for broad NVIDIA driver compatibility on self-hosted Umbrel machines.
+developer: Comfy-Org
+website: https://www.comfy.org/
+submitter: 9vibes
+submission: https://github.com/9vibes/KNS-Umbrel
+repo: https://github.com/comfyanonymous/ComfyUI
+support: https://github.com/comfyanonymous/ComfyUI/issues
+gallery:
+  - https://raw.githubusercontent.com/Comfy-Org/ComfyUI_frontend/main/public/assets/images/comfy-logo-wordmark.svg
+  - https://raw.githubusercontent.com/Comfy-Org/ComfyUI_frontend/main/public/assets/images/comfy-logo-single.svg
+releaseNotes: |-
+  What's new in 0.1.0
+
+  - Adds ComfyUI GPU to the KUNAS Umbrel store.
+  - Runs ComfyUI on port 8188 behind Umbrel's app proxy.
+  - Enables NVIDIA runtime settings for GPU acceleration.
+  - Persists models, custom nodes, inputs, outputs, user settings, and model caches under the app data directory.
