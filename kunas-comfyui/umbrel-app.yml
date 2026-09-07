@@ -4,7 +4,7 @@ name: ComfyUI GPU
 tagline: Node-based AI image, video, and audio generation with NVIDIA GPU acceleration
 icon: https://raw.githubusercontent.com/Comfy-Org/ComfyUI_frontend/main/public/assets/images/comfy-icon-512.png
 category: ai
-version: "0.1.1"
+version: "0.1.2"
 # Keep this outside umbrelOS 2.0's 40000-49999 Machines reserved range.
 port: 28188
 description: >-
@@ -19,8 +19,9 @@ description: >-
   workflows and downloaded models survive app restarts and updates.
 
 
-  The image is based on yanwk/comfyui-boot and is pinned to a CUDA 12.4 slim
-  tag for broad NVIDIA driver compatibility on self-hosted Umbrel machines.
+  The image is based on yanwk/comfyui-boot and is pinned to the current CUDA
+  12.6 slim tag so ComfyUI's latest runtime modules are available on NVIDIA
+  Umbrel machines.
 developer: Comfy-Org
 website: https://www.comfy.org/
 submitter: 9vibes
@@ -31,11 +32,12 @@ gallery:
   - https://raw.githubusercontent.com/Comfy-Org/ComfyUI_frontend/main/public/assets/images/comfy-logo-wordmark.svg
   - https://raw.githubusercontent.com/Comfy-Org/ComfyUI_frontend/main/public/assets/images/comfy-logo-single.svg
 releaseNotes: |-
-  What's new in 0.1.1
+  What's new in 0.1.2
 
-  - Fixes startup by persisting the ComfyUI boot image's full /root workspace instead of mounting individual /root/ComfyUI subdirectories before ComfyUI is cloned.
-  - Keeps models, custom nodes, inputs, outputs, user settings, and caches durable under the app data directory.
+  - Updates the runtime image to yanwk/comfyui-boot:cu126-slim so ComfyUI's current comfy_aimdo runtime module is available.
+  - Keeps the fixed full-/root app-data mount from 0.1.1.
 
   Previous updates
 
+  - 0.1.1: Fixed startup by persisting the ComfyUI boot image's full /root workspace instead of mounting individual /root/ComfyUI subdirectories before ComfyUI is cloned.
   - 0.1.0: Added ComfyUI GPU to the KUNAS Umbrel store with NVIDIA runtime settings and Umbrel app proxy support.

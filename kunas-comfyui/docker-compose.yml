@@ -10,7 +10,7 @@ services:
       PROXY_AUTH_ADD: "false"
 
   server:
-    image: yanwk/comfyui-boot:cu124-slim
+    image: yanwk/comfyui-boot:cu126-slim
     init: true
     restart: on-failure
     runtime: nvidia
