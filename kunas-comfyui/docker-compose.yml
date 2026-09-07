@@ -19,17 +19,11 @@ services:
       NVIDIA_VISIBLE_DEVICES: all
       NVIDIA_DRIVER_CAPABILITIES: compute,utility
     volumes:
-      - ${APP_DATA_DIR}/storage-cache/dot-cache:/root/.cache
-      - ${APP_DATA_DIR}/storage-cache/dot-config:/root/.config
-      - ${APP_DATA_DIR}/storage-nodes/dot-local:/root/.local
-      - ${APP_DATA_DIR}/storage-nodes/custom_nodes:/root/ComfyUI/custom_nodes
-      - ${APP_DATA_DIR}/storage-models/models:/root/ComfyUI/models
-      - ${APP_DATA_DIR}/storage-models/hf-hub:/root/.cache/huggingface/hub
-      - ${APP_DATA_DIR}/storage-models/torch-hub:/root/.cache/torch/hub
-      - ${APP_DATA_DIR}/storage-user/input:/root/ComfyUI/input
-      - ${APP_DATA_DIR}/storage-user/output:/root/ComfyUI/output
-      - ${APP_DATA_DIR}/storage-user/user-profile:/root/ComfyUI/user
-      - ${APP_DATA_DIR}/storage-user/user-scripts:/root/user-scripts
+      # Mount the image's whole /root workspace. Mounting individual
+      # /root/ComfyUI subdirectories on a fresh install creates a partial
+      # /root/ComfyUI directory before the boot image can clone ComfyUI, which
+      # makes startup fail with: destination path 'ComfyUI' already exists.
+      - ${APP_DATA_DIR}/storage:/root
     deploy:
       resources:
         reservations:
