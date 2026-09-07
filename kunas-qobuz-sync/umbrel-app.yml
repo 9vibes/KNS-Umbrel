@@ -1,0 +1,64 @@
+manifestVersion: 1
+id: kunas-qobuz-sync
+name: Qobuz Sync
+tagline: Monitor purchased albums and tracks, sync them to your Umbrel Downloads/QobuzSync folder, and keep artwork, and metadata in one place for Navidrome or your preferred music server to digest.
+icon: https://raw.githubusercontent.com/9vibes/qobuz-sync/main/assets/icon.svg
+category: media
+version: "0.1.44"
+# Keep this outside umbrelOS 2.0's 40000-49999 Machines reserved range.
+port: 28080
+description: >-
+  Qobuz Sync monitors your Qobuz account for purchased albums and tracks, then downloads newly discovered purchases to your Umbrel Downloads/QobuzSync folder.
+
+
+  Open the app after installation to enter your Qobuz credentials or a Qobuz auth token, choose a quality level, set a sync interval, and run a manual sync.
+
+
+  This app is intended only for archiving music you have purchased from your own Qobuz account. It is not affiliated with Qobuz.
+
+
+  Release history:
+  - 0.1.44: Simplifies Qobuz Web Player token instructions and removes the Downloads path note from the settings help.
+  - 0.1.43: Clears stale completed track-progress rows so tracks no longer remain stuck as Writing to disk.
+  - 0.1.42: Adds artwork to active progress track cards and puts them ahead of older recent downloads.
+  - 0.1.41: Integrates track progress into each Library track card and keeps one master progress bar under Sync status.
+  - 0.1.40: Moves download progress bars into Sync status, replacing the old yellow overall progress bar.
+  - 0.1.37: Shows the recent changelog directly in the App Store description so it is visible even when Umbrel does not surface release notes.
+  - 0.1.36: Security hardening for credential storage and full-library resync cleanup.
+  - 0.1.35: Added versioned What's New metadata and durable release history tracking.
+developer: 9vibes
+website: https://github.com/9vibes/qobuz-sync
+submitter: 9vibes
+submission: https://github.com/9vibes/qobuz-sync
+repo: https://github.com/9vibes/qobuz-sync
+support: https://github.com/9vibes/qobuz-sync/issues
+gallery:
+  - https://raw.githubusercontent.com/9vibes/qobuz-sync/main/assets/screenshot-library.png
+  - https://raw.githubusercontent.com/9vibes/qobuz-sync/main/assets/screenshot-settings.png
+widgets:
+  - id: status
+    type: three-stats
+    refresh: 30000
+    endpoint: server:8080/widget
+    link: ""
+    example:
+      text: All Good!
+      items:
+        - title: Status
+          text: All Good!
+        - title: Downloaded
+          text: "12"
+        - title: Progress
+          text: Complete 0/0
+releaseNotes: |-
+  What's new in 0.1.44
+
+  - Simplifies the Qobuz Web Player token instructions in Settings & status.
+  - Combines the Storage / Local Storage guidance into one step.
+  - Removes the Downloads path note from that authentication help block.
+
+  Previous updates
+
+  - 0.1.43: Cleared stale completed track-progress rows so tracks no longer remain stuck as Writing to disk.
+  - 0.1.42: Added artwork to active progress track cards and put them ahead of older recent downloads.
+  - 0.1.41: Integrated per-track download progress directly into corresponding Library track cards and kept one master progress bar under Sync status.
