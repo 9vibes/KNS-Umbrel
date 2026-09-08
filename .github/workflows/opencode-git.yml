@@ -1,0 +1,44 @@
+name: Build OpenCode Git image
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "kunas-opencode-git/Dockerfile"
+      - ".github/workflows/opencode-git.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: ./kunas-opencode-git
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ghcr.io/9vibes/kunas-opencode-git:1.18.29-git
+            ghcr.io/9vibes/kunas-opencode-git:latest
