@@ -10,7 +10,7 @@ services:
       PROXY_AUTH_ADD: "false"
 
   server:
-    image: ghcr.io/9vibes/qobuz-sync:0.1.46
+    image: ghcr.io/9vibes/qobuzsync:0.1.46
     user: "0:0"
     init: true
     restart: on-failure
