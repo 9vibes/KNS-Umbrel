@@ -18,6 +18,7 @@ description: >-
 
 
   Release history:
+  - 0.1.45: Adds live page refreshes for progress, counters, recent downloads, last sync, and status badge, and softens the hero card corner flare.
   - 0.1.44: Simplifies Qobuz Web Player token instructions and removes the Downloads path note from the settings help.
   - 0.1.43: Clears stale completed track-progress rows so tracks no longer remain stuck as Writing to disk.
   - 0.1.42: Adds artwork to active progress track cards and puts them ahead of older recent downloads.
@@ -51,14 +52,14 @@ widgets:
         - title: Progress
           text: Complete 0/0
 releaseNotes: |-
-  What's new in 0.1.44
+  What's new in 0.1.45
 
-  - Simplifies the Qobuz Web Player token instructions in Settings & status.
-  - Combines the Storage / Local Storage guidance into one step.
-  - Removes the Downloads path note from that authentication help block.
+  - Adds lightweight live page refreshes so the dashboard updates without manually refreshing the browser.
+  - Refreshes progress, counters, recent downloads, last sync text, and status badge while the page is open.
+  - Softens the title card corner flare so the top-right corner stays visually rounded.
 
   Previous updates
 
+  - 0.1.44: Simplified Qobuz Web Player token instructions in Settings & status.
   - 0.1.43: Cleared stale completed track-progress rows so tracks no longer remain stuck as Writing to disk.
   - 0.1.42: Added artwork to active progress track cards and put them ahead of older recent downloads.
-  - 0.1.41: Integrated per-track download progress directly into corresponding Library track cards and kept one master progress bar under Sync status.
