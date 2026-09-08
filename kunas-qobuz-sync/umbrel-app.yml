@@ -4,7 +4,7 @@ name: Qobuz Sync
 tagline: Monitor purchased albums and tracks, sync them to your Umbrel Downloads/QobuzSync folder, and keep artwork, and metadata in one place for Navidrome or your preferred music server to digest.
 icon: https://raw.githubusercontent.com/9vibes/qobuz-sync/main/assets/icon.svg
 category: media
-version: "0.1.45"
+version: "0.1.46"
 # Keep this outside umbrelOS 2.0's 40000-49999 Machines reserved range.
 port: 28080
 description: >-
@@ -18,6 +18,7 @@ description: >-
 
 
   Release history:
+  - 0.1.46: Publishes the live page refresh update under a fresh Umbrel-visible version and points the package at the 0.1.46 image.
   - 0.1.45: Adds live page refreshes for progress, counters, recent downloads, last sync, and status badge, and softens the hero card corner flare.
   - 0.1.44: Simplifies Qobuz Web Player token instructions and removes the Downloads path note from the settings help.
   - 0.1.43: Clears stale completed track-progress rows so tracks no longer remain stuck as Writing to disk.
@@ -52,14 +53,15 @@ widgets:
         - title: Progress
           text: Complete 0/0
 releaseNotes: |-
-  What's new in 0.1.45
+  What's new in 0.1.46
 
-  - Adds lightweight live page refreshes so the dashboard updates without manually refreshing the browser.
-  - Refreshes progress, counters, recent downloads, last sync text, and status badge while the page is open.
-  - Softens the title card corner flare so the top-right corner stays visually rounded.
+  - Publishes the live-refresh dashboard improvements under a new Umbrel-visible package version.
+  - Points the installed package at the freshly built ghcr.io/9vibes/qobuz-sync:0.1.46 image.
+  - Includes the live progress, counter, recent-download, last-sync, status-badge, and rounded-corner flare fixes.
 
   Previous updates
 
+  - 0.1.45: Added lightweight live page refreshes and softened the title card corner flare.
   - 0.1.44: Simplified Qobuz Web Player token instructions in Settings & status.
   - 0.1.43: Cleared stale completed track-progress rows so tracks no longer remain stuck as Writing to disk.
   - 0.1.42: Added artwork to active progress track cards and put them ahead of older recent downloads.
