@@ -10,10 +10,12 @@ services:
       PROXY_AUTH_ADD: "false"
 
   app:
-    image: ghcr.io/9vibes/kunas-opencode-git:1.18.29-git-2
+    image: ghcr.io/9vibes/kunas-opencode-git:1.18.29-git-3
     init: true
     restart: on-failure
-    user: "1000:1000"
+    # Run as root so first-run OpenCode can initialize the mounted app data
+    # directory even when Umbrel created it with root ownership.
+    user: "0:0"
     environment:
       HOME: /home/opencode
     # The upstream image has an opencode entrypoint. Override it so the
