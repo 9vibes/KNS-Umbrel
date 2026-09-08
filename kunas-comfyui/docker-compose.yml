@@ -18,6 +18,34 @@ services:
       CLI_ARGS: "--listen 0.0.0.0 --port 8188"
       NVIDIA_VISIBLE_DEVICES: all
       NVIDIA_DRIVER_CAPABILITIES: compute,utility
+    # Disable ACE 1.5's fixed-KV comfy_kitchen decode path. On this Umbrel host
+    # the CUDA 12.6 image starts and sees both RTX 3090s, but ACE text encoding
+    # fails inside comfy_kitchen.flash_attention_decode with:
+    # CUDA driver version is insufficient for CUDA runtime version.
+    # This patch falls back to the safer non-fixed-KV attention path while
+    # keeping GPU acceleration for the rest of ComfyUI.
+    command:
+      - bash
+      - -lc
+      - |
+        set -euo pipefail
+        ACE_FILE="/root/ComfyUI/comfy/text_encoders/ace15.py"
+        if [ -f "$ACE_FILE" ]; then
+          python3 - <<'PY'
+        from pathlib import Path
+        p = Path('/root/ComfyUI/comfy/text_encoders/ace15.py')
+        text = p.read_text()
+        for old, new in {
+            'ar_model.transformer.model.fixed_kv = True': 'ar_model.transformer.model.fixed_kv = False',
+            'ar_model.transformer.model.prefetch_dynamic_vbars = True': 'ar_model.transformer.model.prefetch_dynamic_vbars = False',
+            'ar_model.transformer.model.graph_dynamic_vbar_blocks = True': 'ar_model.transformer.model.graph_dynamic_vbar_blocks = False',
+        }.items():
+            text = text.replace(old, new)
+        p.write_text(text)
+        print('[KUNAS] ACE 1.5 fixed-KV/comfy_kitchen decode path disabled')
+        PY
+        fi
+        exec bash /runner-scripts/entrypoint.sh
     volumes:
       # Mount the image's whole /root workspace. Mounting individual
       # /root/ComfyUI subdirectories on a fresh install creates a partial
