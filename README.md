@@ -14,7 +14,7 @@ https://github.com/9vibes/KNS-Umbrel
 
 - **Qobuz Sync** (`kunas-qobuz-sync`)  
   Sync purchased Qobuz music to `Downloads/QobuzSync`.  
-  App source: [`9vibes/qobuz-sync`](https://github.com/9vibes/qobuz-sync)
+  App source: [`9vibes/QobuzSync`](https://github.com/9vibes/QobuzSync)
 
 - **Kokoro GPU** (`kunas-kokoro-fastapi`)  
   GPU-enabled Kokoro FastAPI text-to-speech server for Umbrel/Open WebUI.
