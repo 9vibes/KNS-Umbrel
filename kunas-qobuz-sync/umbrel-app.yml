@@ -11,7 +11,7 @@ description: >-
   Qobuz Sync monitors your Qobuz account for purchased albums and tracks, then downloads newly discovered purchases to your Umbrel Downloads/QobuzSync folder.
 
 
-  Open the app after installation to enter your Qobuz credentials or a Qobuz auth token, choose a quality level, set a sync interval, and run a manual sync.
+  Open the app after installation to enter your Qobuz credentials or a Qobuz auth token, choose a quality level, set a sync interval and enjoy.
 
 
   This app is intended only for archiving music you have purchased from your own Qobuz account. It is not affiliated with Qobuz.
