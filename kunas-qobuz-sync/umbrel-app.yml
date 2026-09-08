@@ -4,7 +4,7 @@ name: Qobuz Sync
 tagline: Monitor purchased albums and tracks, sync them to your Umbrel Downloads/QobuzSync folder, and keep artwork, and metadata in one place for Navidrome or your preferred music server to digest.
 icon: https://raw.githubusercontent.com/9vibes/qobuz-sync/main/assets/icon.svg
 category: media
-version: "0.1.44"
+version: "0.1.45"
 # Keep this outside umbrelOS 2.0's 40000-49999 Machines reserved range.
 port: 28080
 description: >-
