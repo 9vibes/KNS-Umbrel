@@ -23,7 +23,7 @@ https://github.com/9vibes/KNS-Umbrel
   Node-based AI image, video, and audio workflows with NVIDIA GPU acceleration.
 
 - **OpenCode Git** (`kunas-opencode-git`)
-  OpenCode AI coding agent with Git installed inside the container and first-run local Ollama config for `qwen3.6:35b`.
+  OpenCode AI coding agent with Git and GitHub CLI installed inside the container, plus first-run local Ollama config for `qwen3.6:35b`.
 
 ## Repository purpose
 

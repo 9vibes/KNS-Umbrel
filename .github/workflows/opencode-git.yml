@@ -40,5 +40,5 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ghcr.io/9vibes/kunas-opencode-git:1.18.29-git-3
+            ghcr.io/9vibes/kunas-opencode-git:1.18.29-git-4
             ghcr.io/9vibes/kunas-opencode-git:latest

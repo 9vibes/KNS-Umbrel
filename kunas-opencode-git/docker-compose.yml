@@ -10,7 +10,7 @@ services:
       PROXY_AUTH_ADD: "false"
 
   app:
-    image: ghcr.io/9vibes/kunas-opencode-git:1.18.29-git-3
+    image: ghcr.io/9vibes/kunas-opencode-git:1.18.29-git-4
     init: true
     restart: on-failure
     # Run as root so first-run OpenCode can initialize the mounted app data
