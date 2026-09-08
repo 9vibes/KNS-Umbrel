@@ -4,7 +4,7 @@ name: OpenCode Git
 tagline: OpenCode AI coding agent with Git installed for repository actions
 icon: https://raw.githubusercontent.com/getumbrel/umbrel-apps-gallery/master/opencode/icon.svg
 category: ai
-version: "1.18.29-git-1"
+version: "1.18.29-git-2"
 # Keep this outside umbrelOS 2.0's 40000-49999 Machines reserved range.
 port: 28096
 description: >-
@@ -31,9 +31,14 @@ gallery:
   - https://raw.githubusercontent.com/getumbrel/umbrel-apps-gallery/master/opencode/2.jpg
   - https://raw.githubusercontent.com/getumbrel/umbrel-apps-gallery/master/opencode/3.jpg
 releaseNotes: |-
-  What's new in 1.18.29-git-1
+  What's new in 1.18.29-git-2
 
-  - Adds a KUNAS OpenCode package based on OpenCode 1.18.29.
+  - Fixes container startup by overriding the upstream OpenCode entrypoint before running the first-run config seeding shell.
+  - Uses the ghcr.io/9vibes/kunas-opencode-git:1.18.29-git-2 image.
+
+  Previous updates
+
+  - 1.18.29-git-1: Added a KUNAS OpenCode package based on OpenCode 1.18.29.
   - Uses a custom GHCR image with git, OpenSSH client, and CA certificates installed inside the OpenCode container.
   - Seeds local Ollama configuration for local-ollama/qwen3.6:35b on first run.
   - Mounts Umbrel Documents at /9Vibes Stuff for project access.
