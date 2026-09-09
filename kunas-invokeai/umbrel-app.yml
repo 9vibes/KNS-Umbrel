@@ -1,0 +1,39 @@
+manifestVersion: 1
+id: kunas-invokeai
+name: InvokeAI GPU
+tagline: Professional creative AI image generation with NVIDIA GPU acceleration
+icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/invoke-ai.svg
+category: ai
+version: "0.1.0"
+# Keep this outside umbrelOS 2.0's 40000-49999 Machines reserved range.
+port: 29090
+description: >-
+  InvokeAI is a professional creative engine for visual media generation using
+  Stable Diffusion and other image models. It provides a web interface for model
+  management, image generation, canvas workflows, and creative iteration.
+
+
+  This KUNAS Umbrel package runs the official InvokeAI Docker image with NVIDIA
+  GPU acceleration enabled and persists the InvokeAI runtime directory, models,
+  generated outputs, databases, configuration, and Hugging Face cache in the app
+  data directory.
+
+
+  Open the app after installation, use InvokeAI's model manager to install or
+  import models, then generate from the browser UI.
+developer: InvokeAI
+website: https://invoke.ai/
+submitter: 9vibes
+submission: https://github.com/9vibes/KNS-Umbrel
+repo: https://github.com/invoke-ai/InvokeAI
+support: https://github.com/invoke-ai/InvokeAI/issues
+releaseNotes: |-
+  What's new in 0.1.0
+
+  - Adds InvokeAI GPU to the KUNAS Umbrel store.
+  - Uses the official ghcr.io/invoke-ai/invokeai:latest image.
+  - Enables NVIDIA GPU runtime settings for compatible Umbrel hosts.
+  - Persists the InvokeAI root directory at /invokeai for models, outputs, configuration, databases, and Hugging Face cache.
+path: ""
+defaultUsername: ""
+defaultPassword: ""

@@ -1,0 +1,35 @@
+version: "3.7"
+
+services:
+
+  app_proxy:
+    environment:
+      # The format here is: <app-id>_<docker-service-name>_1
+      APP_HOST: kunas-invokeai_server_1
+      APP_PORT: 9090
+      PROXY_AUTH_ADD: "false"
+
+  server:
+    image: ghcr.io/invoke-ai/invokeai:latest
+    init: true
+    restart: on-failure
+    runtime: nvidia
+    environment:
+      INVOKEAI_ROOT: /invokeai
+      INVOKEAI_HOST: 0.0.0.0
+      INVOKEAI_PORT: 9090
+      HF_HOME: /invokeai/.cache/huggingface
+      NVIDIA_VISIBLE_DEVICES: all
+      NVIDIA_DRIVER_CAPABILITIES: compute,utility
+    volumes:
+      # Stores models, outputs, databases, configs, and Hugging Face cache.
+      - ${APP_DATA_DIR}/data/invokeai:/invokeai
+    tty: true
+    stdin_open: true
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
