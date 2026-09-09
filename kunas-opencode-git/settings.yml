@@ -1,7 +1,0 @@
-dependencies: {}
-customMounts:
-  - serviceName: app
-    targetPath: /9Vibes Stuff
-    sourcePath: /Home/Documents
-    readOnly: false
-autoStart: true
