@@ -2,9 +2,9 @@ manifestVersion: 1
 id: kunas-invokeai
 name: InvokeAI GPU
 tagline: Professional creative AI image generation with NVIDIA GPU acceleration
-icon: https://raw.githubusercontent.com/9vibes/KNS-Umbrel/master/kunas-invokeai/icon.svg
+icon: https://raw.githubusercontent.com/9vibes/KNS-Umbrel/master/kunas-invokeai/icon.jpg
 category: ai
-version: "0.1.2"
+version: "0.1.3"
 # Keep this outside umbrelOS 2.0's 40000-49999 Machines reserved range.
 port: 29090
 description: >-
@@ -31,12 +31,13 @@ gallery:
   - https://raw.githubusercontent.com/9vibes/KNS-Umbrel/master/kunas-invokeai/1.png
   - https://raw.githubusercontent.com/9vibes/KNS-Umbrel/master/kunas-invokeai/2.png
 releaseNotes: |-
-  What's new in 0.1.2
+  What's new in 0.1.3
 
-  - Stores InvokeAI icon and gallery images directly in the KUNAS repo and references raw image URLs for reliable Umbrel App Store rendering.
+  - Replaces the InvokeAI App Store icon with the custom uploaded yellow InvokeAI icon.
 
   Previous updates
 
+  - 0.1.2: Stores InvokeAI icon and gallery images directly in the KUNAS repo and references raw image URLs for reliable Umbrel App Store rendering.
   - 0.1.1: Added gallery images to the App Store manifest so the Umbrel details page can render correctly.
   - 0.1.0: Added InvokeAI GPU to the KUNAS Umbrel store.
   - Uses the official ghcr.io/invoke-ai/invokeai:latest image.
