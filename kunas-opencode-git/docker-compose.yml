@@ -1,0 +1,61 @@
+version: "3.7"
+
+services:
+
+  app_proxy:
+    environment:
+      # The format here is: <app-id>_<docker-service-name>_1
+      APP_HOST: kunas-opencode-git_app_1
+      APP_PORT: 4096
+      PROXY_AUTH_ADD: "false"
+
+  app:
+    image: ghcr.io/9vibes/kunas-opencode-git:1.18.29-git-4
+    init: true
+    restart: on-failure
+    # Run as root so first-run OpenCode can initialize the mounted app data
+    # directory even when Umbrel created it with root ownership.
+    user: "0:0"
+    environment:
+      HOME: /home/opencode
+    # The upstream image has an opencode entrypoint. Override it so the
+    # first-run config seed runs in a shell before launching the server.
+    entrypoint:
+      - sh
+      - -lc
+    command:
+      - |
+        set -eu
+        mkdir -p /home/opencode/.config/opencode
+        if [ ! -f /home/opencode/.config/opencode/opencode.jsonc ]; then
+          cat > /home/opencode/.config/opencode/opencode.jsonc <<'EOF'
+        {
+          "$schema": "https://opencode.ai/config.json",
+          "model": "local-ollama/qwen3.6:35b",
+          "small_model": "local-ollama/qwen3.6:35b",
+          "provider": {
+            "local-ollama": {
+              "npm": "@ai-sdk/openai-compatible",
+              "name": "Local Ollama",
+              "options": {
+                "baseURL": "http://10.12.12.12:11434/v1",
+                "apiKey": "ollama"
+              },
+              "models": {
+                "qwen3.6:35b": {
+                  "name": "Qwen 3.6 35B",
+                  "limit": {
+                    "context": 32768,
+                    "input": 28672,
+                    "output": 4096
+                  }
+                }
+              }
+            }
+          }
+        }
+        EOF
+        fi
+        exec opencode serve --hostname 0.0.0.0 --port 4096
+    volumes:
+      - ${APP_DATA_DIR}/data/opencode:/home/opencode/
