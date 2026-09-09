@@ -2,9 +2,9 @@ manifestVersion: 1
 id: kunas-invokeai
 name: InvokeAI GPU
 tagline: Professional creative AI image generation with NVIDIA GPU acceleration
-icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/invoke-ai.svg
+icon: https://raw.githubusercontent.com/9vibes/KNS-Umbrel/master/kunas-invokeai/icon.svg
 category: ai
-version: "0.1.1"
+version: "0.1.2"
 # Keep this outside umbrelOS 2.0's 40000-49999 Machines reserved range.
 port: 29090
 description: >-
@@ -28,15 +28,16 @@ submission: https://github.com/9vibes/KNS-Umbrel
 repo: https://github.com/invoke-ai/InvokeAI
 support: https://github.com/invoke-ai/InvokeAI/issues
 gallery:
-  - https://github.com/invoke-ai/InvokeAI/assets/31807370/6e3728c7-e90e-4711-905c-3b55844ff5be
-  - https://github.com/invoke-ai/InvokeAI/assets/31807370/708f7a82-084f-4860-bfbe-e2588c53548d
+  - https://raw.githubusercontent.com/9vibes/KNS-Umbrel/master/kunas-invokeai/1.png
+  - https://raw.githubusercontent.com/9vibes/KNS-Umbrel/master/kunas-invokeai/2.png
 releaseNotes: |-
-  What's new in 0.1.1
+  What's new in 0.1.2
 
-  - Adds gallery images to the App Store manifest so the Umbrel details page can render correctly.
+  - Stores InvokeAI icon and gallery images directly in the KUNAS repo and references raw image URLs for reliable Umbrel App Store rendering.
 
   Previous updates
 
+  - 0.1.1: Added gallery images to the App Store manifest so the Umbrel details page can render correctly.
   - 0.1.0: Added InvokeAI GPU to the KUNAS Umbrel store.
   - Uses the official ghcr.io/invoke-ai/invokeai:latest image.
   - Enables NVIDIA GPU runtime settings for compatible Umbrel hosts.
