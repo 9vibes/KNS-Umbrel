@@ -22,6 +22,9 @@ https://github.com/9vibes/KNS-Umbrel
 - **ComfyUI GPU** (`kunas-comfyui`)
   Node-based AI image, video, and audio workflows with NVIDIA GPU acceleration.
 
+- **InvokeAI GPU** (`kunas-invokeai`)
+  Professional creative AI image generation with NVIDIA GPU acceleration and persistent models/outputs.
+
 - **OpenCode Git** (`kunas-opencode-git`)
   OpenCode AI coding agent with Git and GitHub CLI installed inside the container, plus first-run local Ollama config for `qwen3.6:35b`.
 
