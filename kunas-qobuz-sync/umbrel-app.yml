@@ -4,20 +4,21 @@ name: Qobuz Sync
 tagline: Monitor purchased albums and tracks, sync them to your Umbrel Downloads/QobuzSync folder, and keep artwork, and metadata in one place for Navidrome or your preferred music server to digest.
 icon: https://raw.githubusercontent.com/9vibes/QobuzSync/main/assets/icon.svg
 category: media
-version: "0.1.50"
+version: "0.1.51"
 # Keep this outside umbrelOS 2.0's 40000-49999 Machines reserved range.
 port: 28080
 description: >-
   Qobuz Sync monitors your Qobuz account for purchased albums and tracks, then downloads newly discovered purchases to your Umbrel Downloads/QobuzSync folder.
 
 
-  Open the app after installation to enter your Qobuz credentials or a Qobuz auth token, choose a quality level, set a sync interval and enjoy.
+  Open the app after installation to paste your Qobuz Web Player browser session or auth token, choose a quality level, set a sync interval and enjoy.
 
 
   This app is intended only for archiving music you have purchased from your own Qobuz account. It is not affiliated with Qobuz.
 
 
   Release history:
+  - 0.1.51: Removes the broken Qobuz email/password login method and requires Qobuz Web Player session/token login.
   - 0.1.50: Removes the dashboard security notice and switches the container to the randomized 0.1.48 web port.
   - 0.1.49: Publishes the security-hardened 0.1.47 container (opt-in dashboard auth, CSRF protection, credential redaction, sync-lock fixes).
   - 0.1.48: Switches the Umbrel package to the newly published ghcr.io/9vibes/qobuzsync:0.1.46 image.
@@ -57,14 +58,15 @@ widgets:
         - title: Progress
           text: Complete 0/0
 releaseNotes: |-
-  What's new in 0.1.50
+  What's new in 0.1.51
 
-  - Removes the "running without an access token" security notice from the dashboard.
-  - Switches the container to the randomized 0.1.48 build, which listens on port 23809 instead of 8080.
-  - The optional QOBUZ_SYNC_AUTH_TOKEN login, CSRF protection and credential redaction from 0.1.47 remain in the image.
+  - Removes the broken Qobuz email/password login method from the settings UI.
+  - Requires Qobuz Web Player browser-session credentials, or user ID plus auth token, for sync.
+  - Clears and ignores legacy saved password hashes so they cannot configure login.
 
   Previous updates
 
+  - 0.1.50: Removed the dashboard security notice and switched the container to the randomized 0.1.48 web port.
   - 0.1.49: Updated the Umbrel package to the security-hardened ghcr.io/9vibes/qobuzsync:0.1.47 image.
   - 0.1.48: Switched the Umbrel package to the newly published ghcr.io/9vibes/qobuzsync:0.1.46 image.
   - 0.1.46: Published the live-refresh dashboard improvements under a fresh Umbrel-visible package version.
