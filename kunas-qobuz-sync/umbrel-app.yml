@@ -4,7 +4,7 @@ name: Qobuz Sync
 tagline: Monitor purchased albums and tracks, sync them to your Umbrel Downloads/QobuzSync folder, and keep artwork, and metadata in one place for Navidrome or your preferred music server to digest.
 icon: https://raw.githubusercontent.com/9vibes/QobuzSync/main/assets/icon.svg
 category: media
-version: "0.1.48"
+version: "0.1.49"
 # Keep this outside umbrelOS 2.0's 40000-49999 Machines reserved range.
 port: 28080
 description: >-
@@ -18,6 +18,7 @@ description: >-
 
 
   Release history:
+  - 0.1.49: Publishes the security-hardened 0.1.47 container (opt-in dashboard auth, CSRF protection, credential redaction, sync-lock fixes).
   - 0.1.48: Switches the Umbrel package to the newly published ghcr.io/9vibes/qobuzsync:0.1.46 image.
   - 0.1.47: Updates App Store metadata to use the new 9vibes/QobuzSync source repository while keeping the current published container image.
   - 0.1.46: Publishes the live page refresh update under a fresh Umbrel-visible version and points the package at the 0.1.46 image.
@@ -55,14 +56,17 @@ widgets:
         - title: Progress
           text: Complete 0/0
 releaseNotes: |-
-  What's new in 0.1.48
+  What's new in 0.1.49
 
-  - Updates the Umbrel package image to ghcr.io/9vibes/qobuzsync:0.1.46.
-  - Uses the fresh GHCR package published by the clean 9vibes/QobuzSync source repository.
+  - Updates the Umbrel package to the security-hardened ghcr.io/9vibes/qobuzsync:0.1.47 image.
+  - Fixes /sync-now releasing its job lock before the worker finished, so overlapping sync/re-sync jobs can no longer run concurrently.
+  - Adds opt-in dashboard authentication (QOBUZ_SYNC_AUTH_TOKEN) with a login page and CSRF origin checks on all state-changing requests.
+  - Redacts Qobuz credentials from API error messages before they reach the UI, database, or logs.
+  - Stops committed third-party binaries, caches cover-art recovery, reuses the logged-in client for live refresh, strips filesystem paths from the public JSON API, uses SQLite WAL + busy timeout, and removes partial files when downloads fail.
 
   Previous updates
 
-  - 0.1.47: Updated App Store metadata to use the new 9vibes/QobuzSync source repository.
+  - 0.1.48: Switched the Umbrel package to the newly published ghcr.io/9vibes/qobuzsync:0.1.46 image.
   - 0.1.46: Published the live-refresh dashboard improvements under a fresh Umbrel-visible package version.
   - 0.1.45: Added lightweight live page refreshes and softened the title card corner flare.
   - 0.1.44: Simplified Qobuz Web Player token instructions in Settings & status.
