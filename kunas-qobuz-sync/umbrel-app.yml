@@ -4,7 +4,7 @@ name: Qobuz Sync
 tagline: Monitor purchased albums and tracks, sync them to your Umbrel Downloads/QobuzSync folder, and keep artwork, and metadata in one place for Navidrome or your preferred music server to digest.
 icon: https://raw.githubusercontent.com/9vibes/QobuzSync/main/assets/icon.svg
 category: media
-version: "0.1.51"
+version: "0.1.52"
 # Keep this outside umbrelOS 2.0's 40000-49999 Machines reserved range.
 port: 28080
 description: >-
@@ -18,6 +18,7 @@ description: >-
 
 
   Release history:
+  - 0.1.52: Faster local-only dashboard updates, safer non-destructive resync, reliable album downloads, MP3 support, and security fixes.
   - 0.1.51: Removes the broken Qobuz email/password login method and requires Qobuz Web Player session/token login.
   - 0.1.50: Removes the dashboard security notice and switches the container to the randomized 0.1.48 web port.
   - 0.1.49: Publishes the security-hardened 0.1.47 container (opt-in dashboard auth, CSRF protection, credential redaction, sync-lock fixes).
@@ -58,14 +59,23 @@ widgets:
         - title: Progress
           text: Complete 0/0
 releaseNotes: |-
-  What's new in 0.1.51
+  What's new in 0.1.52
 
-  - Removes the broken Qobuz email/password login method from the settings UI.
-  - Requires Qobuz Web Player browser-session credentials, or user ID plus auth token, for sync.
-  - Clears and ignores legacy saved password hashes so they cannot configure login.
+  - Speeds up dashboard updates with local metadata caching and a single non-overlapping polling loop.
+  - Preserves existing files during full resync and failed downloads, with atomic replacement and basic audio-format checks.
+  - Fixes repeated album downloads, incomplete purchase listings, overlapping sync jobs, and failures blocking other purchases.
+  - Adds correct MP3 filenames and ID3 metadata/artwork, plus mobile, keyboard, and visible error feedback improvements.
+  - Tightens credential handling, database permissions, settings validation, and artwork safety.
+  - Verified with 380 tests, including real-browser checks.
+
+  Upgrade notes
+
+  - Older albums without file manifests receive a one-time verification redownload. Unmarked existing folders are preserved; replacements may use album-ID-suffixed folders.
+  - Full resync no longer deletes the library first. Keep backups; replacements are atomic per file, not for an entire album.
 
   Previous updates
 
+  - 0.1.51: Removed broken email/password login and retained Qobuz Web Player session/token login.
   - 0.1.50: Removed the dashboard security notice and switched the container to the randomized 0.1.48 web port.
   - 0.1.49: Updated the Umbrel package to the security-hardened ghcr.io/9vibes/qobuzsync:0.1.47 image.
   - 0.1.48: Switched the Umbrel package to the newly published ghcr.io/9vibes/qobuzsync:0.1.46 image.
