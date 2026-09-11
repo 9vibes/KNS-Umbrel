@@ -4,7 +4,7 @@ name: Qobuz Sync
 tagline: Monitor purchased albums and tracks, sync them to your Umbrel Downloads/QobuzSync folder, and keep artwork, and metadata in one place for Navidrome or your preferred music server to digest.
 icon: https://raw.githubusercontent.com/9vibes/QobuzSync/main/assets/icon.svg
 category: media
-version: "0.1.55"
+version: "0.1.56"
 # Keep this outside umbrelOS 2.0's 40000-49999 Machines reserved range.
 port: 28080
 description: >-
@@ -18,6 +18,7 @@ description: >-
 
 
   Release history:
+  - 0.1.56: Discovers existing purchased audio on disk, resumes partial app-owned albums, and keeps Library cards stable during downloads.
   - 0.1.55: Handles Safari null-origin form submissions with signed browser-bound tokens for settings, login, and sync actions.
   - 0.1.54: Fixes remaining Save settings origin rejections with HTTPS reverse proxies, missing forwarded schemes, and IPv6 hosts.
   - 0.1.53: Fixes Qobuz browser-session paste behind Umbrel/reverse proxies and accepts full Local Storage row copies.
@@ -62,19 +63,21 @@ widgets:
         - title: Progress
           text: Complete 0/0
 releaseNotes: |-
-  What's new in 0.1.55
+  What's new in 0.1.56
 
-  - Fixes Safari Save settings rejection when the browser sends Origin: null, using signed browser-bound form tokens.
-  - Adds the same protection to login and sync actions without disabling authentication or cross-site request checks.
-  - Rejects oversized and malformed form submissions safely.
+  - Sync now checks disk before downloading unrecorded or incomplete purchases and registers complete matches without downloading their audio again.
+  - Reuses valid tracks in partially downloaded app-owned albums. Re Sync Entire Library still forces fresh downloads.
+  - Keeps Library cards visible through completion and preserves artwork and scroll position during progress updates.
+  - Handles large albums without dropping early track cards and refreshes artwork when local covers change.
 
   Upgrade notes
 
-  - After updating, reload the app page to obtain the new form token before clicking Save settings. Existing saved credentials and downloads are preserved.
-  - When using the separate user ID and auth token fields, leave Paste Qobuz browser session empty. That field accepts session JSON, not an account or server name.
+  - After updating, reload the app page and click Sync now to check your existing archive. Saved credentials and downloads are preserved.
+  - Discovery checks QobuzSync's folder layout and previously recorded paths, not arbitrary renamed music files. Uncertain files are not adopted, and FLAC quality tiers are not distinguished by this check.
 
   Previous updates
 
+  - 0.1.55: Fixed Safari null-origin form submissions with signed browser-bound tokens.
   - 0.1.54: Improved origin checks for HTTPS reverse proxies, missing forwarded schemes, and IPv6 hosts.
   - 0.1.53: Added forwarded-origin support and full Local Storage row paste support.
   - 0.1.52: Faster local-only dashboard updates, safer non-destructive resync, reliable album downloads, MP3 support, and security fixes.
