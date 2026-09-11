@@ -1,3 +1,18 @@
+// Reject private paths before Vite's SPA fallback, even before files exist.
+export function privateDataGuard() {
+  return {name:'umbrel-private-data', configureServer(server) {
+    server.middlewares.use((req,res,next) => {
+      let path;
+      try { path = decodeURIComponent((req.url || '').split('?')[0]).replaceAll('\\\\','/'); }
+      catch { res.statusCode=400; res.end('Bad path'); return; }
+      if (/(^|\/)\.env(?:[./]|$)/i.test(path) || /(^|\/)\.gev-cache(?:\/|$)/i.test(path) || path.startsWith('/@fs/data/')) {
+        res.statusCode=403; res.end('Forbidden'); return;
+      }
+      next();
+    });
+  }};
+}
+
 // Only enable behind Umbrel's authenticated app_proxy, never a public port.
 export function admitUmbrelRequest(req) {
   const deny = {ok:false,status:403,error:'Same-origin Umbrel request required'};
