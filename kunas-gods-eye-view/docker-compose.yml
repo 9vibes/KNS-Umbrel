@@ -1,0 +1,13 @@
+version: "3.7"
+services:
+  app_proxy:
+    environment:
+      APP_HOST: kunas-gods-eye-view_app_1
+      APP_PORT: 4173
+      # No PROXY_AUTH_ADD=false: provider settings require Umbrel login.
+  app:
+    image: ghcr.io/9vibes/kunas-gods-eye-view:0.1.1-umbrel.1
+    init: true
+    restart: on-failure
+    volumes:
+      - ${APP_DATA_DIR}/data:/data

@@ -1,0 +1,43 @@
+manifestVersion: 1
+id: kunas-gods-eye-view
+name: God's Eye View
+tagline: Explore a live 3D globe of aircraft, ships, satellites and more
+icon: https://raw.githubusercontent.com/9vibes/KNS-Umbrel/master/kunas-gods-eye-view/assets/icon.svg
+category: exploration
+version: "0.1.1-umbrel.1"
+port: 28107
+description: >-
+  God's Eye View is Bilawal Sidhu's browser-based geospatial console with a
+  3D globe, aircraft, ships, satellites, earthquakes, traffic cameras and more.
+  Public feeds work without keys; some layers are simulated or unavailable
+  until you configure their provider in POWER UP / Provider Settings.
+
+
+  This KUNAS package runs the full upstream Vite backend, not a static preview.
+  Provider Settings is available behind Umbrel login and saves credentials in
+  persistent app data. Google Maps and Cesium keys are intentionally sent to
+  your browser: restrict them with the provider. Paid providers can incur costs.
+  Keys are stored in a private plaintext file, so protect app-data backups.
+
+
+  Use a desktop browser with WebGL support. Voice/microphone features require
+  a browser-trusted HTTPS origin when accessing Umbrel remotely; plain LAN HTTP
+  does not provide microphone access. Internet access is needed for live feeds.
+  Do not expose the backend port or disable Umbrel authentication.
+developer: Bilawal Sidhu
+website: https://github.com/bilawalsidhu/gods-eye-view
+submitter: 9vibes
+submission: https://github.com/9vibes/KNS-Umbrel
+repo: https://github.com/bilawalsidhu/gods-eye-view
+support: https://github.com/9vibes/KNS-Umbrel/issues
+gallery:
+  - https://raw.githubusercontent.com/9vibes/KNS-Umbrel/master/kunas-gods-eye-view/assets/1.png
+releaseNotes: |-
+  What's new in 0.1.1-umbrel.1
+  - First KUNAS release, pinned to upstream c7ef01827d7f12407180bc77e3955736c00cd749.
+  - Full live API backend and persistent provider settings/cache.
+  - Umbrel-authenticated settings with same-origin write protection.
+dependencies: []
+path: ""
+defaultUsername: ""
+defaultPassword: ""
