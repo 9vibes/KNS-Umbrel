@@ -10,23 +10,13 @@ services:
       PROXY_AUTH_ADD: "false"
 
   server:
-    image: ghcr.io/remsky/kokoro-fastapi-gpu:v0.8.2-cu126
+    image: ghcr.io/remsky/kokoro-fastapi-cpu:v0.8.2
     init: true
     restart: on-failure
-    runtime: nvidia
     environment:
       HOST: 0.0.0.0
       PORT: 8880
-      USE_GPU: "true"
-      DEVICE: gpu
+      USE_GPU: "false"
+      DEVICE: cpu
       DOWNLOAD_MODEL: "true"
       API_LOG_LEVEL: INFO
-      NVIDIA_VISIBLE_DEVICES: all
-      NVIDIA_DRIVER_CAPABILITIES: compute,utility
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
