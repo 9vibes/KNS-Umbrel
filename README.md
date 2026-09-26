@@ -50,6 +50,13 @@ https://github.com/9vibes/KNS-Umbrel
   Recordings are never automatically deleted.
   App source: [`9vibes/SteamLab`](https://github.com/9vibes/SteamLab). [Setup and safety notes](kunas-steamlab/README.md).
 
+- **EVENCOMMS 0.1.0** (`kunas-evencomms`)
+  Early-release Even glasses/operator conversations with local English CPU transcription
+  and optional human-approved Ollama replies. Initial x86-64 only, with a public,
+  digest-pinned image; physical G2/phone installation still needs acceptance testing.
+  App source: [`9vibes/EVENCOMMS`](https://github.com/9vibes/EVENCOMMS).
+  [Setup, configuration and release caveats](kunas-evencomms/README.md).
+
 ## Repository purpose
 
 This repo contains only Umbrel app-store metadata and installable app packages.

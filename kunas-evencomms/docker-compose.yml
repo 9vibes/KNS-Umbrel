@@ -1,0 +1,65 @@
+version: "3.7"
+
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+services:
+  app_proxy:
+    environment:
+      APP_HOST: kunas-evencomms_server_1
+      APP_PORT: 8000
+      # EVENCOMMS authenticates operators and paired phone clients itself.
+      PROXY_AUTH_ADD: "false"
+    logging: *logging
+
+  data_init:
+    image: ghcr.io/9vibes/evencomms:0.1.0@sha256:491e90e678e0b90ba72c50a262900a42a8738213cd654377a714b27a05befc84
+    platform: linux/amd64
+    user: "0:0"
+    command: [python, -m, backend.init_data]
+    network_mode: none
+    read_only: true
+    restart: "no"
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      disable: true
+    volumes:
+      - ${APP_DATA_DIR:?Umbrel must provide APP_DATA_DIR}/data:/data
+    logging: *logging
+
+  server:
+    image: ghcr.io/9vibes/evencomms:0.1.0@sha256:491e90e678e0b90ba72c50a262900a42a8738213cd654377a714b27a05befc84
+    platform: linux/amd64
+    user: "10001:10001"
+    init: true
+    restart: unless-stopped
+    depends_on:
+      data_init:
+        condition: service_completed_successfully
+    environment:
+      ADMIN_PASSWORD: ${APP_PASSWORD:?Umbrel must provide a nonempty APP_PASSWORD}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://${DEVICE_DOMAIN_NAME:-umbrel.local}:28097}
+      DATABASE_PATH: /data/evencomms.sqlite3
+      MODEL_CACHE: /data/models
+      STT_ENABLED: ${STT_ENABLED:-true}
+      STT_MODEL: ${STT_MODEL:-base.en}
+      STT_TIMEOUT: ${STT_TIMEOUT:-90}
+      OLLAMA_URL: ${OLLAMA_URL:-}
+      OLLAMA_MODEL: ${OLLAMA_MODEL-llama3.2:3b}
+      OLLAMA_TIMEOUT: ${OLLAMA_TIMEOUT:-30}
+      MAX_SESSIONS: ${MAX_SESSIONS:-100}
+      MAX_MESSAGES_PER_SESSION: ${MAX_MESSAGES_PER_SESSION:-1000}
+    volumes:
+      - ${APP_DATA_DIR:?Umbrel must provide APP_DATA_DIR}/data:/data
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=256m
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    logging: *logging

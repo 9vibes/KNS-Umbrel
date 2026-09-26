@@ -1,0 +1,103 @@
+manifestVersion: 1
+id: kunas-evencomms
+name: EVENCOMMS
+tagline: Local conversations between Even glasses and an operator
+icon: https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.1.0/assets/icon.svg
+category: social
+version: "0.1.0"
+port: 28097
+description: >-
+  EVENCOMMS is an early release for local communication between an Even glasses
+  wearer and a browser operator. Physical G2 glasses and phone companion behavior
+  are not yet hardware-tested. The companion requires Even app 2.2.10 or later,
+  Even Hub SDK 0.0.16 or later, and compatible firmware supporting hold/release
+  events. A typed browser simulator is available without glasses.
+
+
+  Short English speech chunks are transcribed locally on CPU. Single tap deletes
+  the last draft word and pauses capture for correction; use Start listening to
+  resume. Hold freezes capture, and release finalizes preceding speech and sends
+  once. Double tap exits; it is not Send. Failed transcription must be retried or
+  discarded explicitly. Continuous word-by-word transcription is not guaranteed.
+
+
+  The operator reads submitted questions and sends replies to the wearer.
+  Optional suggestions from an existing local Ollama server require human review
+  and an explicit send; AI never auto-sends. Ollama is disabled by default, and
+  neither Ollama nor its models are installed by this package.
+
+
+  This initial image supports Linux x86-64 (amd64) only, not Raspberry Pi or other
+  ARM devices. Speech recognition uses CPU, not GPU. The first transcription
+  downloads a model over the Internet; the cache persists for later offline use.
+  Cold model loading may exceed the 90-second timeout; wait for the job to finish
+  and retry. Hardware performance, RAM requirements and endurance are unverified.
+
+
+  Sign in with Umbrel's generated application password; no username is required.
+  Use a trusted network and HTTPS for phone use and private conversations. IP,
+  custom DNS, TLS and packaged-app access require explicit ALLOWED_ORIGINS settings;
+  see the setup guide. Sent text persists in SQLite; raw audio is not stored by
+  the app. Deletion is logical, not a forensic erase. Screenshots use synthetic
+  conversations and do not demonstrate physical glasses testing.
+developer: 9vibes
+website: https://github.com/9vibes/EVENCOMMS
+submitter: 9vibes
+submission: https://github.com/9vibes/KNS-Umbrel
+repo: https://github.com/9vibes/EVENCOMMS
+support: https://github.com/9vibes/EVENCOMMS/issues
+gallery:
+  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.1.0/assets/screenshot-operator.png
+  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.1.0/assets/screenshot-wearer.png
+releaseNotes: |-
+  Initial 0.1.0 package for x86-64 CPU transcription, wearer pairing, private
+  drafts, manual operator replies and optional human-approved Ollama suggestions.
+  Source: EVENCOMMS v0.1.0 (3706137). Gallery images contain synthetic data.
+
+  Published with an immutable image digest and verified anonymous download.
+  Release checks passed real CPU speech recognition, model-cache reuse,
+  database persistence, authentication and WebSocket origin checks.
+  Physical G2 gestures, phone connectivity, actual Umbrel installation and
+  target-device latency/endurance still require acceptance testing.
+dependencies: []
+path: ""
+deterministicPassword: true
+defaultUsername: ""
+environment:
+  - name: ALLOWED_ORIGINS
+    services: [server]
+    default: ""
+    note: Empty uses http://<device-domain>:28097 (umbrel.local fallback). Otherwise supply the complete comma-separated list of exact HTTP(S) origins for browsers and the packaged Even app, with ports when non-default. No paths or wildcards; explicitly include HTTPS behind TLS termination.
+  - name: STT_ENABLED
+    services: [server]
+    default: "true"
+    options: ["true", "false"]
+    note: Enable local English CPU transcription. Set false for text-only use.
+  - name: STT_MODEL
+    services: [server]
+    default: base.en
+    note: Faster Whisper model name or a model directory inside the container. First download needs Internet access; cached models persist in /data/models. Hardware capacity is unverified.
+  - name: STT_TIMEOUT
+    services: [server]
+    default: "90"
+    note: Positive finite transcription timeout in seconds. A cold download/load can exceed it; the worker remains busy until completion. Wait, then explicitly retry failed transcription.
+  - name: OLLAMA_URL
+    services: [server]
+    default: ""
+    note: Empty disables AI suggestions. To enable, supply a Docker-reachable trusted local Ollama base URL, not /api/chat. No Ollama installation or model download is performed.
+  - name: OLLAMA_MODEL
+    services: [server]
+    default: llama3.2:3b
+    note: Model already installed on the configured Ollama server; it is not pulled automatically. An empty model also disables suggestions. The operator must review and send replies.
+  - name: OLLAMA_TIMEOUT
+    services: [server]
+    default: "30"
+    note: Positive finite suggestion timeout in seconds. Manual replies remain available if Ollama fails.
+  - name: MAX_SESSIONS
+    services: [server]
+    default: "100"
+    note: Positive integer limit on stored conversations, not a hardware capacity or retention guarantee.
+  - name: MAX_MESSAGES_PER_SESSION
+    services: [server]
+    default: "1000"
+    note: Positive integer limit on stored messages per conversation, not a timed deletion policy.
