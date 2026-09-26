@@ -1,30 +1,69 @@
-# EVENCOMMS 0.1.0 For Umbrel
+# EVENCOMMS 0.2.1 For Umbrel
 
 Local communication between an Even glasses wearer and a browser operator, with
 short-chunk English CPU transcription and optional human-approved Ollama replies.
+The full-width **STREAM** tab adds authenticated HLS preview of one RTMP feed,
+without recording, transcoding or stream analysis. CPU speech recognition is
+unchanged; STREAM does not require a GPU.
 This is an **early release**: physical G2/phone behavior, hardware installation,
 performance and endurance have not been verified. The screenshots contain
 synthetic conversations, not evidence of hardware testing.
 
 ## Release Status
 
-- Source: [9vibes/EVENCOMMS v0.1.0](https://github.com/9vibes/EVENCOMMS/tree/v0.1.0), commit `3706137`.
-- Both app services pin `ghcr.io/9vibes/evencomms:0.1.0` to
-  `sha256:491e90e678e0b90ba72c50a262900a42a8738213cd654377a714b27a05befc84`.
-  Anonymous download of the manifest, configuration and every layer was verified
-  with SHA256 checks. No registry login is needed to pull this release.
-- Initial platform: `linux/amd64` only. Raspberry Pi and other ARM hosts are not
+- Source: [EVENCOMMS v0.2.1](https://github.com/9vibes/EVENCOMMS/tree/v0.2.1),
+  commit `bac7a2aa443a0246b0014673cb2152bcc008becb`. The failed 0.2.0 candidate
+  did not publish an application image and was not added to the store.
+- Both app services use `ghcr.io/9vibes/evencomms:0.2.1` pinned to
+  `sha256:847d7e3c3b331da64ee6f73e2710162aa72a78bd282d1b3027dde27c45ae14e2`.
+  Anonymous downloads and SHA256 checks passed for its manifest, configuration
+  and every layer. No registry login is required.
+- All four versioned icon/gallery URLs were verified. The images contain only
+  synthetic conversation text and generated, labeled demo video.
+- Platform: `linux/amd64` only. Raspberry Pi and other ARM hosts are not
   supported. Speech recognition uses CPU/int8, not GPU; no NVIDIA runtime is needed.
-- [Release checks](https://github.com/9vibes/EVENCOMMS/actions/runs/36224561598)
-  passed unit/browser tests, real CPU transcription from synthetic speech, cold
-  model download, model-cache reuse, database persistence, authentication and
-  WebSocket checks with same-host and explicitly allowed rewritten-host origins.
-  The tested container runs non-root with a read-only root filesystem.
-- Docker Compose CLI validation passed with a structural substitute for Umbrel's
-  supplied proxy service. Actual Umbrel installation and physical G2/phone testing
-  remain unverified; this is not a hardware acceptance result.
+- [Release checks passed](https://github.com/9vibes/EVENCOMMS/actions/runs/36248453191):
+  260 unit/browser tests, frontend/package builds, real RTMP/HLS playback in the
+  standalone and managed-config stacks, fresh CPU speech recognition and a
+  container-level upgrade from the pinned 0.1.0 image. The upgrade retained
+  messages, wearer credentials and model-cache contents while refreshing configs.
+- Managed-config tests enter nginx directly; they do not run Umbrel's supplied
+  app proxy. Actual host installation, port availability and physical G2/phone
+  acceptance still require deployment checks.
 - Adding this package to the store does not automatically install it on a Stone
   or any other Umbrel host. No installation on a Stone is claimed.
+
+## Upgrade From 0.1.0
+
+**This upgrade opens a new plaintext RTMP listener on `0.0.0.0:21936` by default.**
+Use only a trusted LAN or encrypted VPN, preferably binding `RTMP_BIND` to the
+host's LAN/VPN IP. Restrict it with Docker-aware firewall rules and **never
+router-forward TCP 21936**. HTTPS on the console does not encrypt RTMP keys/media.
+
+1. Stop encoders and the app. Back up all of `${APP_DATA_DIR}/data`, including
+   `evencomms.sqlite3`, any `-wal`/`-shm` sidecars and `models`, preserving ownership
+   and permissions. Keep the existing app ID, Umbrel app/password seed and data
+   directory. Do not uninstall or delete/reinitialize the database.
+2. Check TCP `21936` on the actual host with `ss -ltn` and
+   `docker ps --format '{{.Names}} {{.Ports}}'`. It differs from SteamLab's `21935`
+   but is not guaranteed free. If needed, change `RTMP_PORT` for both the server's
+   advertised URL and MediaMTX's host mapping before recreating the app.
+   `STREAM_ENABLED=false` still publishes the port; the media authentication
+   callback denies access. It is not a substitute for firewalling or stopping
+   MediaMTX, nor a way to disconnect an already accepted publisher.
+3. Refresh the KUNAS store and update **in place** through
+   Umbrel and recreate the full stack, including `data_init`, `server`, `web` and
+   `mediamtx`, not only the backend. The initializer automatically installs the
+   image's configs; no manual template copying is needed.
+4. The SQLite migration preserves conversations and wearer pairings and generates
+   distinct persistent publisher and server-only reader secrets. The existing
+   `/data` mapping, model cache, generated admin password, app ID and web port
+   `28097` stay unchanged. Operator tokens are process-local: sign in again after
+   restart. Paired wearers can reconnect without pairing again if their local
+   token and server conversation are retained.
+5. Check login, wearer reconnect, conversation history, a cached-model transcription
+   and STREAM playback through the real Umbrel URL. Apply the deployment checks
+   below before operational use.
 
 ## Installation And First Pairing
 
@@ -32,8 +71,9 @@ synthetic conversations, not evidence of hardware testing.
    settings, or refresh the store if it is already installed.
 2. Install **EVENCOMMS** (`kunas-evencomms`) on a compatible x86-64 Umbrel host.
    Open it from Umbrel, normally at `http://umbrel.local:28097` (use your actual
-   device domain). Port `28097` belongs to the Umbrel app proxy; this package does
-   not directly publish container port `8000`.
+   device domain). Port `28097` belongs to the Umbrel app proxy, targeting
+   `kunas-evencomms_web_1:8080`, never the raw backend at `8000`. Review the RTMP
+   warning and check port availability above before installing.
 3. Sign in to the operator console using the generated application password
    shown by Umbrel. No username or shared default password is required.
 4. Select **Pair a wearer** to generate a single-use code valid for five minutes.
@@ -49,6 +89,11 @@ The generated password is passed as `ADMIN_PASSWORD` from Umbrel's nonempty
 login and wearer token authentication itself, so `PROXY_AUTH_ADD` is `false`.
 Operator tokens expire after eight hours and are lost on server restart; log in
 again. Wearer pairing persists until its conversation is deleted.
+
+Behind nginx, clients share the backend's default **five attempts per minute for
+each of login and pairing**, including successful attempts. Wait a minute after
+a burst; this is not a separate allowance per browser/IP. Status polling and
+playback do not consume that budget. Do not enable blanket forwarded-IP trust.
 
 ## Phone And Glasses
 
@@ -97,11 +142,25 @@ the human operator requests, reviews/edits and explicitly sends a reply.
 
 ## Configuration
 
-Set these in Umbrel's app environment settings, then apply/recreate the app's
-server. Every exposed setting targets the `server` service.
+Set these in Umbrel's app environment settings where supported, then apply and
+recreate the affected services. Settings target `server` except `RTMP_BIND`
+(`mediamtx`) and `RTMP_PORT` (both `server` and `mediamtx`).
+
+`RTMP_BIND` and `RTMP_PORT` must reach the **Compose interpolation environment**;
+adding variables only inside a running container cannot change published ports.
+Umbrel versions differ in how manifest environment fields are applied. If your
+UI only injects container variables, use that version's supported deployment
+environment mechanism. Recreate the affected services and inspect the resolved
+Compose config and actual host port publication; do not assume a UI value changed
+the binding. Keep the server's `RTMP_PORT` and published host port identical.
 
 | Setting | Default | Meaning |
 | --- | --- | --- |
+| `STREAM_ENABLED` | `true` | Enable authenticated STREAM; false denies media authentication/playback, but leaves RTMP published. |
+| `PUBLIC_HOST` | `umbrel.local` in settings | Encoder-reachable hostname/IP without scheme, port or path. If unset/empty, Compose uses `DEVICE_DOMAIN_NAME`, then `umbrel.local`; the nonempty UI default overrides that fallback. Set your actual reachable host. |
+| `RTMP_BIND` | `0.0.0.0` | MediaMTX host bind; prefer an explicit LAN/VPN IP. Requires Compose interpolation and recreation. |
+| `RTMP_PORT` | `21936` | Available host TCP ingest port, also advertised by the server. Requires Compose interpolation and recreation. |
+| `COOKIE_SECURE` | `false` | Set `true` for Secure playback cookies behind trusted HTTPS; false is only for isolated HTTP use. |
 | `ALLOWED_ORIGINS` | Empty in settings | Compose substitutes `http://${DEVICE_DOMAIN_NAME:-umbrel.local}:28097`; a nonempty value replaces that list. |
 | `STT_ENABLED` | `true` | Choose `true` or `false`; false enables text-only operation. |
 | `STT_MODEL` | `base.en` | Faster Whisper model name or container-local model directory. |
@@ -155,6 +214,7 @@ forward WebSocket Upgrade, and allow audio bodies of 480000 bytes plus framing.
 Set proxy timeouts above `STT_TIMEOUT` and `OLLAMA_TIMEOUT`. Restrict direct HTTP
 access with network/firewall controls; do not expose plaintext port `28097` to
 the public Internet. HTTP exposes passwords, bearer tokens and conversation text.
+Set `COOKIE_SECURE=true` for HTTPS playback cookies; this does not encrypt RTMP.
 
 **Explicitly allow the public HTTPS origin even for same-origin HTTPS/WSS access.**
 The image runs Uvicorn with `--no-proxy-headers`; backend HTTP/WS does not infer
@@ -164,6 +224,45 @@ replace authentication; proxy clients can share a source address for throttling.
 Avoid proxy logs containing credentials, request bodies, transcripts or replies.
 Tor browser access does not establish phone/Even Hub reachability, anonymous
 inference, or Tor routing for model downloads or Ollama traffic.
+
+## STREAM And Network Isolation
+
+Only nginx `web` joins both the default Umbrel app-proxy network and the private
+application bridge. `server` and `mediamtx` join only the private bridge;
+`data_init` has no network. The private bridge is not `internal: true`, allowing
+LAN/VPN RTMP and backend model downloads/Ollama access. Do not attach untrusted
+containers: MediaMTX's control API relies on network isolation.
+
+Backend `8000`, HLS `8888` and media API `9997` have no host publication. Nginx
+blocks exact `/internal` and all `/internal/` paths for every method, including
+MediaMTX's private authentication callback. Never bypass it by pointing a public
+proxy at the backend. The official nginx and MediaMTX image digests match the
+source staging package. Both wait for backend health after initialization; there
+is no dependency cycle or invented shell healthcheck for the minimal media image.
+
+1. Sign in and open **STREAM**, then explicitly **Reveal credentials** under
+   Encoder configuration. In OBS choose Service: Custom, copy the displayed
+   RTMP server (`rtmp://<PUBLIC_HOST>:<RTMP_PORT>/live`) and the entire stream key
+   (`stream?user=publisher&pass=<secret>`). Keep the query string and leave OBS's
+   separate authentication off. Do not use the console's web port.
+2. Use H.264 video, AAC audio and a one-second keyframe interval. There is no
+   transcoding to repair unsupported codecs. Only one publisher is accepted;
+   stop the old encoder before switching sources.
+3. Confirm actual video/audio playback, not just online status. Authenticated
+   same-origin HLS uses a short-lived HttpOnly, SameSite=Strict playback cookie
+   and server-only reader credentials, not URL tokens. Expect seconds of latency;
+   playback starts muted and may require manual Play.
+4. Leaving STREAM stops browser playback/polling, not the encoder. Logout revokes
+   linked playback sessions. The short HLS window stays in memory; no recording
+   or stored video is provided.
+
+Publishing and reader secrets are distinct from each other and from the admin
+password. They persist in SQLite and backups. Restarting, hiding credentials,
+logging out, deleting a conversation or changing the admin password does not
+rotate them. There is no implemented key-rotation control. If compromised, stop
+MediaMTX and block ingest pending a reviewed recovery procedure; do not delete
+the database as a shortcut. Protect OBS profiles, clipboards and backups; never
+share real keys in logs, screenshots or issue reports.
 
 ## Models And Resource Use
 
@@ -183,8 +282,9 @@ measure on your host before relying on real-time communication.
 
 ## Persistence And Backups
 
-Both app services mount `${APP_DATA_DIR}/data` at `/data`. Sent conversations and
-wearer pairing state persist in `evencomms.sqlite3` and its SQLite sidecars; speech
+The init and server services retain `${APP_DATA_DIR}/data` at `/data`. Sent
+conversations, wearer pairing state and stream secrets persist in
+`evencomms.sqlite3` and its SQLite sidecars; speech
 models and download caches live under `models`. The app does not persist raw
 audio. Explicit AI suggestion requests send bounded recent text to the configured
 Ollama server. This is not end-to-end encryption from the EVENCOMMS server.
@@ -195,11 +295,25 @@ Caches may be omitted only if you accept downloading models again before offline
 use. Preserve UID/GID `10001:10001`, permissions and ownership when restoring,
 including existing cached files. Restore while the app is stopped.
 
-The one-shot root `data_init` service runs `python -m backend.init_data` without
-network access and with a read-only root filesystem. It prepares only fixed
-`/data` and `/data/models` roots and known SQLite files; it does **not** run
+The one-shot root `data_init` service runs
+`python -m backend.init_data --config-dir /config` without network access and with
+a read-only root filesystem. Its data and config bind mounts are read-write.
+It prepares fixed `/data` and `/data/models` roots and known SQLite files, and
+installs the bundled `/app/infra/nginx.conf` and `/app/infra/mediamtx.yml` into
+`${APP_DATA_DIR}/config`. It does **not** run
 recursive `chown` or repair ownership of nested cached files. A restore with
 wrongly owned caches therefore needs deliberate ownership repair before startup.
+
+The generated config directory contains no secrets and is **image-managed**:
+do not hand-edit its two managed files, because the next initialization overwrites
+them. They are copied literally, preserving nginx `$` variables, with no platform
+template expansion, `envsubst`, manual copying or extra store template files.
+Directory mode `0755` and file mode `0644` allow nginx UID 101 to read them.
+Nginx and MediaMTX each mount the entire config directory read-only, not individual
+files, avoiding missing-file bind-mount races. Unrelated config files are untouched;
+the directory can be regenerated from the release image and is not a substitute
+for backing up persistent `data`.
+
 The server runs as `10001:10001`, with a read-only root, a size-bounded `/tmp`
 tmpfs, all capabilities dropped and no privilege escalation. JSON-file logs are
 bounded to three 10 MB files per service. The image's single-worker command and
@@ -215,6 +329,22 @@ client. Deletion is logical, not forensic erasure: SQLite/WAL remnants, snapshot
 backups, browser storage and swap may retain data. Manage encryption and backup
 retention separately; keep app data and backups private.
 
-Before operational use, verify real speech, cold/warm model behavior, pairing and
-reconnect, gesture ordering, correction pause/resume, deletion, TLS/origins/package
-permissions, and an operator-approved AI reply on the intended hardware.
+## Required Deployment Checks
+
+- Release verification is recorded above. Before operational use, test a clean
+  install or a stopped-data 0.1.0 upgrade on the intended Umbrel host/version.
+- Confirm healthy server/web and running MediaMTX, generated config permissions,
+  the actual RTMP host bind/port and no publication of `8000`, `8888` or `9997`.
+  Through the browser-facing URL, verify `/internal`, `/internal/` and
+  `/internal/media/auth` return 404 for GET, POST, PUT, DELETE and OPTIONS.
+- Verify valid encoder credentials publish, a wrong key fails, a second publisher
+  cannot replace the first, and unauthenticated clients cannot access settings,
+  status or HLS. Verify playback, cookie renewal, logout, re-entering STREAM,
+  encoder reconnect and media restart recovery, including Secure cookies on TLS.
+- Verify existing conversations/pairings/models and the generated password survive
+  upgrade; operators log in again and paired wearers reconnect. Check WebSockets
+  and explicit origins through nginx and the actual Umbrel/TLS proxies.
+- Before operational use, verify real speech, cold/warm model behavior, gesture
+  ordering, correction pause/resume, deletion, TLS/origins/package permissions
+  and an operator-approved AI reply on the intended hardware. `/health` and static
+  YAML checks are not evidence of end-to-end media or hardware acceptance.

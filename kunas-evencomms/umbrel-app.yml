@@ -2,9 +2,9 @@ manifestVersion: 1
 id: kunas-evencomms
 name: EVENCOMMS
 tagline: Local conversations between Even glasses and an operator
-icon: https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.1.0/assets/icon.svg
+icon: https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.2.1/assets/icon.svg
 category: social
-version: "0.1.0"
+version: "0.2.1"
 port: 28097
 description: >-
   EVENCOMMS is an early release for local communication between an Even glasses
@@ -27,7 +27,14 @@ description: >-
   neither Ollama nor its models are installed by this package.
 
 
-  This initial image supports Linux x86-64 (amd64) only, not Raspberry Pi or other
+  The full-width STREAM tab previews one RTMP feed using authenticated HLS.
+  There is no recording, transcoding or stream analysis. Publisher and private
+  reader keys are distinct and persist in SQLite. Upgrading opens plaintext RTMP
+  on TCP 21936 by default, even with STREAM_ENABLED=false; use only a trusted
+  LAN/VPN, prefer a LAN IP bind and never router-forward this port.
+
+
+  This image supports Linux x86-64 (amd64) only, not Raspberry Pi or other
   ARM devices. Speech recognition uses CPU, not GPU. The first transcription
   downloads a model over the Internet; the cache persists for later offline use.
   Cold model loading may exceed the 90-second timeout; wait for the job to finish
@@ -47,23 +54,60 @@ submission: https://github.com/9vibes/KNS-Umbrel
 repo: https://github.com/9vibes/EVENCOMMS
 support: https://github.com/9vibes/EVENCOMMS/issues
 gallery:
-  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.1.0/assets/screenshot-operator.png
-  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.1.0/assets/screenshot-wearer.png
+  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.2.1/assets/screenshot-operator.png
+  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.2.1/assets/screenshot-wearer.png
+  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.2.1/assets/screenshot-stream.png
 releaseNotes: |-
-  Initial 0.1.0 package for x86-64 CPU transcription, wearer pairing, private
-  drafts, manual operator replies and optional human-approved Ollama suggestions.
-  Source: EVENCOMMS v0.1.0 (3706137). Gallery images contain synthetic data.
+  0.2.1 adds a full-width STREAM tab with authenticated HLS preview of one RTMP
+  feed, without recording or transcoding. New nginx and MediaMTX services use
+  image-managed configuration installed automatically at startup. CPU STT,
+  wearer conversations and human-approved Ollama replies remain available.
 
-  Published with an immutable image digest and verified anonymous download.
-  Release checks passed real CPU speech recognition, model-cache reuse,
-  database persistence, authentication and WebSocket origin checks.
-  Physical G2 gestures, phone connectivity, actual Umbrel installation and
-  target-device latency/endurance still require acceptance testing.
+  Stop and back up the entire persistent data directory, including SQLite WAL
+  files, before updating in place; do not uninstall. Conversations, pairings,
+  models and the generated application password are preserved. SQLite migration
+  generates persistent, distinct publisher and private reader keys. Operators
+  must log in again after restart; paired wearers can reconnect.
+
+  WARNING: this upgrade publishes plaintext RTMP on 0.0.0.0:21936. Check that
+  TCP 21936 is free, prefer RTMP_BIND set to a LAN/VPN IP and never router-forward
+  it. STREAM_ENABLED=false denies media authentication but leaves the port
+  published. Use COOKIE_SECURE=true with HTTPS and explicit ALLOWED_ORIGINS.
+
+  Source: EVENCOMMS v0.2.1 (bac7a2a). Release checks passed 260 unit/browser tests,
+  real RTMP playback with generated configuration, fresh CPU transcription,
+  and a 0.1.0-to-0.2.1 container upgrade preserving messages, pairing and models.
+  The published application image is digest-pinned; anonymous downloads of its
+  manifest, configuration and all layers were checksum-verified. Physical
+  G2/phone behavior, the actual Umbrel host/proxy and target-device latency still
+  require acceptance testing. The failed 0.2.0 candidate was not published as an image.
 dependencies: []
 path: ""
 deterministicPassword: true
 defaultUsername: ""
 environment:
+  - name: STREAM_ENABLED
+    services: [server]
+    default: "true"
+    options: ["true", "false"]
+    note: Enable authenticated STREAM preview. False denies media authentication/playback but does not unpublish RTMP or disconnect an already accepted publisher; stop MediaMTX and block ingest when necessary.
+  - name: PUBLIC_HOST
+    services: [server]
+    default: umbrel.local
+    note: Encoder-reachable LAN/VPN hostname or IP, without scheme, port or path. Compose falls back to DEVICE_DOMAIN_NAME then umbrel.local only when unset or empty; this nonempty UI default overrides that fallback, so change it for your actual host.
+  - name: RTMP_BIND
+    services: [mediamtx]
+    default: "0.0.0.0"
+    note: Host interface for plaintext RTMP. Prefer the host LAN/VPN IP and never router-forward. This must reach Compose interpolation, not just the container environment; recreate MediaMTX and verify the published binding.
+  - name: RTMP_PORT
+    services: [server, mediamtx]
+    default: "21936"
+    note: Free host TCP port for RTMP, also advertised to encoders. Must reach Compose interpolation for the port mapping; recreate server and MediaMTX and verify the actual host publication. Still published with STREAM_ENABLED=false.
+  - name: COOKIE_SECURE
+    services: [server]
+    default: "false"
+    options: ["true", "false"]
+    note: Set true behind trusted HTTPS for Secure playback cookies; false is for isolated HTTP use. Also explicitly allow the HTTPS origin in ALLOWED_ORIGINS.
   - name: ALLOWED_ORIGINS
     services: [server]
     default: ""

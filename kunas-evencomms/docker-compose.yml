@@ -1,4 +1,4 @@
-version: "3.7"
+# Application and infrastructure images are pinned to verified release digests.
 
 x-logging: &logging
   driver: json-file
@@ -9,17 +9,17 @@ x-logging: &logging
 services:
   app_proxy:
     environment:
-      APP_HOST: kunas-evencomms_server_1
-      APP_PORT: 8000
+      APP_HOST: kunas-evencomms_web_1
+      APP_PORT: 8080
       # EVENCOMMS authenticates operators and paired phone clients itself.
       PROXY_AUTH_ADD: "false"
     logging: *logging
 
   data_init:
-    image: ghcr.io/9vibes/evencomms:0.1.0@sha256:491e90e678e0b90ba72c50a262900a42a8738213cd654377a714b27a05befc84
+    image: ghcr.io/9vibes/evencomms:0.2.1@sha256:847d7e3c3b331da64ee6f73e2710162aa72a78bd282d1b3027dde27c45ae14e2
     platform: linux/amd64
     user: "0:0"
-    command: [python, -m, backend.init_data]
+    command: [python, -m, backend.init_data, --config-dir, /config]
     network_mode: none
     read_only: true
     restart: "no"
@@ -29,10 +29,11 @@ services:
       disable: true
     volumes:
       - ${APP_DATA_DIR:?Umbrel must provide APP_DATA_DIR}/data:/data
+      - ${APP_DATA_DIR:?Umbrel must provide APP_DATA_DIR}/config:/config
     logging: *logging
 
   server:
-    image: ghcr.io/9vibes/evencomms:0.1.0@sha256:491e90e678e0b90ba72c50a262900a42a8738213cd654377a714b27a05befc84
+    image: ghcr.io/9vibes/evencomms:0.2.1@sha256:847d7e3c3b331da64ee6f73e2710162aa72a78bd282d1b3027dde27c45ae14e2
     platform: linux/amd64
     user: "10001:10001"
     init: true
@@ -53,6 +54,13 @@ services:
       OLLAMA_TIMEOUT: ${OLLAMA_TIMEOUT:-30}
       MAX_SESSIONS: ${MAX_SESSIONS:-100}
       MAX_MESSAGES_PER_SESSION: ${MAX_MESSAGES_PER_SESSION:-1000}
+      STREAM_ENABLED: ${STREAM_ENABLED:-true}
+      PUBLIC_HOST: ${PUBLIC_HOST:-${DEVICE_DOMAIN_NAME:-umbrel.local}}
+      RTMP_PORT: ${RTMP_PORT:-21936}
+      MEDIA_API_URL: http://mediamtx:9997
+      MEDIA_HLS_URL: http://mediamtx:8888
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}
+    networks: [private]
     volumes:
       - ${APP_DATA_DIR:?Umbrel must provide APP_DATA_DIR}/data:/data
     read_only: true
@@ -63,3 +71,52 @@ services:
     security_opt:
       - no-new-privileges:true
     logging: *logging
+
+  mediamtx:
+    image: bluenviron/mediamtx:1.12.3@sha256:3634a1eed1288b93e8d22ed74694eae96d483fcf676cac5d0c91830ad1b86b3d
+    entrypoint: [/mediamtx]
+    command: [/config/mediamtx.yml]
+    restart: unless-stopped
+    depends_on:
+      server:
+        condition: service_healthy
+    volumes:
+      - ${APP_DATA_DIR:?Umbrel must provide APP_DATA_DIR}/config:/config:ro
+    # Plaintext RTMP: trusted LAN/VPN only; prefer a LAN IP and never router-forward.
+    ports:
+      - "${RTMP_BIND:-0.0.0.0}:${RTMP_PORT:-21936}:1935/tcp"
+    networks: [private]
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    logging: *logging
+
+  web:
+    image: nginx:1.28-alpine@sha256:a8b39bd9cf0f83869a2162827a0caf6137ddf759d50a171451b335cecc87d236
+    user: "101:101"
+    entrypoint: [nginx]
+    command: [-c, /config/nginx.conf, -g, "daemon off;"]
+    restart: unless-stopped
+    depends_on:
+      server:
+        condition: service_healthy
+    volumes:
+      - ${APP_DATA_DIR:?Umbrel must provide APP_DATA_DIR}/config:/config:ro
+    networks: [default, private]
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    healthcheck:
+      test: [CMD, wget, --spider, -q, http://127.0.0.1:8080/health]
+      interval: 30s
+      timeout: 5s
+      start_period: 15s
+      retries: 3
+    logging: *logging
+
+networks:
+  # Not internal:true: published RTMP must remain reachable by LAN/VPN encoders.
+  private:
+    driver: bridge
