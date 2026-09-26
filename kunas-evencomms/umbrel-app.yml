@@ -1,10 +1,10 @@
 manifestVersion: 1
 id: kunas-evencomms
 name: EVENCOMMS
-tagline: Local conversations between Even glasses and an operator
-icon: https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.2.1/assets/icon.svg
+tagline: Live comms, stream monitoring and visual research
+icon: https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.3.0/assets/icon.svg
 category: social
-version: "0.2.1"
+version: "0.3.0"
 port: 28097
 description: >-
   EVENCOMMS is an early release for local communication between an Even glasses
@@ -27,11 +27,30 @@ description: >-
   neither Ollama nor its models are installed by this package.
 
 
-  The full-width STREAM tab previews one RTMP feed using authenticated HLS.
-  There is no recording, transcoding or stream analysis. Publisher and private
+  STREAM previews one RTMP feed using authenticated low-latency HLS, with 1x-4x
+  digital zoom and pan, not optical zoom. There is no recording, transcoding or
+  continuous stream analysis. Publisher and private
   reader keys are distinct and persist in SQLite. Upgrading opens plaintext RTMP
   on TCP 21936 by default, even with STREAM_ENABLED=false; use only a trusted
   LAN/VPN, prefer a LAN IP bind and never router-forward this port.
+
+
+  RESEARCH is separate, opt-in OpenAI cloud chat, not a replacement for local
+  Ollama. Connect a key for the current operator sign-in over HTTPS. The key stays
+  in server RAM, not browser storage, and clears on logout, expiry, disconnect or
+  restart. The model dropdown fetches the account's actual /models list;
+  availability does not prove capability. Select an image-capable model for stills.
+
+
+  Capture takes only the current zoom/pan video crop, not page controls. Review
+  removable draft thumbnails before explicit Send to OpenAI: only then are the
+  prompt, selected images and Research history submitted. Limits are 3 images per
+  turn, 6 per chat and 20 messages. No continuous video/audio, stream credentials
+  or unsent wearer drafts are automatically sent. API usage is billable;
+  store: false is not a zero-retention guarantee. There are no web-search tools
+  or automatic replies to glasses. Research history lives in browser RAM and is
+  lost on reload, New chat or sign-out. An advanced server environment key is
+  shared across operators; see the setup and privacy guide.
 
 
   This image supports Linux x86-64 (amd64) only, not Raspberry Pi or other
@@ -44,9 +63,9 @@ description: >-
   Sign in with Umbrel's generated application password; no username is required.
   Use a trusted network and HTTPS for phone use and private conversations. IP,
   custom DNS, TLS and packaged-app access require explicit ALLOWED_ORIGINS settings;
-  see the setup guide. Sent text persists in SQLite; raw audio is not stored by
-  the app. Deletion is logical, not a forensic erase. Screenshots use synthetic
-  conversations and do not demonstrate physical glasses testing.
+  see the setup guide. Sent wearer/operator conversation text persists in SQLite;
+  raw audio is not stored by the app. Deletion is logical, not a forensic erase.
+  Screenshots use synthetic conversations and do not demonstrate physical glasses testing.
 developer: 9vibes
 website: https://github.com/9vibes/EVENCOMMS
 submitter: 9vibes
@@ -54,33 +73,48 @@ submission: https://github.com/9vibes/KNS-Umbrel
 repo: https://github.com/9vibes/EVENCOMMS
 support: https://github.com/9vibes/EVENCOMMS/issues
 gallery:
-  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.2.1/assets/screenshot-operator.png
-  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.2.1/assets/screenshot-wearer.png
-  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.2.1/assets/screenshot-stream.png
+  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.3.0/assets/screenshot-operator.png
+  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.3.0/assets/screenshot-wearer.png
+  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.3.0/assets/screenshot-stream.png
+  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.3.0/assets/screenshot-research.png
 releaseNotes: |-
-  0.2.1 adds a full-width STREAM tab with authenticated HLS preview of one RTMP
-  feed, without recording or transcoding. New nginx and MediaMTX services use
-  image-managed configuration installed automatically at startup. CPU STT,
-  wearer conversations and human-approved Ollama replies remain available.
+  0.3.0 adds opt-in OpenAI visual Research, 1x-4x digital zoom/pan and
+  low-latency HLS. CPU STT, wearer controls, conversations and human-approved
+  local Ollama replies retain their defaults. Research sends only on explicit
+  Send, uses billable OpenAI API access and never automatically replies to glasses.
 
-  Stop and back up the entire persistent data directory, including SQLite WAL
-  files, before updating in place; do not uninstall. Conversations, pairings,
-  models and the generated application password are preserved. SQLite migration
-  generates persistent, distinct publisher and private reader keys. Operators
-  must log in again after restart; paired wearers can reconnect.
+  Upgrade from 0.1.0 or 0.2.1 in place after stopping and backing up all persistent
+  data, SQLite sidecars, pairings, stream keys, model cache and the Umbrel password
+  seed. Do not uninstall. Existing data, stream keys and generated admin password
+  are preserved; 0.1.0 migration creates missing stream keys. Sign in again after
+  restart; paired wearers can reconnect. Research sign-in keys and chat history
+  are ephemeral and are not migrated or backed up with the database.
+
+  Recreate the full stack: initialization automatically overwrites image-managed
+  nginx/MediaMTX config files. MediaMTX uses lowLatency with 200ms parts; nginx's
+  body ceiling is 9m for Research, with ordinary JSON/audio backend bounds
+  unchanged. The HLS player targets 1s, with a 3s drift threshold and 1.05x catch-up.
+  A local server-timestamp measurement improved from 2.05s to 1.23s, not a
+  camera-to-screen measurement or performance guarantee. Less buffering trades
+  resilience to network jitter for latency; validate native Safari HLS over HTTPS.
 
   WARNING: this upgrade publishes plaintext RTMP on 0.0.0.0:21936. Check that
   TCP 21936 is free, prefer RTMP_BIND set to a LAN/VPN IP and never router-forward
   it. STREAM_ENABLED=false denies media authentication but leaves the port
   published. Use COOKIE_SECURE=true with HTTPS and explicit ALLOWED_ORIGINS.
 
-  Source: EVENCOMMS v0.2.1 (bac7a2a). Release checks passed 260 unit/browser tests,
-  real RTMP playback with generated configuration, fresh CPU transcription,
-  and a 0.1.0-to-0.2.1 container upgrade preserving messages, pairing and models.
-  The published application image is digest-pinned; anonymous downloads of its
-  manifest, configuration and all layers were checksum-verified. Physical
-  G2/phone behavior, the actual Umbrel host/proxy and target-device latency still
-  require acceptance testing. The failed 0.2.0 candidate was not published as an image.
+  Source: EVENCOMMS v0.3.0 (a4d1b9c). Release checks passed 410 unit/browser tests,
+  real streaming/zoom/frame capture, fresh CPU transcription, and upgrades from
+  both 0.1.0 and 0.2.1 preserving conversations, pairing, models and existing
+  stream secrets. Image validation runs off the event loop with bounded admission.
+  The application image is digest-pinned and its complete anonymous download was
+  checksum-verified. All five versioned icon/gallery URLs were verified.
+
+  Provider tests are mocked, not live OpenAI account tests. Video
+  playback and crop capture are tested with synthetic video. These do not verify
+  real account/model compatibility, billing or provider retention. Physical
+  G2/phone behavior, Safari and the actual Umbrel host/proxy still need acceptance
+  testing. The failed 0.2.0 candidate was not published as an image.
 dependencies: []
 path: ""
 deterministicPassword: true
@@ -137,6 +171,14 @@ environment:
     services: [server]
     default: "30"
     note: Positive finite suggestion timeout in seconds. Manual replies remain available if Ollama fails.
+  - name: OPENAI_TIMEOUT
+    services: [server]
+    default: "90"
+    note: Optional nonsecret Research provider timeout in seconds, 1..110. Use HTTPS in-app Key Connect for a current-sign-in key; no API key is collected by this form.
+  - name: OPENAI_MAX_OUTPUT_TOKENS
+    services: [server]
+    default: "2048"
+    note: Optional nonsecret Research output token cap, integer 256..8192. OpenAI API usage is billable; model availability does not guarantee image or Responses support.
   - name: MAX_SESSIONS
     services: [server]
     default: "100"

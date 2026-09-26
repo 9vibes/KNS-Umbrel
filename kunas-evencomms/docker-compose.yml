@@ -16,7 +16,7 @@ services:
     logging: *logging
 
   data_init:
-    image: ghcr.io/9vibes/evencomms:0.2.1@sha256:847d7e3c3b331da64ee6f73e2710162aa72a78bd282d1b3027dde27c45ae14e2
+    image: ghcr.io/9vibes/evencomms:0.3.0@sha256:2e81e2c04292e4d48f38fa3c568eb2742d0afbe8a0e468db6c4c62e1d5f3e6c3
     platform: linux/amd64
     user: "0:0"
     command: [python, -m, backend.init_data, --config-dir, /config]
@@ -33,7 +33,7 @@ services:
     logging: *logging
 
   server:
-    image: ghcr.io/9vibes/evencomms:0.2.1@sha256:847d7e3c3b331da64ee6f73e2710162aa72a78bd282d1b3027dde27c45ae14e2
+    image: ghcr.io/9vibes/evencomms:0.3.0@sha256:2e81e2c04292e4d48f38fa3c568eb2742d0afbe8a0e468db6c4c62e1d5f3e6c3
     platform: linux/amd64
     user: "10001:10001"
     init: true
@@ -52,6 +52,9 @@ services:
       OLLAMA_URL: ${OLLAMA_URL:-}
       OLLAMA_MODEL: ${OLLAMA_MODEL-llama3.2:3b}
       OLLAMA_TIMEOUT: ${OLLAMA_TIMEOUT:-30}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_TIMEOUT: ${OPENAI_TIMEOUT:-90}
+      OPENAI_MAX_OUTPUT_TOKENS: ${OPENAI_MAX_OUTPUT_TOKENS:-2048}
       MAX_SESSIONS: ${MAX_SESSIONS:-100}
       MAX_MESSAGES_PER_SESSION: ${MAX_MESSAGES_PER_SESSION:-1000}
       STREAM_ENABLED: ${STREAM_ENABLED:-true}

@@ -50,14 +50,16 @@ https://github.com/9vibes/KNS-Umbrel
   Recordings are never automatically deleted.
   App source: [`9vibes/SteamLab`](https://github.com/9vibes/SteamLab). [Setup and safety notes](kunas-steamlab/README.md).
 
-- **EVENCOMMS 0.2.1** (`kunas-evencomms`)
+- **EVENCOMMS 0.3.0** (`kunas-evencomms`)
   Early-release Even glasses/operator conversations with local English CPU transcription
-  and optional human-approved Ollama replies. Adds a full-width STREAM tab with
-  authenticated HLS preview, without recording or transcoding. x86-64 only.
+  and optional human-approved Ollama replies. Adds opt-in OpenAI visual Research,
+  1x-4x digital zoom/pan and low-latency HLS monitoring. Research sends reviewed
+  prompts, selected stills and chat history only on explicit Send; API billing applies.
+  No recording, transcoding or automatic replies to glasses. x86-64 only.
   **Upgrade opens plaintext RTMP on TCP 21936: trusted LAN/VPN only, never
-  router-forward.** Update in place after a stopped-data backup. The image is
-  digest-pinned and verified publicly downloadable; physical G2/phone
-  and Umbrel installation still need acceptance testing.
+  router-forward.** Update in place after a stopped-data backup. The published
+  image is digest-pinned and verified anonymously downloadable. Physical G2/phone and
+  Umbrel installation still need acceptance testing.
   App source: [`9vibes/EVENCOMMS`](https://github.com/9vibes/EVENCOMMS).
   [Setup, configuration and release caveats](kunas-evencomms/README.md).
 
