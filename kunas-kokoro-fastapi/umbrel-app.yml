@@ -1,28 +1,27 @@
 manifestVersion: 1
 id: kunas-kokoro-fastapi
-name: Kokoro Multilingual
-tagline: Multilingual OpenAI-compatible TTS for Spanish and more
+name: Kokoro GPU
+tagline: GPU-enabled OpenAI-compatible TTS for Umbrel/Open WebUI
 icon: https://getumbrel.github.io/umbrel-apps-gallery/kokoro/icon.svg
 category: ai
-version: "0.8.2-multilingual-7"
+version: "0.8.2-gpu-8"
 # Keep this outside umbrelOS 2.0's 40000-49999 Machines reserved range.
 port: 28880
 path: /web/
 description: >-
   Kokoro FastAPI is a Dockerized OpenAI-compatible text-to-speech API for
-  Kokoro-82M. This package uses the multilingual Kokoro FastAPI CPU image with
-  Kokoro v1.0 voice packs, including English, Spanish, French, Hindi, Italian,
-  Japanese, Brazilian Portuguese, and Mandarin Chinese voices.
+  Kokoro-82M. This package uses the NVIDIA GPU Kokoro FastAPI image so speech
+  generation runs on CUDA instead of CPU on compatible Umbrel hosts.
 
   The web player is available at /web/ and API documentation is available at
   /docs. The API exposes the OpenAI-compatible speech endpoint
   /v1/audio/speech, making it suitable for apps like Open WebUI that can
-  connect to an OpenAI-compatible TTS provider. Spanish voices include
-  ef_dora, em_alex, and em_santa.
+  connect to an OpenAI-compatible TTS provider.
 
-  This release uses the CPU image because this Umbrel host's current NVIDIA
-  driver rejects the upstream CUDA 12.6 multilingual GPU image. Update the host
-  NVIDIA driver to use the GPU image again.
+  This GPU build pins ghcr.io/remsky/kokoro-fastapi-gpu:v0.1.4 because newer
+  multilingual GPU images require a newer NVIDIA driver than this Umbrel host
+  currently provides. This CUDA-compatible GPU build may have a smaller voice
+  inventory than the multilingual CPU package.
 
 developer: remsky
 website: https://github.com/remsky/Kokoro-FastAPI
@@ -35,9 +34,9 @@ gallery:
   - https://getumbrel.github.io/umbrel-apps-gallery/kokoro/2.jpg
   - https://getumbrel.github.io/umbrel-apps-gallery/kokoro/3.jpg
 releaseNotes: |-
-  What's new in 0.8.2-multilingual-7
+  What's new in 0.8.2-gpu-8
 
-  - Updates Kokoro to Kokoro FastAPI v0.8.2 with Kokoro v1.0 multilingual voice packs.
-  - Adds multilingual TTS support, including Spanish voices ef_dora, em_alex, and em_santa.
-  - Uses the upstream CPU image because this Umbrel host rejects the CUDA 12.6 multilingual GPU image with an NVIDIA driver requirement error.
+  - Switches Kokoro from the CPU image to the NVIDIA GPU image.
+  - Enables the NVIDIA runtime and CUDA device visibility for the Kokoro server.
+  - Pins the CUDA-compatible ghcr.io/remsky/kokoro-fastapi-gpu:v0.1.4 image because newer multilingual GPU images require a newer host NVIDIA driver.
   - Keeps the OpenAI-compatible /v1/audio/speech API and /web/ player launch path.
