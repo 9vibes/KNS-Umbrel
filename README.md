@@ -50,12 +50,18 @@ https://github.com/9vibes/KNS-Umbrel
   Recordings are never automatically deleted.
   App source: [`9vibes/SteamLab`](https://github.com/9vibes/SteamLab). [Setup and safety notes](kunas-steamlab/README.md).
 
-- **EVENCOMMS 0.4.1** (`kunas-evencomms`)
+- **EVENCOMMS 0.4.2** (`kunas-evencomms`)
   Early-release Even glasses/operator conversations with local English CPU transcription
   and optional human-approved Ollama replies. Retains OpenAI API Research,
   1x-4x digital zoom/pan, low-latency HLS and experimental ChatGPT account Research
-  through official Codex 0.157.1. The hotfix restores **Get Codex login code** on
-  trusted-network, non-loopback HTTP with confirmation before each login request.
+  through unchanged official Codex 0.157.1. This reply-compatibility hotfix restores
+  native Responses Lite, accepts validated metadata/deltas for both pinned models
+  and adds safe `[codex:code]` diagnostics. Tools, approvals, unknown events and
+  model changes still fail closed. Native workspace routing is checked before
+  every inference attempt, including after credential refresh; unsupported routes
+  are rejected, not silently sent to the fixed global endpoint.
+  The 0.4.1 **Get Codex login code** behavior is unchanged: trusted-network,
+  non-loopback HTTP requires confirmation before each login request.
   HTTPS is strongly recommended: HTTP exposes operator sessions, codes and chat.
   OpenAI sign-in always uses its HTTPS device page; API-key entry remains
   HTTPS/exact-loopback-only.
@@ -70,11 +76,12 @@ https://github.com/9vibes/KNS-Umbrel
   **Plaintext RTMP remains on TCP 21936: trusted LAN/VPN only, never
   router-forward.** Update in place, never uninstall; back up data/models, password
   seed and existing private `codex-auth` token without rotation.
-  App/init `:0.4.1` and bridge `:0.4.1-codex` are digest-pinned; complete anonymous
-  downloads were checksum-verified. CI, final-image checks and upgrades through
-  0.4.0 passed, including preservation of the existing private bridge token.
-  Real-account, physical G2/phone, Safari and actual Umbrel-host acceptance remain
-  unverified; no installation on a Stone is claimed.
+  App/init `:0.4.2` and bridge `:0.4.2-codex` are digest-pinned; complete anonymous
+  downloads were checksum-verified. CI, final-image checks, all five versioned
+  assets and upgrade gates through 0.4.1 passed. Synthetic tests do not identify
+  the past user-specific failure or verify live accounts, entitlement, routing or
+  billing. Physical G2/phone, Safari and
+  actual Umbrel-host acceptance remain unverified; no Stone installation is claimed.
   App source: [`9vibes/EVENCOMMS`](https://github.com/9vibes/EVENCOMMS).
   [Setup, configuration and release caveats](kunas-evencomms/README.md).
 

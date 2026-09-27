@@ -1,11 +1,11 @@
-# Published 0.4.1 image pair verified; live-account acceptance remains unverified.
+# Published 0.4.2 image pair verified; live-account acceptance remains unverified.
 manifestVersion: 1
 id: kunas-evencomms
 name: EVENCOMMS
 tagline: Live comms, stream monitoring and visual research
-icon: https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.1/assets/icon.svg
+icon: https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.2/assets/icon.svg
 category: social
-version: "0.4.1"
+version: "0.4.2"
 port: 28097
 description: >-
   EVENCOMMS is an early release for local communication between an Even glasses
@@ -73,7 +73,7 @@ description: >-
   the browser chat does not erase those threads. A separate local service token is
   provisioned once, not an OpenAI account credential or the app password. No secret
   form field or new enable setting is needed. The bridge has no published ports;
-  its health does not gate normal app startup. In 0.4.1, Get Codex login code works
+  its health does not gate normal app startup. Since 0.4.1, Get Codex login code works
   on the normal Umbrel HTTP URL after trusted-network confirmation before each
   login request. OpenAI sign-in always uses https://auth.openai.com/codex/device.
   Issued codes, including nine-digit numeric and other supported formats, are
@@ -85,6 +85,20 @@ description: >-
   No TLS is installed automatically. Keep COOKIE_SECURE=false on HTTP; set true
   only behind trusted HTTPS with explicit ALLOWED_ORIGINS, or playback breaks.
   No tools or automatic replies to glasses are enabled.
+
+
+  The 0.4.2 release fixes native reply compatibility for both pinned models,
+  restoring Responses Lite and accepting validated metadata and streaming deltas.
+  Fixed markers such as [codex:rate_limit] classify failures without returning
+  provider error bodies, account details, credentials or native logs. Tools,
+  approvals, unknown events and model changes remain blocked. Native account
+  routing is checked before every inference attempt, including after OAuth refresh;
+  unsupported workspaces fail with [codex:unsupported_workspace], not a silent
+  fallback to the fixed global endpoint. The 85-second deadline is unchanged;
+  the hidden 15-second relay read cutoff is removed. Synthetic tests do not establish
+  the cause of a user's prior generic error or verify live entitlement/routing/billing.
+  Both exact tested images are published and digest-pinned; their complete anonymous
+  downloads and versioned assets were verified.
 
 
   This image supports Linux x86-64 (amd64) only, not Raspberry Pi or other
@@ -109,47 +123,52 @@ submission: https://github.com/9vibes/KNS-Umbrel
 repo: https://github.com/9vibes/EVENCOMMS
 support: https://github.com/9vibes/EVENCOMMS/issues
 gallery:
-  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.1/assets/screenshot-operator.png
-  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.1/assets/screenshot-wearer.png
-  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.1/assets/screenshot-stream.png
-  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.1/assets/screenshot-research.png
+  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.2/assets/screenshot-operator.png
+  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.2/assets/screenshot-wearer.png
+  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.2/assets/screenshot-stream.png
+  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.2/assets/screenshot-research.png
 releaseNotes: |-
-  0.4.1 fixes Codex device-code login on the normal HTTP Umbrel console. Both
-  published images are digest-pinned and complete anonymous downloads were
-  checksum-verified. Source: 11521b18fc4c070c4e0420b462141541396258e6, tagged v0.4.1.
+  0.4.2 reply-compatibility and diagnostic update. Source v0.4.2:
+  13e1b49cce70894dcd574fac953e6501a0934ab1. Both exact tested images are published,
+  digest-pinned and matched to their OCI provenance. Complete anonymous downloads
+  were checksum-verified, and all five versioned asset URLs were checked.
 
-  Fixes 0.4.0's disabled Codex login on Umbrel HTTP. Get Codex login code now asks
-  for trusted-network confirmation before each non-loopback HTTP login POST.
-  HTTPS is strongly recommended: operator sessions, codes and chat can be intercepted.
-  API-key entry still requires HTTPS or exact localhost/loopback. Keep Secure
-  playback cookies off on HTTP; enable only after configuring trusted HTTPS.
+  Fixes reproducible reply-compatibility defects affecting gpt-6-luna and gpt-6-astra:
+  restores native Responses Lite and reasoning-summary none, keeps the native
+  version header and empty additional_tools input, and accepts validated scoped
+  metadata/reasoning/text deltas. Official Codex 0.157.1 and its binary hashes are
+  unchanged. Tools, approvals, unknown events and model reroutes still fail closed.
 
-  OpenAI-issued nine-digit and other supported codes are displayed unchanged; enter
-  them at https://auth.openai.com/codex/device, as with codex login --device-auth.
-  Codes are never generated locally; a separate CLI login does not connect the app.
-  OpenAI may require enabling device-code authentication in ChatGPT security settings.
+  Fixed [codex:code] diagnostics distinguish allowance/rate, model, authentication,
+  policy, timeout, stream and protocol failures without exposing provider bodies,
+  account details, credentials or native logs. Native account/read routing is
+  checked before every upstream inference attempt, including after OAuth refresh.
+  Unsupported workspaces fail with [codex:unsupported_workspace], never silently
+  use the fixed global endpoint. The one-non-401 budget and at most three total
+  authentication-recovery attempts remain. The hidden 15-second relay read cutoff
+  is removed; the overall 85-second deadline is unchanged. No API/model/provider fallback.
 
-  Independent 10-second binary verification preserves login readiness if the
-  75-second generation proof fails or times out; generation stays blocked.
-  Overlapping heartbeat/login acknowledgements no longer accidentally cancel
-  unacknowledged sessions or lose their cleanup obligations.
+  The 0.4.1 HTTP Get Codex login code confirmation, unchanged issued codes and
+  OpenAI HTTPS device page remain; API-key entry stays HTTPS/exact-loopback-only.
+  HTTPS is strongly recommended. No API-key re-entry is required for Codex.
 
-  Update both images in place, never uninstall. Preserve data/models, settings,
-  app ID/password and the existing private codex-auth/token without rotation:
-  ownership 10001:10002, directory 0750, file 0440. No new secret, directory,
-  port or deployment setting is needed for a 0.4.0 upgrade.
+  Passed automated coverage: 1437 unique tests (1396 backend including one native login
+  and 15 full-chat cases, 27 frontend, 14 browser). Native tests use the actual
+  binary, backend/bridge, Session/Generation and relay with synthetic loopback
+  issuer/SSE only. Main CI and release run 36325388237 passed; the dedicated job
+  passed all 16 native cases that general CI skips without the binary. Final-image
+  container checks, private readiness, playback/capture, CPU transcription and
+  upgrades from 0.1.0, 0.2.1, 0.3.0, 0.4.0 and 0.4.1 passed. The 0.4.0/0.4.1 upgrades
+  also verified preservation of the existing private token bytes and permissions.
 
-  Official Codex 0.157.1 and its binary hashes are unchanged, as are two operators/
-  eight requests per login, RAM-only OAuth and no automatic paid API/model/provider
-  fallback. CI/release run 36308059105 passed: 1095 tests (1054 backend including
-  the dedicated native login test, 27 frontend and 14 browser), exact-image
-  container isolation/readiness, playback/capture, CPU transcription and upgrades
-  from 0.1.0, 0.2.1, 0.3.0 and 0.4.0. The 0.4.0 old-to-new initializer check preserved
-  private token bytes and permissions. The pinned binary exercised the production
-  login handler with a synthetic nine-digit code and delayed approval, not a real
-  OpenAI account. All five v0.4.1 icon/gallery URLs were verified.
-  Real accounts, physical G2/phones, Safari and actual Umbrel/Stone installation
-  remain unverified. The four gallery images reuse synthetic API-mode content.
+  Update both images in place, never uninstall. Preserve
+  data/models, settings, app ID/password and codex-auth/token bytes, ownership
+  10001:10002, directory 0750 and file 0440 without rotation. No new settings,
+  directories, services, ports or resources are needed. Two operators/eight sends
+  per login and RAM-only OAuth remain. Gallery PNGs reuse synthetic API-mode content,
+  not regenerated Codex frames. The user's old generic error cannot identify its
+  exact cause; no live-account fix is guaranteed. Real entitlement, routing/billing,
+  physical G2/phones, Safari and actual Umbrel/Stone installation remain unverified.
 dependencies: []
 path: ""
 deterministicPassword: true
