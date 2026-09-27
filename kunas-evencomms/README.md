@@ -1,15 +1,16 @@
-# EVENCOMMS 0.4.0 For Umbrel
+# EVENCOMMS 0.4.1 For Umbrel
 
-The application and isolated Codex bridge are pinned to the verified images from
-the successful 0.4.0 release. Codex account Research remains **experimental**:
-synthetic account tests and container checks do not establish live-account or
-target-host acceptance. See the recorded results and limitations below.
+The application/init and isolated Codex bridge are pinned to verified 0.4.1
+release images. This hotfix enables Codex device-code login from the HTTP Umbrel
+console after a trusted-network confirmation. Codex remains **experimental**;
+synthetic tests and container checks do not establish live-account or target-host
+acceptance. Verified results and limitations are below.
 
 Local communication between an Even glasses wearer and a browser operator, with
 short-chunk English CPU transcription and optional human-approved Ollama replies.
 The full-width **STREAM** tab provides authenticated low-latency HLS preview of
 one RTMP feed with 1x-4x digital zoom/pan. **RESEARCH** retains opt-in OpenAI API chat
-and adds **ChatGPT account (Experimental Codex)** using official Codex **0.157.1**,
+and **ChatGPT account (Experimental Codex)** using official Codex **0.157.1**,
 with reviewed still-frame attachments, separate from local Ollama. API mode remains
 the UI default and existing API-key settings/overrides are unchanged.
 There is no recording, transcoding or continuous stream analysis. CPU speech
@@ -21,40 +22,41 @@ synthetic conversations, not evidence of hardware testing.
 
 ## Release Status
 
-- Source: [EVENCOMMS commit 3114226](https://github.com/9vibes/EVENCOMMS/tree/3114226dafb049b99228630b32dbf1f638a40e41),
-  full revision `3114226dafb049b99228630b32dbf1f638a40e41`, tagged `v0.4.0`.
-  This is an in-place update from store 0.3.0 (`78058df` content retained
-  in store baseline `e53ba24`). The failed 0.2.0 candidate was never an image/store release.
-- App/init: `ghcr.io/9vibes/evencomms:0.4.0`, pinned to
-  `sha256:0b22e2b2d2967e55f244985ebc16cdac3426c852527f83398dce7b639b5e6d15`.
-  Bridge: `ghcr.io/9vibes/evencomms:0.4.0-codex`, pinned to
-  `sha256:ef6ec09356f75a9cd3b077dc93e86535a6b42a3ef001f5a7f299dc82dc5a97b4`.
-  Both use the same public GHCR package. Complete anonymous manifest, configuration
-  and layer downloads were checksum-verified against the release artifacts.
-  nginx and MediaMTX retain their existing digest pins.
-- The `v0.4.0` tag is published and all five icon/gallery URLs returned HTTP 200.
-  Assets are unchanged from 0.3.0 and synthetic:
+- Source: [EVENCOMMS v0.4.1](https://github.com/9vibes/EVENCOMMS/tree/v0.4.1),
+  full revision `11521b18fc4c070c4e0420b462141541396258e6`. Store baseline:
+  `45072bee204ebd20f76f50eddaf7a9a22b75a0cd` (0.4.0).
+- App/init `ghcr.io/9vibes/evencomms:0.4.1` is pinned to
+  `sha256:bb72aa606eaa2dd217dfd80076c121449b5d05bb897996aa540d4cd346f941ab`.
+  Bridge `ghcr.io/9vibes/evencomms:0.4.1-codex` is pinned to
+  `sha256:6ec98d80f8fa7855f455a5b6f9c80f558a074bce686411e0c3b794d060b27e8e`.
+  Complete anonymous manifest, configuration and layer downloads were
+  checksum-verified against the release artifacts in the existing public package.
+  nginx and MediaMTX retain their existing digest pins. All other deployment
+  fields, manifest settings, app identity, password and ports remain unchanged.
+- All five `v0.4.1` icon/gallery URLs returned HTTP 200.
+  They reuse unchanged synthetic 0.3.0 assets, not regenerated codes:
   Research shows disconnected **API** mode with a local draft capture, not Codex
   login, a real account, fabricated AI answers or proof of hardware testing.
 - Platform: `linux/amd64` only. Raspberry Pi and other ARM hosts are not
   supported. Speech recognition uses CPU/int8, not GPU; no NVIDIA runtime is needed.
-- **1031 backend, 27 frontend and 13 browser tests passed** in
-  [main CI](https://github.com/9vibes/EVENCOMMS/actions/runs/36301967911).
-  The [tagged release workflow](https://github.com/9vibes/EVENCOMMS/actions/runs/36302687176)
-  also passed and published both exact tested image IDs without rebuilding.
-- Release checks passed fresh CPU transcription and upgrades from 0.1.0, 0.2.1
-  and 0.3.0 preserving conversations, pairing, models and existing stream secrets.
-  Final-image RTMP/HLS/browser playback, zoom and cropped capture also passed.
-- The final bridge image passed the actual pinned runtime's synthetic proof with
-  external networking disabled and container restrictions enforced. Private token
-  provisioning/idempotency, UID access, read-only mounts, resource/network controls,
-  backend independence and authenticated running-service `/ready` were verified.
-  Its startup gate reported verified binary, enabled generation and zero account
-  sessions. Provider tests use mocks/synthetic fixtures, not live OpenAI accounts.
+- [Main CI](https://github.com/9vibes/EVENCOMMS/actions/runs/36307573683) and the
+  [tagged release workflow](https://github.com/9vibes/EVENCOMMS/actions/runs/36308059105)
+  passed. Automated coverage totals **1095 tests**: 1054 backend, 27 frontend and
+  14 browser. General CI skips the native login test when its binary is not on
+  PATH; the dedicated Codex job runs that test successfully with the pinned binary.
+- Release checks passed CPU transcription, final-image playback/zoom/capture,
+  isolated bridge proof and authenticated `/ready`, plus upgrades from 0.1.0,
+  0.2.1, 0.3.0 and 0.4.0. The 0.4.0 gate ran its old initializer with private auth
+  first, then verified that the new initializer preserves token bytes, ownership
+  and permissions. This is not a live-account migration test.
+- The actual pinned binary passed the production `Session` login handler with a
+  nine-digit code and delayed approval through HTTP 403/404 polling. This uses
+  a synthetic local issuer, not a real account. Both exact final image IDs passed
+  their container checks before publication; no rebuild occurred after those checks.
 - Real account/device-code login, live text/image inference, model entitlement,
   tenant-specific routing, allowance/billing and provider retention remain
   unverified. Physical G2/phones, native Safari and the actual Umbrel host/TLS path
-  also require acceptance testing. The verified CI containers do not establish
+  also require acceptance testing. Synthetic CI containers do not establish
   target-device performance, end-to-end deployment readiness or an Umbrel installation.
 - Managed-config tests enter nginx directly; they do not run Umbrel's supplied
   app proxy. Actual host installation, port availability and physical G2/phone
@@ -62,15 +64,16 @@ synthetic conversations, not evidence of hardware testing.
 - Adding this package to the store does not automatically install it on a Stone
   or any other Umbrel host. No installation on a Stone is claimed.
 
-## Upgrade From 0.1.0, 0.2.1 Or 0.3.0
+## Upgrade From 0.1.0, 0.2.1, 0.3.0 Or 0.4.0
 
-Keep existing operator settings and deployment overrides, including
-explicitly empty values; do not replace a customized installation with the source
-staging stack. For forks, test against a stopped-data copy rather than assuming
-an untested migration is compatible. Do not rename the app or uninstall to upgrade.
+Keep existing operator settings and deployment
+overrides, including explicitly empty values; do not replace a customized
+installation with the source staging stack. For forks, test against a stopped-data
+copy rather than assuming an untested migration is compatible. Do not rename the
+app or uninstall to upgrade.
 
 **This package publishes plaintext RTMP on `0.0.0.0:21936` by default.**
-It is new for 0.1.0 installations and remains published for 0.2.1/0.3.0 installations.
+It is new for 0.1.0 installations and remains published for 0.2.1/0.3.0/0.4.0.
 Use only a trusted LAN or encrypted VPN, preferably binding `RTMP_BIND` to the
 host's LAN/VPN IP. Restrict it with Docker-aware firewall rules and **never
 router-forward TCP 21936**. HTTPS on the console does not encrypt RTMP keys/media.
@@ -93,14 +96,15 @@ router-forward TCP 21936**. HTTPS on the console does not encrypt RTMP keys/medi
    MediaMTX, nor a way to disconnect an already accepted publisher.
 3. Refresh the KUNAS store and update **in place** through
    Umbrel and recreate the full stack, including `data_init`, `server`, `web`,
-   `mediamtx` and the new `codex-bridge`, using both release images, not only the
+   `mediamtx` and `codex-bridge`, using both release images, not only the
    backend. The initializer automatically installs the image's configs,
    overwriting its managed nginx/MediaMTX files; no manual
    template copying is needed. The 0.3.0 `hlsVariant: lowLatency`,
    `hlsPartDuration: 200ms` and nginx `9m` Research ceiling are retained.
    Ordinary JSON/audio backend bounds remain unchanged. Init also provisions the
-   private service token once, preserving a valid existing token on upgrades.
-   No account credential or manual secret setup is required.
+   private service token once. A 0.4.0 upgrade retains its existing token bytes,
+   ownership and modes without rotation; no new directory or secret setup is needed.
+   Older installs provision it automatically. No account credential is required.
 4. The SQLite migration preserves conversations, wearer pairings and existing
    stream keys; upgrading from 0.1.0 generates missing distinct persistent
    publisher and server-only reader secrets. The existing
@@ -127,9 +131,10 @@ router-forward TCP 21936**. HTTPS on the console does not encrypt RTMP keys/medi
    device domain). Port `28097` belongs to the Umbrel app proxy, targeting
    `kunas-evencomms_web_1:8080`, never the raw backend at `8000`. Review the RTMP
    warning and check port availability above before installing.
-   This normal remote HTTP URL **cannot initiate Codex device sign-in in the UI**.
-   Configure trusted HTTPS, `COOKIE_SECURE=true` and explicit `ALLOWED_ORIGINS`
-   first; installing the bridge does not provision TLS.
+   On 0.4.1, **Get Codex login code** works here after confirmation before each
+   login request, only on a trusted LAN/VPN. HTTPS is strongly recommended: HTTP
+   exposes operator sessions, codes and chat. Keep `COOKIE_SECURE=false` while
+   using HTTP or STREAM playback breaks. Installing the bridge does not provision TLS.
 3. Sign in to the operator console using the generated application password
    shown by Umbrel. No username or shared default password is required.
 4. Select **Pair a wearer** to generate a single-use code valid for five minutes.
@@ -246,9 +251,11 @@ without Ollama and remain available after suggestion failures.
 
 RESEARCH is an opt-in cloud workflow, **not an Ollama replacement**. Open the
 Research tab, keep the default **OpenAI API key** provider and use **Key Connect**
-for the current operator sign-in over trusted HTTPS. API mode requires an OpenAI
-API key; a ChatGPT subscription is not API credit. Experimental Codex is a separate
-explicit choice, not an automatic fallback in either direction.
+for the current operator sign-in over trusted HTTPS (or exact localhost/loopback
+for local development). The HTTP Codex exception does not relax API-key entry.
+API mode requires an OpenAI API key; a ChatGPT subscription is not API credit.
+Experimental Codex is a separate explicit choice, not an automatic fallback in
+either direction.
 The key is scoped to that operator token and kept only in server RAM, never
 browser `localStorage` or `sessionStorage`. Logout, token expiry, disconnect or a
 server restart clears it; the API does not return it.
@@ -298,15 +305,24 @@ offline/synthetic loopback probe processes, not real account login or inference.
 A failed bridge or safety gate leaves normal conversations, CPU STT, Ollama, API
 Research and streaming available. Merely installing it does not permit account use.
 
-1. Configure trusted HTTPS for the operator, `COOKIE_SECURE=true` and the entire
-   exact `ALLOWED_ORIGINS` list. The usual `http://umbrel.local:28097` is not an
-   eligible remote login origin. Exact localhost/loopback HTTP is only a local
-   development exception, not an Umbrel TLS workaround.
+1. Strongly prefer trusted HTTPS for operator privacy, with `COOKIE_SECURE=true`
+   only behind HTTPS and the entire exact `ALLOWED_ORIGINS` list. Unlike 0.4.0,
+   0.4.1 permits Codex device login at `http://umbrel.local:28097` after explicit
+   trusted-network confirmation before every login POST. HTTP still exposes the
+   operator session, one-time code and chat to interception; never use it on an
+   untrusted/public network. Keep `COOKIE_SECURE=false` on HTTP or playback breaks.
+   API-key entry still requires HTTPS or exact localhost/loopback.
 2. In Research explicitly select **ChatGPT account (Experimental Codex)** and
-   confirm clearing any current local chat. Choose **Sign in with ChatGPT**, open
-   OpenAI's device page and enter the displayed one-time code. The app never asks
-   for your account password, browser cookies or pasted OAuth tokens. Your account
-   or workspace may require enabling device-code authentication.
+   confirm clearing any current local chat. Choose **Get Codex login code** and
+   confirm the HTTP warning for each login attempt when shown; cancelling sends
+   no login POST. Always open `https://auth.openai.com/codex/device` and enter the
+   displayed code unchanged. OpenAI issues it: nine-digit numeric codes and other
+   supported formats are preserved, never generated or reformatted locally.
+   This is the same device-code flow as `codex login --device-auth`; a code from
+   a separate CLI process authorizes that process, not EVENCOMMS. If required,
+   enable device-code authentication in ChatGPT security settings or ask the
+   workspace administrator. Never paste a password, browser cookie or OAuth token
+   into EVENCOMMS; sign in personally on OpenAI's HTTPS page.
 3. After connection, explicitly choose a model. The pinned `gpt-6-luna` and
    `gpt-6-astra` selectors support image inputs in the tested runtime contract;
    they are not a live entitlement list or proof that your account can use them.
@@ -350,10 +366,14 @@ browser view does not erase those threads. Each Send uses exactly the displayed
 history, not hidden prior turns. Bounded RAM caches can briefly retain results.
 Disconnect/logout, expiry, the request cap or restart destroy runtime state;
 cleanup is best-effort, with a 120-second lease renewed every 30 seconds to expire
-orphaned sessions. Closing a tab or switching providers is not logout. Local
-cleanup does not guarantee remote token revocation or sign out the ChatGPT website.
+orphaned sessions. The 0.4.1 heartbeat ignores absent IDs across an unacknowledged
+login or newer creation than its snapshot, avoiding accidental cancellation;
+uncertain creation retains its cleanup obligation. Closing a tab or switching
+providers is not logout. Local cleanup does not guarantee remote token revocation
+or sign out the ChatGPT website.
 
-See the committed source's [Codex protocol, limits and privacy guide](https://github.com/9vibes/EVENCOMMS/blob/3114226dafb049b99228630b32dbf1f638a40e41/docs/codex.md).
+The [0.4.1 Codex protocol, limits and privacy guide](https://github.com/9vibes/EVENCOMMS/blob/11521b18fc4c070c4e0420b462141541396258e6/docs/codex.md)
+is pinned to this release's source revision.
 
 ### Exact Origins And TLS
 
@@ -386,11 +406,12 @@ forward WebSocket Upgrade, and allow Research bodies up to the `9m` nginx ceilin
 Ordinary JSON/audio backend limits remain unchanged, including audio bodies of
 480000 bytes plus framing. Set proxy timeouts above `STT_TIMEOUT`, `OLLAMA_TIMEOUT`
 and `OPENAI_TIMEOUT`, allowing device-login polling and Codex response waiting.
-TLS is a manual deployment prerequisite; the bridge installs no certificates or
-automatic TLS proxy. Restrict direct HTTP
+TLS is strongly recommended for privacy, not a 0.4.1 Codex login prerequisite;
+the bridge installs no certificates or automatic TLS proxy. Restrict direct HTTP
 access with network/firewall controls; do not expose plaintext port `28097` to
-the public Internet. HTTP exposes passwords, bearer tokens and conversation text.
-Set `COOKIE_SECURE=true` for HTTPS playback cookies; this does not encrypt RTMP.
+the public Internet. HTTP exposes passwords, bearer tokens, device codes and chat.
+Set `COOKIE_SECURE=true` only for HTTPS playback cookies; leave it false on HTTP
+so playback cookies can be sent. This does not encrypt RTMP.
 
 **Explicitly allow the public HTTPS origin even for same-origin HTTPS/WSS access.**
 The image runs Uvicorn with `--no-proxy-headers`; backend HTTP/WS does not infer
@@ -405,7 +426,7 @@ inference, or Tor routing for model downloads, Ollama or OpenAI traffic.
 
 Only nginx `web` joins both the default Umbrel app-proxy network and the private
 application bridge. `mediamtx` joins only `private`; `server` joins `private` plus
-the new **internal** `codex_link` network. Only backend and bridge join
+the existing **internal** `codex_link` network. Only backend and bridge join
 `codex_link`; only the bridge joins the separate non-internal `codex_egress` for
 outgoing authentication/inference. This is not an OpenAI-only egress firewall.
 `data_init` has no network. The private bridge is not `internal: true`, allowing
@@ -431,10 +452,13 @@ Bridge `/health` is liveness, not proof of safe generation. The private,
 service-token-authenticated `GET /ready` must report `binary_verified: true`,
 `generation_enabled: true` and `active_sessions: 0` after the synthetic startup
 proof. It returns no credentials/prompts and does not initiate real login or
-inference. The proof has a 75-second bound with a 90-second Compose health start
-period. Check it privately without publishing `8001`, exposing the token or
-treating readiness as live account entitlement. Failure disables Codex generation,
-not the ordinary app; never bypass the probe to obtain a green status.
+inference. Independent pinned-binary verification runs off the event loop with a
+10-second deadline, followed by a 75-second generation proof; the Compose health
+start period stays 90 seconds. If generation proof fails or times out, a verified
+binary can still issue login codes, but Send remains blocked until the full proof
+passes. Check privately without publishing `8001`, exposing the token or treating
+readiness as live account entitlement. Failure does not disable the ordinary app;
+never bypass the probe to obtain a green status.
 
 1. Sign in and open **STREAM**, then explicitly **Reveal credentials** under
    Encoder configuration. In OBS choose Service: Custom, copy the displayed
@@ -523,10 +547,11 @@ wrongly owned caches therefore needs deliberate ownership repair before startup.
 Init creates a random **64-character hexadecimal** service token once at
 `${APP_DATA_DIR}/codex-auth/token`, outside both `/data` and shared `/config`.
 The private directory is owned by `10001:10002` with mode `0750`; the token has
-the same ownership and mode `0440`. A valid existing token is preserved, not
-regenerated on upgrade. Restore this private folder with those ownership/modes;
-never include real account credentials in it or a backup. It is a local service
-secret, **not an OpenAI account credential**, and is independent of `APP_PASSWORD`.
+the same ownership and mode `0440`. A valid existing 0.4.0 token keeps its bytes,
+ownership and permissions in 0.4.1; do not regenerate or rotate it for this update.
+Restore this private folder with those ownership/modes; never include real account
+credentials in it or a backup. It is a local service secret, **not an OpenAI account
+credential**, and is independent of `APP_PASSWORD`.
 
 Only init mounts that folder writable at `/codex-auth`; backend and bridge mount
 it read-only at `/run/codex-auth`, each with
@@ -563,11 +588,11 @@ retention separately; keep app data and backups private.
 
 ## Required Deployment Checks
 
-- Confirm the installed images match the verified app/init and bridge digests in
-  Release Status above. CI verified those exact AMD64 image IDs; complete anonymous
-  image downloads and versioned assets were also checked before promotion. Do not
-  substitute moving tags or source staging images in an installed package.
-- Test a clean install and stopped-data upgrades from 0.1.0/0.2.1/**0.3.0** on the
+- Confirm installed images match the exact tested AMD64 app/init and bridge
+  digests recorded in Release Status above. CI verified those image IDs; complete
+  anonymous image downloads and all five versioned assets were checked before
+  promotion. Do not substitute moving tags or source staging images.
+- Test a clean install and stopped-data upgrades from 0.1.0/0.2.1/0.3.0/**0.4.0** on the
   intended Umbrel host/version, including existing environment overrides and
   explicitly empty `OLLAMA_MODEL`. Forks/custom installations need their own checks.
 - Confirm healthy server/web and running MediaMTX, generated config permissions,
@@ -594,8 +619,9 @@ retention separately; keep app data and backups private.
   exposing secrets or treating an environment-key fallback as disconnected.
 - Codex real-account/device login, text/image inference, entitlement, tenant routing,
   allowance/billing and retention are separate, still-unverified acceptance checks.
-  Any live check needs an authorized eligible account, trusted HTTPS, explicit
-  model choice and Send. Verify no API/model/provider fallback, bounded 401 recovery,
+  Any live check needs an authorized eligible account, preferably trusted HTTPS
+  (HTTP only on a trusted LAN/VPN with per-login confirmation), explicit model choice
+  and Send. Verify no API/model/provider fallback, bounded 401 recovery,
   disconnect/expiry cleanup and no hidden agent continuations or automatic frames.
 - Before operational use, verify real speech, cold/warm model behavior, gesture
   ordering, correction pause/resume, deletion, TLS/origins/package permissions

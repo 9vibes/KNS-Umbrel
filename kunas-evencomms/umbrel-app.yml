@@ -1,11 +1,11 @@
-# Published 0.4.0 image pair verified; Codex account behavior remains experimental.
+# Published 0.4.1 image pair verified; live-account acceptance remains unverified.
 manifestVersion: 1
 id: kunas-evencomms
 name: EVENCOMMS
 tagline: Live comms, stream monitoring and visual research
-icon: https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.0/assets/icon.svg
+icon: https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.1/assets/icon.svg
 category: social
-version: "0.4.0"
+version: "0.4.1"
 port: 28097
 description: >-
   EVENCOMMS is an early release for local communication between an Even glasses
@@ -38,7 +38,7 @@ description: >-
 
   RESEARCH is separate, opt-in OpenAI cloud chat, not a replacement for local
   Ollama. OpenAI API key mode remains the default, with existing settings and user
-  overrides unchanged. Connect a key for the current operator sign-in over HTTPS.
+  overrides unchanged. Key entry requires HTTPS or exact localhost/loopback.
   The key stays in server RAM, not browser storage, and clears on logout, expiry,
   explicit Research disconnect or restart. The model dropdown fetches the account's actual /models list;
   availability does not prove capability. Select an image-capable model for stills.
@@ -73,10 +73,18 @@ description: >-
   the browser chat does not erase those threads. A separate local service token is
   provisioned once, not an OpenAI account credential or the app password. No secret
   form field or new enable setting is needed. The bridge has no published ports;
-  its health does not gate normal app startup. Remote device sign-in requires
-  manually configured trusted HTTPS, COOKIE_SECURE=true and explicit
-  ALLOWED_ORIGINS. The normal Umbrel HTTP URL is not eligible; no TLS is installed
-  automatically. No tools or automatic replies to glasses are enabled.
+  its health does not gate normal app startup. In 0.4.1, Get Codex login code works
+  on the normal Umbrel HTTP URL after trusted-network confirmation before each
+  login request. OpenAI sign-in always uses https://auth.openai.com/codex/device.
+  Issued codes, including nine-digit numeric and other supported formats, are
+  displayed unchanged, never generated locally. This is the same flow as
+  codex login --device-auth; a separate CLI session's code cannot connect the app.
+  OpenAI may require enabling device-code authentication in ChatGPT security settings.
+  Never paste account passwords, cookies or OAuth tokens into EVENCOMMS.
+  HTTPS is strongly recommended: HTTP exposes operator sessions, codes and chat.
+  No TLS is installed automatically. Keep COOKIE_SECURE=false on HTTP; set true
+  only behind trusted HTTPS with explicit ALLOWED_ORIGINS, or playback breaks.
+  No tools or automatic replies to glasses are enabled.
 
 
   This image supports Linux x86-64 (amd64) only, not Raspberry Pi or other
@@ -101,72 +109,47 @@ submission: https://github.com/9vibes/KNS-Umbrel
 repo: https://github.com/9vibes/EVENCOMMS
 support: https://github.com/9vibes/EVENCOMMS/issues
 gallery:
-  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.0/assets/screenshot-operator.png
-  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.0/assets/screenshot-wearer.png
-  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.0/assets/screenshot-stream.png
-  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.0/assets/screenshot-research.png
+  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.1/assets/screenshot-operator.png
+  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.1/assets/screenshot-wearer.png
+  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.1/assets/screenshot-stream.png
+  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.1/assets/screenshot-research.png
 releaseNotes: |-
-  0.4.0 adds experimental ChatGPT account Research through official Codex 0.157.1
-  and an isolated bridge. Both published AMD64 images are pinned to verified
-  digests. Their complete anonymous manifest, config and layer downloads were
-  checksum-verified against the release artifacts.
+  0.4.1 fixes Codex device-code login on the normal HTTP Umbrel console. Both
+  published images are digest-pinned and complete anonymous downloads were
+  checksum-verified. Source: 11521b18fc4c070c4e0420b462141541396258e6, tagged v0.4.1.
 
-  API mode remains the UI default and existing optional OpenAI keys/settings are
-  retained. CPU STT, wearer controls, conversations, pairings, human-approved local
-  Ollama, API Research, selected stills, 1x-4x digital zoom/pan and LL-HLS remain.
-  No recording, transcoding, continuous analysis or automatic replies to glasses.
+  Fixes 0.4.0's disabled Codex login on Umbrel HTTP. Get Codex login code now asks
+  for trusted-network confirmation before each non-loopback HTTP login POST.
+  HTTPS is strongly recommended: operator sessions, codes and chat can be intercepted.
+  API-key entry still requires HTTPS or exact localhost/loopback. Keep Secure
+  playback cookies off on HTTP; enable only after configuring trusted HTTPS.
 
-  The bridge starts idle with synthetic local probes, not real account/inference
-  requests. Account use requires explicit Codex choice, device login, model and
-  Send, with an eligible ChatGPT plan/workspace. Allowance, purchased credits and
-  ChatGPT privacy rules apply, not API store: false. Two signed-in operators and
-  eight fresh requests per login bound RAM. OAuth credentials are RAM-only.
-  Submitted frames/history remain in ephemeral threads until runtime cleanup.
-  No automatic API/model/provider fallback or extra agent loops; the relay allows
-  only bounded normal OAuth 401 recovery, not arbitrary generation retries.
+  OpenAI-issued nine-digit and other supported codes are displayed unchanged; enter
+  them at https://auth.openai.com/codex/device, as with codex login --device-auth.
+  Codes are never generated locally; a separate CLI login does not connect the app.
+  OpenAI may require enabling device-code authentication in ChatGPT security settings.
 
-  Upgrade from 0.1.0, 0.2.1 or 0.3.0 in place. Stop the
-  app and back up all data, SQLite sidecars, pairings, stream keys, model cache,
-  settings and the Umbrel password seed. Also privately back up codex-auth if it
-  exists and on every subsequent backup. Do not uninstall or replace the app ID.
-  Preserve existing user overrides, including explicitly empty settings; test
-  custom forks separately. Web port 28097, RTMP 21936, data paths and generated
-  password are unchanged. Sign in again after restart; paired wearers reconnect.
-  API sign-in keys, Codex OAuth credentials and Research chat are not restored
-  from backups. The failed 0.2.0 candidate was never an image/store release.
+  Independent 10-second binary verification preserves login readiness if the
+  75-second generation proof fails or times out; generation stays blocked.
+  Overlapping heartbeat/login acknowledgements no longer accidentally cancel
+  unacknowledged sessions or lose their cleanup obligations.
 
-  Recreate the full stack, including data_init and codex-bridge, using both
-  release images. Initialization refreshes image-managed nginx/MediaMTX configs
-  and creates a random 64-hex local service token once in private codex-auth/token,
-  outside data/config. Valid existing tokens are not rotated. Preserve ownership
-  10001:10002, directory 0750 and file 0440 on backup/restore. Only init mounts it
-  writable; only backend/bridge mount it read-only. It is not an OpenAI credential,
-  and neither init nor bridge receives APP_PASSWORD. The bridge adds no public
-  ports and its health does not gate normal startup. Private authenticated /ready
-  must prove verified binary, generation enabled and zero idle account sessions.
+  Update both images in place, never uninstall. Preserve data/models, settings,
+  app ID/password and the existing private codex-auth/token without rotation:
+  ownership 10001:10002, directory 0750, file 0440. No new secret, directory,
+  port or deployment setting is needed for a 0.4.0 upgrade.
 
-  WARNING: plaintext RTMP remains published on 0.0.0.0:21936, new for 0.1.0.
-  Check the port, prefer RTMP_BIND set to a LAN/VPN IP and never router-forward.
-  STREAM_ENABLED=false leaves the port published. LL-HLS retains 200ms parts,
-  a 1s HLS.js live target and nginx's 9m Research ceiling, not latency guarantees.
-  Remote Codex login needs manually configured HTTPS, COOKIE_SECURE=true and
-  explicit ALLOWED_ORIGINS; the ordinary Umbrel HTTP URL is not eligible.
-
-  Source v0.4.0: 3114226dafb049b99228630b32dbf1f638a40e41. All 1071 automated tests
-  passed (1031 backend, 27 frontend, 13 browser). Release run 36302687176 passed
-  fresh CPU transcription and upgrades from 0.1.0, 0.2.1 and 0.3.0, preserving
-  conversations, pairing, model cache and existing stream secrets. Final-image
-  playback, zoom and capture passed. The bridge's real binary proof ran without
-  external networking under container restrictions; private token provisioning,
-  UID permissions, mounts, resource/network controls and authenticated running
-  /ready (verified binary, generation enabled, zero account sessions) passed.
-
-  All five v0.4.0 icon/gallery URLs were HTTP-verified. Gallery images retain
-  synthetic 0.3.0 content, showing API Research, not a Codex login or fabricated
-  successful model answer. Mocks/synthetic tests do not verify real account/device
-  login, inference, model entitlement, tenant routing, billing or retention.
-  Physical G2/phones, native Safari and the actual Umbrel host/proxy/TLS path still
-  need acceptance testing. Publication is not installation on an actual Umbrel host.
+  Official Codex 0.157.1 and its binary hashes are unchanged, as are two operators/
+  eight requests per login, RAM-only OAuth and no automatic paid API/model/provider
+  fallback. CI/release run 36308059105 passed: 1095 tests (1054 backend including
+  the dedicated native login test, 27 frontend and 14 browser), exact-image
+  container isolation/readiness, playback/capture, CPU transcription and upgrades
+  from 0.1.0, 0.2.1, 0.3.0 and 0.4.0. The 0.4.0 old-to-new initializer check preserved
+  private token bytes and permissions. The pinned binary exercised the production
+  login handler with a synthetic nine-digit code and delayed approval, not a real
+  OpenAI account. All five v0.4.1 icon/gallery URLs were verified.
+  Real accounts, physical G2/phones, Safari and actual Umbrel/Stone installation
+  remain unverified. The four gallery images reuse synthetic API-mode content.
 dependencies: []
 path: ""
 deterministicPassword: true
