@@ -4,7 +4,7 @@ name: Kokoro GPU
 tagline: GPU-enabled OpenAI-compatible TTS for Umbrel/Open WebUI
 icon: https://getumbrel.github.io/umbrel-apps-gallery/kokoro/icon.svg
 category: ai
-version: "0.8.2-gpu-8"
+version: "0.8.3"
 # Keep this outside umbrelOS 2.0's 40000-49999 Machines reserved range.
 port: 28880
 path: /web/
@@ -34,7 +34,7 @@ gallery:
   - https://getumbrel.github.io/umbrel-apps-gallery/kokoro/2.jpg
   - https://getumbrel.github.io/umbrel-apps-gallery/kokoro/3.jpg
 releaseNotes: |-
-  What's new in 0.8.2-gpu-8
+  What's new in 0.8.3
 
   - Switches Kokoro from the CPU image to the NVIDIA GPU image.
   - Enables the NVIDIA runtime and CUDA device visibility for the Kokoro server.
