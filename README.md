@@ -50,16 +50,26 @@ https://github.com/9vibes/KNS-Umbrel
   Recordings are never automatically deleted.
   App source: [`9vibes/SteamLab`](https://github.com/9vibes/SteamLab). [Setup and safety notes](kunas-steamlab/README.md).
 
-- **EVENCOMMS 0.3.0** (`kunas-evencomms`)
+- **EVENCOMMS 0.4.0** (`kunas-evencomms`)
   Early-release Even glasses/operator conversations with local English CPU transcription
-  and optional human-approved Ollama replies. Adds opt-in OpenAI visual Research,
-  1x-4x digital zoom/pan and low-latency HLS monitoring. Research sends reviewed
-  prompts, selected stills and chat history only on explicit Send; API billing applies.
+  and optional human-approved Ollama replies. Retains OpenAI API Research,
+  1x-4x digital zoom/pan and low-latency HLS monitoring; adds experimental ChatGPT
+  account Research through official Codex 0.157.1. Its isolated bridge starts idle
+  with synthetic local probes, not real account login/inference. Account use requires
+  explicit provider choice, device login, model selection and Send over configured
+  HTTPS; eligible ChatGPT plan allowance and privacy controls apply, not API
+  `store: false`. API mode stays the default, with no automatic provider/model/API
+  fallback. Limits are two signed-in operators and eight requests per login.
+  OAuth tokens stay in RAM; only explicit Send submits reviewed text/history/stills.
+  Bounded OAuth 401 recovery is allowed; the relay prevents extra agent turns.
   No recording, transcoding or automatic replies to glasses. x86-64 only.
-  **Upgrade opens plaintext RTMP on TCP 21936: trusted LAN/VPN only, never
-  router-forward.** Update in place after a stopped-data backup. The published
-  image is digest-pinned and verified anonymously downloadable. Physical G2/phone and
-  Umbrel installation still need acceptance testing.
+  **Plaintext RTMP remains on TCP 21936: trusted LAN/VPN only, never
+  router-forward.** Update in place, never uninstall; back up data/models, password
+  seed and the new private `codex-auth` service-token directory.
+  Both release images are digest-pinned and their complete anonymous downloads
+  were checksum-verified. CI, isolated-container checks, CPU transcription and
+  upgrades from 0.1.0/0.2.1/0.3.0 passed. Real-account, physical G2/phone, Safari
+  and actual Umbrel-host acceptance remain unverified.
   App source: [`9vibes/EVENCOMMS`](https://github.com/9vibes/EVENCOMMS).
   [Setup, configuration and release caveats](kunas-evencomms/README.md).
 

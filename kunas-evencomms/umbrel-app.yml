@@ -1,10 +1,11 @@
+# Published 0.4.0 image pair verified; Codex account behavior remains experimental.
 manifestVersion: 1
 id: kunas-evencomms
 name: EVENCOMMS
 tagline: Live comms, stream monitoring and visual research
-icon: https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.3.0/assets/icon.svg
+icon: https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.0/assets/icon.svg
 category: social
-version: "0.3.0"
+version: "0.4.0"
 port: 28097
 description: >-
   EVENCOMMS is an early release for local communication between an Even glasses
@@ -36,9 +37,10 @@ description: >-
 
 
   RESEARCH is separate, opt-in OpenAI cloud chat, not a replacement for local
-  Ollama. Connect a key for the current operator sign-in over HTTPS. The key stays
-  in server RAM, not browser storage, and clears on logout, expiry, disconnect or
-  restart. The model dropdown fetches the account's actual /models list;
+  Ollama. OpenAI API key mode remains the default, with existing settings and user
+  overrides unchanged. Connect a key for the current operator sign-in over HTTPS.
+  The key stays in server RAM, not browser storage, and clears on logout, expiry,
+  explicit Research disconnect or restart. The model dropdown fetches the account's actual /models list;
   availability does not prove capability. Select an image-capable model for stills.
 
 
@@ -53,6 +55,30 @@ description: >-
   shared across operators; see the setup and privacy guide.
 
 
+  Experimental ChatGPT account Research uses the official pinned Codex 0.157.1
+  runtime in an isolated bridge. It starts idle by default, running synthetic
+  loopback safety probes, not real account login or inference. Account use requires
+  explicitly choosing Codex, device sign-in on OpenAI's site, model selection and
+  Send. An eligible ChatGPT plan/workspace is required; requests consume Codex
+  allowance and may incur purchased-credit costs. Pinned model selectors do not
+  guarantee entitlement. ChatGPT privacy controls apply, not the API store: false
+  contract. There is no automatic API, model or provider fallback. Normal bounded
+  OAuth 401 recovery is allowed; a private relay budget prevents extra agent turns.
+
+
+  Codex permits two signed-in operators and eight fresh requests per login. OAuth
+  credentials stay in bridge/runtime RAM, never browser storage, SQLite or backups.
+  Only explicit Send submits displayed history and reviewed stills. Submitted
+  history/frames remain in ephemeral bridge threads until runtime cleanup; clearing
+  the browser chat does not erase those threads. A separate local service token is
+  provisioned once, not an OpenAI account credential or the app password. No secret
+  form field or new enable setting is needed. The bridge has no published ports;
+  its health does not gate normal app startup. Remote device sign-in requires
+  manually configured trusted HTTPS, COOKIE_SECURE=true and explicit
+  ALLOWED_ORIGINS. The normal Umbrel HTTP URL is not eligible; no TLS is installed
+  automatically. No tools or automatic replies to glasses are enabled.
+
+
   This image supports Linux x86-64 (amd64) only, not Raspberry Pi or other
   ARM devices. Speech recognition uses CPU, not GPU. The first transcription
   downloads a model over the Internet; the cache persists for later offline use.
@@ -65,7 +91,9 @@ description: >-
   custom DNS, TLS and packaged-app access require explicit ALLOWED_ORIGINS settings;
   see the setup guide. Sent wearer/operator conversation text persists in SQLite;
   raw audio is not stored by the app. Deletion is logical, not a forensic erase.
-  Screenshots use synthetic conversations and do not demonstrate physical glasses testing.
+  Screenshots retain the synthetic 0.3.0 assets: Research shows disconnected API
+  mode and a local draft capture, not Codex login, real accounts or fabricated AI
+  answers. They do not demonstrate physical glasses testing.
 developer: 9vibes
 website: https://github.com/9vibes/EVENCOMMS
 submitter: 9vibes
@@ -73,48 +101,72 @@ submission: https://github.com/9vibes/KNS-Umbrel
 repo: https://github.com/9vibes/EVENCOMMS
 support: https://github.com/9vibes/EVENCOMMS/issues
 gallery:
-  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.3.0/assets/screenshot-operator.png
-  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.3.0/assets/screenshot-wearer.png
-  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.3.0/assets/screenshot-stream.png
-  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.3.0/assets/screenshot-research.png
+  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.0/assets/screenshot-operator.png
+  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.0/assets/screenshot-wearer.png
+  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.0/assets/screenshot-stream.png
+  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.0/assets/screenshot-research.png
 releaseNotes: |-
-  0.3.0 adds opt-in OpenAI visual Research, 1x-4x digital zoom/pan and
-  low-latency HLS. CPU STT, wearer controls, conversations and human-approved
-  local Ollama replies retain their defaults. Research sends only on explicit
-  Send, uses billable OpenAI API access and never automatically replies to glasses.
+  0.4.0 adds experimental ChatGPT account Research through official Codex 0.157.1
+  and an isolated bridge. Both published AMD64 images are pinned to verified
+  digests. Their complete anonymous manifest, config and layer downloads were
+  checksum-verified against the release artifacts.
 
-  Upgrade from 0.1.0 or 0.2.1 in place after stopping and backing up all persistent
-  data, SQLite sidecars, pairings, stream keys, model cache and the Umbrel password
-  seed. Do not uninstall. Existing data, stream keys and generated admin password
-  are preserved; 0.1.0 migration creates missing stream keys. Sign in again after
-  restart; paired wearers can reconnect. Research sign-in keys and chat history
-  are ephemeral and are not migrated or backed up with the database.
+  API mode remains the UI default and existing optional OpenAI keys/settings are
+  retained. CPU STT, wearer controls, conversations, pairings, human-approved local
+  Ollama, API Research, selected stills, 1x-4x digital zoom/pan and LL-HLS remain.
+  No recording, transcoding, continuous analysis or automatic replies to glasses.
 
-  Recreate the full stack: initialization automatically overwrites image-managed
-  nginx/MediaMTX config files. MediaMTX uses lowLatency with 200ms parts; nginx's
-  body ceiling is 9m for Research, with ordinary JSON/audio backend bounds
-  unchanged. The HLS player targets 1s, with a 3s drift threshold and 1.05x catch-up.
-  A local server-timestamp measurement improved from 2.05s to 1.23s, not a
-  camera-to-screen measurement or performance guarantee. Less buffering trades
-  resilience to network jitter for latency; validate native Safari HLS over HTTPS.
+  The bridge starts idle with synthetic local probes, not real account/inference
+  requests. Account use requires explicit Codex choice, device login, model and
+  Send, with an eligible ChatGPT plan/workspace. Allowance, purchased credits and
+  ChatGPT privacy rules apply, not API store: false. Two signed-in operators and
+  eight fresh requests per login bound RAM. OAuth credentials are RAM-only.
+  Submitted frames/history remain in ephemeral threads until runtime cleanup.
+  No automatic API/model/provider fallback or extra agent loops; the relay allows
+  only bounded normal OAuth 401 recovery, not arbitrary generation retries.
 
-  WARNING: this upgrade publishes plaintext RTMP on 0.0.0.0:21936. Check that
-  TCP 21936 is free, prefer RTMP_BIND set to a LAN/VPN IP and never router-forward
-  it. STREAM_ENABLED=false denies media authentication but leaves the port
-  published. Use COOKIE_SECURE=true with HTTPS and explicit ALLOWED_ORIGINS.
+  Upgrade from 0.1.0, 0.2.1 or 0.3.0 in place. Stop the
+  app and back up all data, SQLite sidecars, pairings, stream keys, model cache,
+  settings and the Umbrel password seed. Also privately back up codex-auth if it
+  exists and on every subsequent backup. Do not uninstall or replace the app ID.
+  Preserve existing user overrides, including explicitly empty settings; test
+  custom forks separately. Web port 28097, RTMP 21936, data paths and generated
+  password are unchanged. Sign in again after restart; paired wearers reconnect.
+  API sign-in keys, Codex OAuth credentials and Research chat are not restored
+  from backups. The failed 0.2.0 candidate was never an image/store release.
 
-  Source: EVENCOMMS v0.3.0 (a4d1b9c). Release checks passed 410 unit/browser tests,
-  real streaming/zoom/frame capture, fresh CPU transcription, and upgrades from
-  both 0.1.0 and 0.2.1 preserving conversations, pairing, models and existing
-  stream secrets. Image validation runs off the event loop with bounded admission.
-  The application image is digest-pinned and its complete anonymous download was
-  checksum-verified. All five versioned icon/gallery URLs were verified.
+  Recreate the full stack, including data_init and codex-bridge, using both
+  release images. Initialization refreshes image-managed nginx/MediaMTX configs
+  and creates a random 64-hex local service token once in private codex-auth/token,
+  outside data/config. Valid existing tokens are not rotated. Preserve ownership
+  10001:10002, directory 0750 and file 0440 on backup/restore. Only init mounts it
+  writable; only backend/bridge mount it read-only. It is not an OpenAI credential,
+  and neither init nor bridge receives APP_PASSWORD. The bridge adds no public
+  ports and its health does not gate normal startup. Private authenticated /ready
+  must prove verified binary, generation enabled and zero idle account sessions.
 
-  Provider tests are mocked, not live OpenAI account tests. Video
-  playback and crop capture are tested with synthetic video. These do not verify
-  real account/model compatibility, billing or provider retention. Physical
-  G2/phone behavior, Safari and the actual Umbrel host/proxy still need acceptance
-  testing. The failed 0.2.0 candidate was not published as an image.
+  WARNING: plaintext RTMP remains published on 0.0.0.0:21936, new for 0.1.0.
+  Check the port, prefer RTMP_BIND set to a LAN/VPN IP and never router-forward.
+  STREAM_ENABLED=false leaves the port published. LL-HLS retains 200ms parts,
+  a 1s HLS.js live target and nginx's 9m Research ceiling, not latency guarantees.
+  Remote Codex login needs manually configured HTTPS, COOKIE_SECURE=true and
+  explicit ALLOWED_ORIGINS; the ordinary Umbrel HTTP URL is not eligible.
+
+  Source v0.4.0: 3114226dafb049b99228630b32dbf1f638a40e41. All 1071 automated tests
+  passed (1031 backend, 27 frontend, 13 browser). Release run 36302687176 passed
+  fresh CPU transcription and upgrades from 0.1.0, 0.2.1 and 0.3.0, preserving
+  conversations, pairing, model cache and existing stream secrets. Final-image
+  playback, zoom and capture passed. The bridge's real binary proof ran without
+  external networking under container restrictions; private token provisioning,
+  UID permissions, mounts, resource/network controls and authenticated running
+  /ready (verified binary, generation enabled, zero account sessions) passed.
+
+  All five v0.4.0 icon/gallery URLs were HTTP-verified. Gallery images retain
+  synthetic 0.3.0 content, showing API Research, not a Codex login or fabricated
+  successful model answer. Mocks/synthetic tests do not verify real account/device
+  login, inference, model entitlement, tenant routing, billing or retention.
+  Physical G2/phones, native Safari and the actual Umbrel host/proxy/TLS path still
+  need acceptance testing. Publication is not installation on an actual Umbrel host.
 dependencies: []
 path: ""
 deterministicPassword: true
