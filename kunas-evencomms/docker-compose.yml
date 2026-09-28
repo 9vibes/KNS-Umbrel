@@ -16,7 +16,7 @@ services:
     logging: *logging
 
   data_init:
-    image: ghcr.io/9vibes/evencomms:0.4.2@sha256:929b7d98c0626325878aee764ebd5767d76b5d3b4656b1e8b475f362cd1e74e2
+    image: ghcr.io/9vibes/evencomms:0.4.3@sha256:527b4dac6b4354727e80304aaf74656b4b8bdd9cc9b4da84f25f50b67d2156db
     platform: linux/amd64
     user: "0:0"
     command: [python, -m, backend.init_data, --config-dir, /config, --codex-auth-dir, /codex-auth]
@@ -34,7 +34,7 @@ services:
     logging: *logging
 
   server:
-    image: ghcr.io/9vibes/evencomms:0.4.2@sha256:929b7d98c0626325878aee764ebd5767d76b5d3b4656b1e8b475f362cd1e74e2
+    image: ghcr.io/9vibes/evencomms:0.4.3@sha256:527b4dac6b4354727e80304aaf74656b4b8bdd9cc9b4da84f25f50b67d2156db
     platform: linux/amd64
     user: "10001:10001"
     init: true
@@ -45,6 +45,7 @@ services:
     environment:
       ADMIN_PASSWORD: ${APP_PASSWORD:?Umbrel must provide a nonempty APP_PASSWORD}
       ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://${DEVICE_DOMAIN_NAME:-umbrel.local}:28097}
+      ALLOW_EVEN_LOCALHOST: ${ALLOW_EVEN_LOCALHOST:-true}
       DATABASE_PATH: /data/evencomms.sqlite3
       MODEL_CACHE: /data/models
       STT_ENABLED: ${STT_ENABLED:-true}
@@ -80,7 +81,7 @@ services:
     logging: *logging
 
   codex-bridge:
-    image: ghcr.io/9vibes/evencomms:0.4.2-codex@sha256:c75b14649e967ef83b9b8ca482fa917bac157b91d3b13f2d7ece96372ca5ade0
+    image: ghcr.io/9vibes/evencomms:0.4.3-codex@sha256:4a917a760076f04037abe268c891504866f053ed8805e862d8a2f092aa01f75c
     platform: linux/amd64
     user: "10002:10002"
     init: true

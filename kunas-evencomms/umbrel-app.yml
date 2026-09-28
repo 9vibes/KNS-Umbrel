@@ -1,11 +1,11 @@
-# Published 0.4.2 image pair verified; live-account acceptance remains unverified.
+# EVENCOMMS 0.4.3 installed-companion connectivity update.
 manifestVersion: 1
 id: kunas-evencomms
 name: EVENCOMMS
 tagline: Live comms, stream monitoring and visual research
-icon: https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.2/assets/icon.svg
+icon: https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.3/assets/icon.svg
 category: social
-version: "0.4.2"
+version: "0.4.3"
 port: 28097
 description: >-
   EVENCOMMS is an early release for local communication between an Even glasses
@@ -97,8 +97,8 @@ description: >-
   fallback to the fixed global endpoint. The 85-second deadline is unchanged;
   the hidden 15-second relay read cutoff is removed. Synthetic tests do not establish
   the cause of a user's prior generic error or verify live entitlement/routing/billing.
-  Both exact tested images are published and digest-pinned; their complete anonymous
-  downloads and versioned assets were verified.
+  Both exact tested images are published and digest-pinned; their public registry
+  manifests, configuration, source labels and versioned assets were verified.
 
 
   This image supports Linux x86-64 (amd64) only, not Raspberry Pi or other
@@ -110,7 +110,8 @@ description: >-
 
   Sign in with Umbrel's generated application password; no username is required.
   Use a trusted network and HTTPS for phone use and private conversations. IP,
-  custom DNS, TLS and packaged-app access require explicit ALLOWED_ORIGINS settings;
+  custom DNS and TLS access require explicit ALLOWED_ORIGINS settings; installed
+  Even clients at http://127.0.0.1 with an explicit port are allowed by default;
   see the setup guide. Sent wearer/operator conversation text persists in SQLite;
   raw audio is not stored by the app. Deletion is logical, not a forensic erase.
   Screenshots retain the synthetic 0.3.0 assets: Research shows disconnected API
@@ -123,52 +124,32 @@ submission: https://github.com/9vibes/KNS-Umbrel
 repo: https://github.com/9vibes/EVENCOMMS
 support: https://github.com/9vibes/EVENCOMMS/issues
 gallery:
-  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.2/assets/screenshot-operator.png
-  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.2/assets/screenshot-wearer.png
-  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.2/assets/screenshot-stream.png
-  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.2/assets/screenshot-research.png
+  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.3/assets/screenshot-operator.png
+  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.3/assets/screenshot-wearer.png
+  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.3/assets/screenshot-stream.png
+  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.3/assets/screenshot-research.png
 releaseNotes: |-
-  0.4.2 reply-compatibility and diagnostic update. Source v0.4.2:
-  13e1b49cce70894dcd574fac953e6501a0934ab1. Both exact tested images are published,
-  digest-pinned and matched to their OCI provenance. Complete anonymous downloads
-  were checksum-verified, and all five versioned asset URLs were checked.
+  Published from source v0.4.3 (80b5dea3e5c09372641601cfbff0ae8f0a60da09).
+  Both images are digest-pinned to the verified release. CI, container checks
+  and in-place upgrades through 0.4.2 passed.
 
-  Fixes reproducible reply-compatibility defects affecting gpt-6-luna and gpt-6-astra:
-  restores native Responses Lite and reasoning-summary none, keeps the native
-  version header and empty additional_tools input, and accepts validated scoped
-  metadata/reasoning/text deltas. Official Codex 0.157.1 and its binary hashes are
-  unchanged. Tools, approvals, unknown events and model reroutes still fail closed.
+  0.4.3 fixes the server-side origin rejection seen when the installed Even
+  companion runs at http://127.0.0.1:<port>. HTTP health checks, pairing and
+  wearer WebSockets now share the same localhost policy, including valid
+  port changes. Pairing codes and bearer-token authentication remain required.
 
-  Fixed [codex:code] diagnostics distinguish allowance/rate, model, authentication,
-  policy, timeout, stream and protocol failures without exposing provider bodies,
-  account details, credentials or native logs. Native account/read routing is
-  checked before every upstream inference attempt, including after OAuth refresh.
-  Unsupported workspaces fail with [codex:unsupported_workspace], never silently
-  use the fixed global endpoint. The one-non-401 budget and at most three total
-  authentication-recovery attempts remain. The hidden 15-second relay read cutoff
-  is removed; the overall 85-second deadline is unchanged. No API/model/provider fallback.
+  This Umbrel package enables ALLOW_EVEN_LOCALHOST by default. It trusts apps
+  served at that exact HTTP loopback address on the client device, not only
+  Even. Set it to false to require exact entries in ALLOWED_ORIGINS. Other
+  hosts, null origins and malformed ports are not automatically allowed.
+  Keep your existing public HTTPS origin in ALLOWED_ORIGINS.
 
-  The 0.4.1 HTTP Get Codex login code confirmation, unchanged issued codes and
-  OpenAI HTTPS device page remain; API-key entry stays HTTPS/exact-loopback-only.
-  HTTPS is strongly recommended. No API-key re-entry is required for Codex.
-
-  Passed automated coverage: 1437 unique tests (1396 backend including one native login
-  and 15 full-chat cases, 27 frontend, 14 browser). Native tests use the actual
-  binary, backend/bridge, Session/Generation and relay with synthetic loopback
-  issuer/SSE only. Main CI and release run 36325388237 passed; the dedicated job
-  passed all 16 native cases that general CI skips without the binary. Final-image
-  container checks, private readiness, playback/capture, CPU transcription and
-  upgrades from 0.1.0, 0.2.1, 0.3.0, 0.4.0 and 0.4.1 passed. The 0.4.0/0.4.1 upgrades
-  also verified preservation of the existing private token bytes and permissions.
-
-  Update both images in place, never uninstall. Preserve
-  data/models, settings, app ID/password and codex-auth/token bytes, ownership
-  10001:10002, directory 0750 and file 0440 without rotation. No new settings,
-  directories, services, ports or resources are needed. Two operators/eight sends
-  per login and RAM-only OAuth remain. Gallery PNGs reuse synthetic API-mode content,
-  not regenerated Codex frames. The user's old generic error cannot identify its
-  exact cause; no live-account fix is guaranteed. Real entitlement, routing/billing,
-  physical G2/phones, Safari and actual Umbrel/Stone installation remain unverified.
+  Update in place; do not uninstall. Existing conversations, wearer pairings,
+  model cache, settings, app password and private service token are preserved.
+  No new ports, volumes or services are introduced. The 0.4.2 Codex fixes and
+  pinned Codex 0.157.1 runtime remain. After updating, retry Check connection
+  and pair inside the installed Even app. Physical G2 message delivery and
+  actual phone port changes still need device verification.
 dependencies: []
 path: ""
 deterministicPassword: true
@@ -200,6 +181,11 @@ environment:
     services: [server]
     default: ""
     note: Empty uses http://<device-domain>:28097 (umbrel.local fallback). Otherwise supply the complete comma-separated list of exact HTTP(S) origins for browsers and the packaged Even app, with ports when non-default. No paths or wildcards; explicitly include HTTPS behind TLS termination.
+  - name: ALLOW_EVEN_LOCALHOST
+    services: [server]
+    default: "true"
+    options: ["true", "false"]
+    note: Allow installed Even clients at http://127.0.0.1 with any valid explicit port for CORS and wearer WebSockets. Trusts any app served at that local address; pairing and bearer tokens remain required. Set false to require exact ALLOWED_ORIGINS entries instead.
   - name: STT_ENABLED
     services: [server]
     default: "true"

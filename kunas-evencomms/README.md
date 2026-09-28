@@ -1,10 +1,18 @@
-# EVENCOMMS 0.4.2 For Umbrel
+# EVENCOMMS 0.4.3 For Umbrel
 
-The application/init and isolated Codex bridge are pinned to verified 0.4.2
-release images. This hotfix addresses reply compatibility and diagnostics for both pinned Codex
-models, retaining 0.4.1's HTTP device-login behavior. Codex remains **experimental**;
-synthetic reproduction neither identifies the user's past generic failure nor
-guarantees a working live account. Recorded verification and limitations are below.
+This update adds server support for the installed Even companion origin
+`http://127.0.0.1:<port>`. The store enables `ALLOW_EVEN_LOCALHOST=true` by
+default for HTTP CORS and wearer WebSockets, including changed ports.
+Other hosts and null origins are not automatically permitted. This trusts
+any app served at that local address, not specifically Even; pairing codes
+and bearer tokens are still required. Set the option to false to use only
+the existing exact-origin policy. Keep public/operator HTTPS origins in
+`ALLOWED_ORIGINS`, and preserve existing overrides during the upgrade.
+
+Update the existing installation in place, then retry **Check connection**
+in the installed Even app before pairing. No uninstall or glasses unpairing
+is needed. The companion still needs its own server network permission.
+Actual port changes and physical glasses delivery require device testing.
 
 Local communication between an Even glasses wearer and a browser operator, with
 short-chunk English CPU transcription and optional human-approved Ollama replies.
@@ -21,6 +29,27 @@ performance and endurance have not been verified. The screenshots contain
 synthetic conversations, not evidence of hardware testing.
 
 ## Release Status
+
+- Source: [v0.4.3](https://github.com/9vibes/EVENCOMMS/tree/v0.4.3),
+  revision `80b5dea3e5c09372641601cfbff0ae8f0a60da09`.
+- [Source CI](https://github.com/9vibes/EVENCOMMS/actions/runs/36362940872)
+  passed: 1,406 backend tests, the separate pinned-runtime checks, frontend and
+  14 browser tests, plus container and Umbrel-stack playback checks.
+- [Release workflow](https://github.com/9vibes/EVENCOMMS/actions/runs/36362967581)
+  passed all final-image checks and upgrades from 0.1.0, 0.2.1, 0.3.0, 0.4.0,
+  0.4.1 and 0.4.2, including private-token preservation for 0.4.x.
+- App/init `ghcr.io/9vibes/evencomms:0.4.3` is pinned to
+  `sha256:527b4dac6b4354727e80304aaf74656b4b8bdd9cc9b4da84f25f50b67d2156db`.
+  Bridge `ghcr.io/9vibes/evencomms:0.4.3-codex` is pinned to
+  `sha256:4a917a760076f04037abe268c891504866f053ed8805e862d8a2f092aa01f75c`.
+  Anonymous registry manifest/config downloads match the release artifacts,
+  image IDs and OCI source/revision/version labels. All five versioned asset
+  URLs returned nonempty content.
+- The app remains Linux AMD64 only. Physical G2/phone delivery and actual
+  phone-origin port changes remain unverified. The separately installed
+  private phone build is not replaced by this Umbrel server update.
+
+## Previous 0.4.2 Verification (Historical)
 
 - Source revision: `13e1b49cce70894dcd574fac953e6501a0934ab1`, published as
   [v0.4.2](https://github.com/9vibes/EVENCOMMS/tree/v0.4.2).
@@ -72,7 +101,7 @@ synthetic conversations, not evidence of hardware testing.
 - Adding this package to the store does not automatically install it on a Stone
   or any other Umbrel host. No installation on a Stone is claimed.
 
-## Upgrade From 0.1.0, 0.2.1, 0.3.0, 0.4.0 Or 0.4.1
+## Upgrade From 0.1.0 Through 0.4.2
 
 Keep existing operator settings and deployment
 overrides, including explicitly empty values; do not replace a customized
@@ -81,7 +110,7 @@ copy rather than assuming an untested migration is compatible. Do not rename the
 app or uninstall to upgrade.
 
 **This package publishes plaintext RTMP on `0.0.0.0:21936` by default.**
-It is new for 0.1.0 installations and remains published for 0.2.1/0.3.0/0.4.0/0.4.1.
+It is new for 0.1.0 installations and remains published for 0.2.1 through 0.4.2.
 Use only a trusted LAN or encrypted VPN, preferably binding `RTMP_BIND` to the
 host's LAN/VPN IP. Restrict it with Docker-aware firewall rules and **never
 router-forward TCP 21936**. HTTPS on the console does not encrypt RTMP keys/media.
@@ -190,9 +219,10 @@ Replace the example with your reachable HTTPS backend origin before packaging.
 `EVENCOMMS_ORIGIN` is a build/package setting, not a server environment setting.
 Verify the generated package's network permissions explicitly allow that HTTPS
 origin and the corresponding WebSocket destination if the packaging schema
-requires it. Rebuild/repack when the backend origin changes. Add the **actual
-packaged client origin** to server `ALLOWED_ORIGINS`; inspect the SDK/client Origin
-or packaging output rather than assuming it equals the backend URL. Do not ship
+requires it. Rebuild/repack when the backend origin changes. Installed clients at
+`http://127.0.0.1:<port>` are covered by `ALLOW_EVEN_LOCALHOST=true`. For other
+origins, add the **actual packaged client origin** to `ALLOWED_ORIGINS`; inspect
+the client diagnostics rather than assuming it equals the backend URL. Do not ship
 an example-origin package or wildcard network permissions.
 
 Implemented wearer controls, still requiring physical acceptance testing:
@@ -231,6 +261,7 @@ the binding. Keep the server's `RTMP_PORT` and published host port identical.
 | `RTMP_PORT` | `21936` | Available host TCP ingest port, also advertised by the server. Requires Compose interpolation and recreation. |
 | `COOKIE_SECURE` | `false` | Set `true` for Secure playback cookies behind trusted HTTPS; false is only for isolated HTTP use. |
 | `ALLOWED_ORIGINS` | Empty in settings | Compose substitutes `http://${DEVICE_DOMAIN_NAME:-umbrel.local}:28097`; a nonempty value replaces that list. |
+| `ALLOW_EVEN_LOCALHOST` | `true` | Permit the installed Even HTTP origin at `127.0.0.1` with a valid explicit port for CORS and wearer WebSockets. Set false to require exact origins. |
 | `STT_ENABLED` | `true` | Choose `true` or `false`; false enables text-only operation. |
 | `STT_MODEL` | `base.en` | Faster Whisper model name or container-local model directory. |
 | `STT_TIMEOUT` | `90` | Transcription request deadline in seconds, including cold model work. |
@@ -429,9 +460,17 @@ synthetic success is not a guarantee that a particular account's reply will succ
 
 The [0.4.2 Codex protocol, limits and privacy guide](https://github.com/9vibes/EVENCOMMS/blob/13e1b49cce70894dcd574fac953e6501a0934ab1/docs/codex.md)
 and [native protocol evidence](https://github.com/9vibes/EVENCOMMS/blob/13e1b49cce70894dcd574fac953e6501a0934ab1/codex_bridge/PROTOCOL.md)
-are pinned to this release's source revision.
+are pinned to the prior 0.4.2 source revision; that behavior is retained.
 
 ### Exact Origins And TLS
+
+The store enables `ALLOW_EVEN_LOCALHOST=true` for the observed installed Even
+origin `http://127.0.0.1:<port>`. This covers valid explicit ports without a
+wildcard and applies to both pairing requests and wearer WebSockets. It does
+not prove that an origin belongs to Even; any app served at that address is
+trusted by this policy. Authentication is still required. Set false to retain
+only exact origin matching, then include the observed origin in the list below.
+
 
 Origins are comma-separated `http://` or `https://` scheme + host + optional port,
 with no paths, query strings, credentials or wildcards. Use HTTPS origins, not
@@ -645,10 +684,10 @@ retention separately; keep app data and backups private.
 ## Required Deployment Checks
 
 - Confirm installed images match the exact tested AMD64 app/init and bridge
-  digests recorded in Release Status. CI verified those image IDs; complete anonymous
-  downloads and all five versioned assets were checked before promotion. Do not
+  digests recorded in Release Status. Check the linked release workflow and public
+  registry provenance before promotion. Do not
   substitute moving tags or source staging images.
-- Test a clean install and stopped-data upgrades from 0.1.0/0.2.1/0.3.0/0.4.0/**0.4.1** on the
+- Test a clean install and stopped-data upgrades from 0.1.0/0.2.1/0.3.0/0.4.0/0.4.1/**0.4.2** on the
   intended Umbrel host/version, including existing environment overrides and
   explicitly empty `OLLAMA_MODEL`. Forks/custom installations need their own checks.
 - Confirm healthy server/web and running MediaMTX, generated config permissions,
