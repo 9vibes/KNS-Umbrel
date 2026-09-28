@@ -1,6 +1,9 @@
-# EVENCOMMS 0.4.5 For Umbrel
+# EVENCOMMS 0.4.6 For Umbrel
 
-Research now streams replies as Codex generates them and uses code login only.
+This release removes the redundant device-code explanation from Research.
+Code login and streaming behavior are unchanged.
+
+Research streams replies as Codex generates them and uses code login only.
 The operator reply preview matches the companion's green-on-black glasses display.
 The unused wearer-client link and redundant Research panels are removed.
 Failed streams keep the draft and frames; only complete replies enter chat history.
@@ -12,14 +15,14 @@ Linux AMD64 only; no new services, permissions or automatic provider fallback.
 
 ## Release Status
 
-- Source: [v0.4.5](https://github.com/9vibes/EVENCOMMS/tree/v0.4.5), revision `d568cafc1731735e1aebae7ad07ed6bbfe07199b`.
-- [Release checks](https://github.com/9vibes/EVENCOMMS/actions/runs/36478033627) passed,
-  including the Linux native-runtime checks and persistent-data upgrades through 0.4.4.
-- App/init: `ghcr.io/9vibes/evencomms:0.4.5@sha256:e5659a28b4625b4052b4a74cadec55fde76af055cdae88c83cf1fddbfba02fe4`.
-- Codex bridge: `ghcr.io/9vibes/evencomms:0.4.5-codex@sha256:57a8a06ba027f1b2807c109a94c689e308f8bee79d45b06607d4cfb03d1f6978`.
-- Streaming/UI checks use synthetic replies and do not establish live account
-  availability or physical glasses acceptance. Existing gallery images show an
-  earlier UI; the actual Research tab now uses code login only.
+- Source: [v0.4.6](https://github.com/9vibes/EVENCOMMS/tree/v0.4.6), revision `0da7279d9cc71eead32d4324665ec3037d3ded77`.
+- [Release checks](https://github.com/9vibes/EVENCOMMS/actions/runs/36491666993) passed,
+  including Linux native-runtime checks and persistent-data upgrades through 0.4.5.
+- App/init: `ghcr.io/9vibes/evencomms:0.4.6@sha256:f86ccc038ef657549f7ee2b73d8bcaed1bbad0136fed6cddd726e70365376512`.
+- Codex bridge: `ghcr.io/9vibes/evencomms:0.4.6-codex@sha256:9004f2246aacdc547d8d57c94f0bcecb0f6da1832d643def50c3a6f8c157388e`.
+- Public registry manifests, image configuration, revision labels and layer access
+  verified anonymously. Synthetic tests do not establish live account availability
+  or physical glasses acceptance. Existing gallery images show an earlier UI.
 
 ## Previous 0.4.2 Verification (Historical)
 

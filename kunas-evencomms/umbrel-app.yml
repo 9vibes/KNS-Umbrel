@@ -1,11 +1,11 @@
-# EVENCOMMS 0.4.5 Codex reply compatibility update.
+# EVENCOMMS 0.4.6 Research interface cleanup.
 manifestVersion: 1
 id: kunas-evencomms
 name: EVENCOMMS
 tagline: Live comms, stream monitoring and visual research
-icon: https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.5/assets/icon.svg
+icon: https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.6/assets/icon.svg
 category: social
-version: "0.4.5"
+version: "0.4.6"
 port: 28097
 description: >-
   EVENCOMMS connects an Even Hub companion with a browser operator for local
@@ -47,18 +47,14 @@ submission: https://github.com/9vibes/KNS-Umbrel
 repo: https://github.com/9vibes/EVENCOMMS
 support: https://github.com/9vibes/EVENCOMMS/issues
 gallery:
-  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.5/assets/screenshot-operator.png
-  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.5/assets/screenshot-wearer.png
-  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.5/assets/screenshot-stream.png
-  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.5/assets/screenshot-research.png
+  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.6/assets/screenshot-operator.png
+  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.6/assets/screenshot-wearer.png
+  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.6/assets/screenshot-stream.png
+  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.6/assets/screenshot-research.png
 releaseNotes: |-
-  Research replies now stream as they are generated instead of waiting for the
-  complete response. Only confirmed replies enter chat history; interrupted
-  requests preserve the question and frames for a manual retry.
-
-  Research now uses code login only. Removes the unused wearer-client link and
-  simplifies the settings panel. The last operator reply preview now matches
-  the companion's green-on-black glasses display with page controls.
+  Removes redundant device-code explanation text from the Research tab.
+  Code login, model selection, streaming replies and the glasses-style operator
+  reply preview remain unchanged.
 
   Update the server and bridge together in place. Existing conversations,
   settings, app password, model cache and private service token are preserved.

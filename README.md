@@ -55,7 +55,7 @@ https://github.com/9vibes/KNS-Umbrel
   Recordings are never automatically deleted.
   App source: [`9vibes/SteamLab`](https://github.com/9vibes/SteamLab). [Setup and safety notes](kunas-steamlab/README.md).
 
-- **EVENCOMMS 0.4.5** (`kunas-evencomms`)
+- **EVENCOMMS 0.4.6** (`kunas-evencomms`)
   Local Even glasses/operator conversations, CPU speech transcription and optional
   human-approved Ollama replies. Research uses ChatGPT code login and streams
   replies live. The operator reply preview matches the companion glasses display.
@@ -63,7 +63,7 @@ https://github.com/9vibes/KNS-Umbrel
   No continuous video analysis, paid API fallback or automatic replies to glasses.
   Update in place; app data, password and private bridge token are preserved.
   Linux AMD64 only. RTMP port 21936 is for trusted LAN/VPN use.
-  App and bridge images are pinned to the verified 0.4.5 release digests.
+  App and bridge images are pinned to the verified 0.4.6 release digests.
   App source: [`9vibes/EVENCOMMS`](https://github.com/9vibes/EVENCOMMS).
   [Setup and release details](kunas-evencomms/README.md).
 
