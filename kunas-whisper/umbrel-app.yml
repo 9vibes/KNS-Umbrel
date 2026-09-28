@@ -4,7 +4,7 @@ name: Whisper STT
 tagline: Private OpenAI-compatible speech-to-text server
 icon: https://raw.githubusercontent.com/9vibes/KNS-Umbrel/master/kunas-whisper/icon.svg
 category: ai
-version: "0.1.2"
+version: "0.1.3"
 # Keep this outside umbrelOS 2.0's 40000-49999 Machines reserved range.
 port: 29000
 path: /docs
@@ -40,13 +40,15 @@ submission: https://github.com/9vibes/KNS-Umbrel
 repo: https://github.com/hwdsl2/docker-whisper
 support: https://github.com/hwdsl2/docker-whisper/issues
 releaseNotes: |-
-  What's new in 0.1.2
+  What's new in 0.1.3
 
-  - Embeds the CORS proxy configuration in the container startup command so it works with umbrelOS legacy compose path resolution.
-  - Fixes the 0.1.1 nginx bind-mount startup failure.
+  - Runs the browser proxy as an unprivileged user with all Linux capabilities dropped.
+  - Moves nginx PID and temporary upload/proxy paths to the writable /tmp tmpfs.
+  - Fixes the 0.1.2 nginx cache ownership crash loop.
 
   Previous updates
 
+  - 0.1.2: Embedded the CORS proxy configuration to support umbrelOS legacy compose path resolution.
   - 0.1.1: Added a browser-compatible CORS proxy for local STT clients and connection tests.
   - Handles OPTIONS preflight requests with Authorization headers.
   - Preserves large audio uploads and streaming transcription responses.
