@@ -1,9 +1,9 @@
 services:
   app_proxy:
     environment:
-      # Umbrel service hostname format: <app-id>_<service-name>_1
-      APP_HOST: kunas-whisper_server_1
-      APP_PORT: 9000
+      # Browser-facing CORS proxy; the Whisper API remains private to this stack.
+      APP_HOST: kunas-whisper_web_1
+      APP_PORT: 8080
       # API clients authenticate with the generated Umbrel app password.
       PROXY_AUTH_ADD: "false"
 
@@ -33,4 +33,28 @@ services:
       interval: 30s
       timeout: 10s
       start_period: 10m
+      retries: 3
+
+  web:
+    image: nginx:1.28-alpine@sha256:a8b39bd9cf0f83869a2162827a0caf6137ddf759d50a171451b335cecc87d236
+    restart: unless-stopped
+    depends_on:
+      server:
+        condition: service_healthy
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    read_only: true
+    tmpfs:
+      - /var/cache/nginx:rw,noexec,nosuid,size=32m
+      - /var/run:rw,noexec,nosuid,size=4m
+      - /tmp:rw,noexec,nosuid,size=16m
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1:8080/health"]
+      interval: 30s
+      timeout: 5s
+      start_period: 15s
       retries: 3

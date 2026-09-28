@@ -4,7 +4,7 @@ name: Whisper STT
 tagline: Private OpenAI-compatible speech-to-text server
 icon: https://raw.githubusercontent.com/9vibes/KNS-Umbrel/master/kunas-whisper/icon.svg
 category: ai
-version: "0.1.0"
+version: "0.1.1"
 # Keep this outside umbrelOS 2.0's 40000-49999 Machines reserved range.
 port: 29000
 path: /docs
@@ -40,9 +40,15 @@ submission: https://github.com/9vibes/KNS-Umbrel
 repo: https://github.com/hwdsl2/docker-whisper
 support: https://github.com/hwdsl2/docker-whisper/issues
 releaseNotes: |-
-  What's new in 0.1.0
+  What's new in 0.1.1
 
-  - Adds the upstream docker-whisper server to the KUNAS Umbrel store.
+  - Adds a browser-compatible CORS proxy for local STT clients and connection tests.
+  - Handles OPTIONS preflight requests with Authorization headers.
+  - Preserves large audio uploads and streaming transcription responses.
+
+  Previous updates
+
+  - 0.1.0: Added the upstream docker-whisper server to the KUNAS Umbrel store.
   - Provides OpenAI-compatible transcription, translation and model endpoints.
   - Persists downloaded Whisper models and configuration data.
   - Uses Umbrel's generated app password as the Bearer API key.
