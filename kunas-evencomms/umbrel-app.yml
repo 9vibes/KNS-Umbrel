@@ -1,11 +1,11 @@
-# EVENCOMMS 0.4.3 installed-companion connectivity update.
+# EVENCOMMS 0.4.4 Codex reply compatibility update.
 manifestVersion: 1
 id: kunas-evencomms
 name: EVENCOMMS
 tagline: Live comms, stream monitoring and visual research
-icon: https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.3/assets/icon.svg
+icon: https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.4/assets/icon.svg
 category: social
-version: "0.4.3"
+version: "0.4.4"
 port: 28097
 description: >-
   EVENCOMMS is an early release for local communication between an Even glasses
@@ -124,32 +124,27 @@ submission: https://github.com/9vibes/KNS-Umbrel
 repo: https://github.com/9vibes/EVENCOMMS
 support: https://github.com/9vibes/EVENCOMMS/issues
 gallery:
-  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.3/assets/screenshot-operator.png
-  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.3/assets/screenshot-wearer.png
-  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.3/assets/screenshot-stream.png
-  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.3/assets/screenshot-research.png
+  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.4/assets/screenshot-operator.png
+  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.4/assets/screenshot-wearer.png
+  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.4/assets/screenshot-stream.png
+  - https://raw.githubusercontent.com/9vibes/EVENCOMMS/v0.4.4/assets/screenshot-research.png
 releaseNotes: |-
-  Published from source v0.4.3 (80b5dea3e5c09372641601cfbff0ae8f0a60da09).
-  Both images are digest-pinned to the verified release. CI, container checks
-  and in-place upgrades through 0.4.2 passed.
+  Fixes Codex Research failing after successful ChatGPT device-code login.
+  The upstream can omit its response Content-Type header; the old bridge rejected
+  the stream before parsing, and Cloudflare masked the resulting protocol error.
+  The pinned native parser now validates that stream. Explicitly incompatible
+  content types, tools, incomplete replies and model changes remain rejected.
+  A live GPT-6 Luna test on Umbrel returned a complete reply with the fix.
 
-  0.4.3 fixes the server-side origin rejection seen when the installed Even
-  companion runs at http://127.0.0.1:<port>. HTTP health checks, pairing and
-  wearer WebSockets now share the same localhost policy, including valid
-  port changes. Pairing codes and bearer-token authentication remain required.
+  Published from v0.4.4 (8b7f076533236368959a0cbeba6885ea8c1247bc). Both images
+  are pinned to the verified release. CI, container checks and in-place upgrades
+  through 0.4.3 passed. The 0.4.3 installed-companion origin support is retained.
 
-  This Umbrel package enables ALLOW_EVEN_LOCALHOST by default. It trusts apps
-  served at that exact HTTP loopback address on the client device, not only
-  Even. Set it to false to require exact entries in ALLOWED_ORIGINS. Other
-  hosts, null origins and malformed ports are not automatically allowed.
-  Keep your existing public HTTPS origin in ALLOWED_ORIGINS.
-
-  Update in place; do not uninstall. Existing conversations, wearer pairings,
-  model cache, settings, app password and private service token are preserved.
-  No new ports, volumes or services are introduced. The 0.4.2 Codex fixes and
-  pinned Codex 0.157.1 runtime remain. After updating, retry Check connection
-  and pair inside the installed Even app. Physical G2 message delivery and
-  actual phone port changes still need device verification.
+  Update in place; do not uninstall. Conversations, wearer pairings, model cache,
+  settings, app password and private service token are preserved. No new ports,
+  volumes, services or permissions. Codex remains pinned to 0.157.1. After the
+  update, reconnect ChatGPT with a new device code and select your model.
+  ChatGPT login is memory-only and clears when the bridge restarts.
 dependencies: []
 path: ""
 deterministicPassword: true

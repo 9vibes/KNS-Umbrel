@@ -1,6 +1,12 @@
-# EVENCOMMS 0.4.3 For Umbrel
+# EVENCOMMS 0.4.4 For Umbrel
 
-This update adds server support for the installed Even companion origin
+This update fixes Codex Research replies when OpenAI omits the response
+Content-Type header. The native SSE parser and completed-turn checks still
+validate replies; explicit incompatible media types and tools remain blocked.
+A real GPT-6 Luna check on Umbrel returned a complete reply with the fix.
+Update in place, then reconnect ChatGPT with a new device code and select a model.
+
+The 0.4.3 update added server support for the installed Even companion origin
 `http://127.0.0.1:<port>`. The store enables `ALLOW_EVEN_LOCALHOST=true` by
 default for HTTP CORS and wearer WebSockets, including changed ports.
 Other hosts and null origins are not automatically permitted. This trusts
@@ -30,24 +36,17 @@ synthetic conversations, not evidence of hardware testing.
 
 ## Release Status
 
-- Source: [v0.4.3](https://github.com/9vibes/EVENCOMMS/tree/v0.4.3),
-  revision `80b5dea3e5c09372641601cfbff0ae8f0a60da09`.
-- [Source CI](https://github.com/9vibes/EVENCOMMS/actions/runs/36362940872)
-  passed: 1,406 backend tests, the separate pinned-runtime checks, frontend and
-  14 browser tests, plus container and Umbrel-stack playback checks.
-- [Release workflow](https://github.com/9vibes/EVENCOMMS/actions/runs/36362967581)
-  passed all final-image checks and upgrades from 0.1.0, 0.2.1, 0.3.0, 0.4.0,
-  0.4.1 and 0.4.2, including private-token preservation for 0.4.x.
-- App/init `ghcr.io/9vibes/evencomms:0.4.3` is pinned to
-  `sha256:527b4dac6b4354727e80304aaf74656b4b8bdd9cc9b4da84f25f50b67d2156db`.
-  Bridge `ghcr.io/9vibes/evencomms:0.4.3-codex` is pinned to
-  `sha256:4a917a760076f04037abe268c891504866f053ed8805e862d8a2f092aa01f75c`.
-  Anonymous registry manifest/config downloads match the release artifacts,
-  image IDs and OCI source/revision/version labels. All five versioned asset
-  URLs returned nonempty content.
-- The app remains Linux AMD64 only. Physical G2/phone delivery and actual
-  phone-origin port changes remain unverified. The separately installed
-  private phone build is not replaced by this Umbrel server update.
+- Source: [v0.4.4](https://github.com/9vibes/EVENCOMMS/tree/v0.4.4),
+  revision `8b7f076533236368959a0cbeba6885ea8c1247bc`.
+- [CI](https://github.com/9vibes/EVENCOMMS/actions/runs/36365731932) and
+  [release checks](https://github.com/9vibes/EVENCOMMS/actions/runs/36365747754)
+  passed, including the real pinned native runtime regression, container
+  playback and persistent-data upgrades from 0.1.0 through 0.4.3.
+- App/init `ghcr.io/9vibes/evencomms:0.4.4` is pinned to `sha256:cd36467a2e1c9845cbf0d31ba16518f3b595b8dfc389a6e5994a9234364119f0`.
+  Bridge `ghcr.io/9vibes/evencomms:0.4.4-codex` is pinned to `sha256:ec68140863fa0e41b328776fce4d4979671f5c75036940958f5f143cd29d8b77`.
+  Anonymous manifest/config downloads match the release artifacts and OCI labels.
+- Linux AMD64 only. The private phone build is not replaced by this server update.
+  Existing settings and `ALLOW_EVEN_LOCALHOST` behavior are preserved.
 
 ## Previous 0.4.2 Verification (Historical)
 
