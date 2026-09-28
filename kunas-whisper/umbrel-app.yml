@@ -1,0 +1,90 @@
+manifestVersion: 1
+id: kunas-whisper
+name: Whisper STT
+tagline: Private OpenAI-compatible speech-to-text server
+icon: https://raw.githubusercontent.com/9vibes/KNS-Umbrel/master/kunas-whisper/icon.svg
+category: ai
+version: "0.1.0"
+# Keep this outside umbrelOS 2.0's 40000-49999 Machines reserved range.
+port: 29000
+path: /docs
+description: >-
+  Whisper STT is a private, self-hosted speech-to-text server powered by
+  faster-whisper. It provides OpenAI-compatible transcription and translation
+  endpoints for local applications such as Open WebUI, with uploaded audio and
+  generated transcripts processed on your Umbrel rather than sent to a cloud
+  transcription provider.
+
+
+  The API supports common audio formats, automatic language detection, JSON,
+  text, verbose JSON, SRT and WebVTT responses, word timestamps, SSE streaming,
+  and optional local speaker diarization. The active model and all downloaded
+  model files persist across restarts and app updates.
+
+
+  This initial package uses the upstream multi-architecture CPU image for broad
+  compatibility. The default base model uses roughly 700 MB RAM. Larger models
+  can be selected in app settings and require substantially more memory and
+  processing time. The upstream CUDA image is not used because it requires
+  NVIDIA driver 575.57.08 or newer.
+
+
+  Open the app for interactive API documentation. Use the generated Umbrel app
+  password as the Bearer API key. The OpenAI-compatible base URL is /v1; the
+  transcription endpoint is /v1/audio/transcriptions and the model value for
+  clients may be set to whisper-1.
+developer: hwdsl2
+website: https://github.com/hwdsl2/docker-whisper
+submitter: 9vibes
+submission: https://github.com/9vibes/KNS-Umbrel
+repo: https://github.com/hwdsl2/docker-whisper
+support: https://github.com/hwdsl2/docker-whisper/issues
+releaseNotes: |-
+  What's new in 0.1.0
+
+  - Adds the upstream docker-whisper server to the KUNAS Umbrel store.
+  - Provides OpenAI-compatible transcription, translation and model endpoints.
+  - Persists downloaded Whisper models and configuration data.
+  - Uses Umbrel's generated app password as the Bearer API key.
+  - Adds Umbrel settings for model, language, CPU threads, beam size, upload size, word timestamps and speaker diarization.
+  - Disables anonymous aggregate usage counting.
+  - Pins the upstream multi-architecture CPU image by digest.
+dependencies: []
+deterministicPassword: true
+defaultUsername: ""
+environment:
+  - name: WHISPER_MODEL
+    services: [server]
+    default: base
+    options: [tiny, tiny.en, base, base.en, small, small.en, medium, medium.en, large-v1, large-v2, large-v3, large-v3-turbo, turbo]
+    note: Active faster-whisper model. The first start or model change downloads it. Larger models improve accuracy but need more RAM and CPU time.
+  - name: WHISPER_LANGUAGE
+    services: [server]
+    default: auto
+    note: Default BCP-47 language code such as en, es, fr, de, zh or auto for detection. Requests may override it.
+  - name: WHISPER_THREADS
+    services: [server]
+    default: "8"
+    note: Positive CPU inference thread count. Increase for lower latency or reduce to leave more CPU for other apps.
+  - name: WHISPER_BEAM
+    services: [server]
+    default: "5"
+    note: Decoding beam size. Use 1 for fastest greedy decoding; higher values may improve accuracy at the cost of speed.
+  - name: WHISPER_MAX_UPLOAD_MB
+    services: [server]
+    default: "1024"
+    note: Maximum uploaded audio size in MB. Use 0 to disable the application-level limit.
+  - name: WHISPER_WORD_TIMESTAMPS
+    services: [server]
+    default: "false"
+    options: ["false", "true"]
+    note: Include word-level timing when verbose_json is requested. It can also be enabled per request.
+  - name: WHISPER_DIARIZATION
+    services: [server]
+    default: "false"
+    options: ["false", "true"]
+    note: Enable local speaker diarization. Additional ONNX models download on first use. Diarization is unavailable for streaming requests.
+  - name: WHISPER_DIARIZE_NUM_SPEAKERS
+    services: [server]
+    default: "-1"
+    note: Exact number of speakers for diarization, or -1 for automatic detection.

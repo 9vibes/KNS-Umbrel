@@ -1,0 +1,36 @@
+services:
+  app_proxy:
+    environment:
+      # Umbrel service hostname format: <app-id>_<service-name>_1
+      APP_HOST: kunas-whisper_server_1
+      APP_PORT: 9000
+      # API clients authenticate with the generated Umbrel app password.
+      PROXY_AUTH_ADD: "false"
+
+  server:
+    image: hwdsl2/whisper-server@sha256:1751ee8c3c889482d0bdd1d91a42511be4a1156d9a905e860b56b474675f9d72
+    init: true
+    restart: unless-stopped
+    environment:
+      WHISPER_PORT: "9000"
+      WHISPER_DEVICE: cpu
+      WHISPER_COMPUTE_TYPE: int8
+      WHISPER_MODEL: ${WHISPER_MODEL:-base}
+      WHISPER_LANGUAGE: ${WHISPER_LANGUAGE:-auto}
+      WHISPER_THREADS: ${WHISPER_THREADS:-8}
+      WHISPER_BEAM: ${WHISPER_BEAM:-5}
+      WHISPER_MAX_UPLOAD_MB: ${WHISPER_MAX_UPLOAD_MB:-1024}
+      WHISPER_WORD_TIMESTAMPS: ${WHISPER_WORD_TIMESTAMPS:-false}
+      WHISPER_DIARIZATION: ${WHISPER_DIARIZATION:-false}
+      WHISPER_DIARIZE_NUM_SPEAKERS: ${WHISPER_DIARIZE_NUM_SPEAKERS:--1}
+      WHISPER_API_KEY: ${APP_PASSWORD:?Umbrel must provide APP_PASSWORD}
+      WHISPER_LOG_LEVEL: INFO
+      WHISPER_DISABLE_USAGE_COUNTS: "1"
+    volumes:
+      - ${APP_DATA_DIR:?Umbrel must provide APP_DATA_DIR}/data:/var/lib/whisper
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:9000/health"]
+      interval: 30s
+      timeout: 10s
+      start_period: 10m
+      retries: 3

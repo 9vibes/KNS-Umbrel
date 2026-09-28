@@ -19,6 +19,11 @@ https://github.com/9vibes/KNS-Umbrel
 - **Kokoro GPU** (`kunas-kokoro-fastapi`)  
   GPU-enabled Kokoro FastAPI text-to-speech server for Umbrel/Open WebUI.
 
+- **Whisper STT** (`kunas-whisper`)
+  Private OpenAI-compatible speech-to-text server powered by faster-whisper. The
+  package persists downloaded models, uses Umbrel's generated app password as
+  its Bearer API key, and exposes interactive API documentation at `/docs`.
+
 - **ComfyUI GPU** (`kunas-comfyui`)
   Node-based AI image, video, and audio workflows with NVIDIA GPU acceleration.
 
