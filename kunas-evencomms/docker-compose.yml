@@ -16,7 +16,7 @@ services:
     logging: *logging
 
   data_init:
-    image: ghcr.io/9vibes/evencomms:0.4.4@sha256:cd36467a2e1c9845cbf0d31ba16518f3b595b8dfc389a6e5994a9234364119f0
+    image: ghcr.io/9vibes/evencomms:0.4.5@sha256:e5659a28b4625b4052b4a74cadec55fde76af055cdae88c83cf1fddbfba02fe4
     platform: linux/amd64
     user: "0:0"
     command: [python, -m, backend.init_data, --config-dir, /config, --codex-auth-dir, /codex-auth]
@@ -34,7 +34,7 @@ services:
     logging: *logging
 
   server:
-    image: ghcr.io/9vibes/evencomms:0.4.4@sha256:cd36467a2e1c9845cbf0d31ba16518f3b595b8dfc389a6e5994a9234364119f0
+    image: ghcr.io/9vibes/evencomms:0.4.5@sha256:e5659a28b4625b4052b4a74cadec55fde76af055cdae88c83cf1fddbfba02fe4
     platform: linux/amd64
     user: "10001:10001"
     init: true
@@ -81,7 +81,7 @@ services:
     logging: *logging
 
   codex-bridge:
-    image: ghcr.io/9vibes/evencomms:0.4.4-codex@sha256:ec68140863fa0e41b328776fce4d4979671f5c75036940958f5f143cd29d8b77
+    image: ghcr.io/9vibes/evencomms:0.4.5-codex@sha256:57a8a06ba027f1b2807c109a94c689e308f8bee79d45b06607d4cfb03d1f6978
     platform: linux/amd64
     user: "10002:10002"
     init: true

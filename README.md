@@ -55,40 +55,17 @@ https://github.com/9vibes/KNS-Umbrel
   Recordings are never automatically deleted.
   App source: [`9vibes/SteamLab`](https://github.com/9vibes/SteamLab). [Setup and safety notes](kunas-steamlab/README.md).
 
-- **EVENCOMMS 0.4.2** (`kunas-evencomms`)
-  Early-release Even glasses/operator conversations with local English CPU transcription
-  and optional human-approved Ollama replies. Retains OpenAI API Research,
-  1x-4x digital zoom/pan, low-latency HLS and experimental ChatGPT account Research
-  through unchanged official Codex 0.157.1. This reply-compatibility hotfix restores
-  native Responses Lite, accepts validated metadata/deltas for both pinned models
-  and adds safe `[codex:code]` diagnostics. Tools, approvals, unknown events and
-  model changes still fail closed. Native workspace routing is checked before
-  every inference attempt, including after credential refresh; unsupported routes
-  are rejected, not silently sent to the fixed global endpoint.
-  The 0.4.1 **Get Codex login code** behavior is unchanged: trusted-network,
-  non-loopback HTTP requires confirmation before each login request.
-  HTTPS is strongly recommended: HTTP exposes operator sessions, codes and chat.
-  OpenAI sign-in always uses its HTTPS device page; API-key entry remains
-  HTTPS/exact-loopback-only.
-  The isolated bridge starts idle with synthetic probes, not real account use.
-  Explicit provider choice, device login, model selection and Send remain required;
-  ChatGPT allowance/privacy controls apply, not API `store: false`. API mode stays
-  the default, with no automatic provider/model/API fallback. Limits remain two
-  signed-in operators and eight requests per login.
-  OAuth tokens stay in RAM; only explicit Send submits reviewed text/history/stills.
-  Bounded OAuth 401 recovery is allowed; the relay prevents extra agent turns.
-  No recording, transcoding or automatic replies to glasses. x86-64 only.
-  **Plaintext RTMP remains on TCP 21936: trusted LAN/VPN only, never
-  router-forward.** Update in place, never uninstall; back up data/models, password
-  seed and existing private `codex-auth` token without rotation.
-  App/init `:0.4.2` and bridge `:0.4.2-codex` are digest-pinned; complete anonymous
-  downloads were checksum-verified. CI, final-image checks, all five versioned
-  assets and upgrade gates through 0.4.1 passed. Synthetic tests do not identify
-  the past user-specific failure or verify live accounts, entitlement, routing or
-  billing. Physical G2/phone, Safari and
-  actual Umbrel-host acceptance remain unverified; no Stone installation is claimed.
+- **EVENCOMMS 0.4.5** (`kunas-evencomms`)
+  Local Even glasses/operator conversations, CPU speech transcription and optional
+  human-approved Ollama replies. Research uses ChatGPT code login and streams
+  replies live. The operator reply preview matches the companion glasses display.
+  Includes authenticated HLS monitoring and reviewed still-frame capture.
+  No continuous video analysis, paid API fallback or automatic replies to glasses.
+  Update in place; app data, password and private bridge token are preserved.
+  Linux AMD64 only. RTMP port 21936 is for trusted LAN/VPN use.
+  App and bridge images are pinned to the verified 0.4.5 release digests.
   App source: [`9vibes/EVENCOMMS`](https://github.com/9vibes/EVENCOMMS).
-  [Setup, configuration and release caveats](kunas-evencomms/README.md).
+  [Setup and release details](kunas-evencomms/README.md).
 
 ## Repository purpose
 

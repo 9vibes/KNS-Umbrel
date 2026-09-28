@@ -1,52 +1,25 @@
-# EVENCOMMS 0.4.4 For Umbrel
+# EVENCOMMS 0.4.5 For Umbrel
 
-This update fixes Codex Research replies when OpenAI omits the response
-Content-Type header. The native SSE parser and completed-turn checks still
-validate replies; explicit incompatible media types and tools remain blocked.
-A real GPT-6 Luna check on Umbrel returned a complete reply with the fix.
-Update in place, then reconnect ChatGPT with a new device code and select a model.
+Research now streams replies as Codex generates them and uses code login only.
+The operator reply preview matches the companion's green-on-black glasses display.
+The unused wearer-client link and redundant Research panels are removed.
+Failed streams keep the draft and frames; only complete replies enter chat history.
 
-The 0.4.3 update added server support for the installed Even companion origin
-`http://127.0.0.1:<port>`. The store enables `ALLOW_EVEN_LOCALHOST=true` by
-default for HTTP CORS and wearer WebSockets, including changed ports.
-Other hosts and null origins are not automatically permitted. This trusts
-any app served at that local address, not specifically Even; pairing codes
-and bearer tokens are still required. Set the option to false to use only
-the existing exact-origin policy. Keep public/operator HTTPS origins in
-`ALLOWED_ORIGINS`, and preserve existing overrides during the upgrade.
-
-Update the existing installation in place, then retry **Check connection**
-in the installed Even app before pairing. No uninstall or glasses unpairing
-is needed. The companion still needs its own server network permission.
-Actual port changes and physical glasses delivery require device testing.
-
-Local communication between an Even glasses wearer and a browser operator, with
-short-chunk English CPU transcription and optional human-approved Ollama replies.
-The full-width **STREAM** tab provides authenticated low-latency HLS preview of
-one RTMP feed with 1x-4x digital zoom/pan. **RESEARCH** retains opt-in OpenAI API chat
-and **ChatGPT account (Experimental Codex)** using official Codex **0.157.1**,
-with reviewed still-frame attachments, separate from local Ollama. API mode remains
-the UI default and existing API-key settings/overrides are unchanged.
-There is no recording, transcoding or continuous stream analysis. CPU speech
-recognition and existing wearer/operator controls are unchanged; STREAM does not
-require a GPU.
-This is an **early release**: physical G2/phone behavior, hardware installation,
-performance and endurance have not been verified. The screenshots contain
-synthetic conversations, not evidence of hardware testing.
+Update in place and reconnect ChatGPT afterwards. App identity, ports, password,
+data, models, stream credentials and the private bridge token are preserved.
+The separately installed phone companion does not need reinstallation.
+Linux AMD64 only; no new services, permissions or automatic provider fallback.
 
 ## Release Status
 
-- Source: [v0.4.4](https://github.com/9vibes/EVENCOMMS/tree/v0.4.4),
-  revision `8b7f076533236368959a0cbeba6885ea8c1247bc`.
-- [CI](https://github.com/9vibes/EVENCOMMS/actions/runs/36365731932) and
-  [release checks](https://github.com/9vibes/EVENCOMMS/actions/runs/36365747754)
-  passed, including the real pinned native runtime regression, container
-  playback and persistent-data upgrades from 0.1.0 through 0.4.3.
-- App/init `ghcr.io/9vibes/evencomms:0.4.4` is pinned to `sha256:cd36467a2e1c9845cbf0d31ba16518f3b595b8dfc389a6e5994a9234364119f0`.
-  Bridge `ghcr.io/9vibes/evencomms:0.4.4-codex` is pinned to `sha256:ec68140863fa0e41b328776fce4d4979671f5c75036940958f5f143cd29d8b77`.
-  Anonymous manifest/config downloads match the release artifacts and OCI labels.
-- Linux AMD64 only. The private phone build is not replaced by this server update.
-  Existing settings and `ALLOW_EVEN_LOCALHOST` behavior are preserved.
+- Source: [v0.4.5](https://github.com/9vibes/EVENCOMMS/tree/v0.4.5), revision `d568cafc1731735e1aebae7ad07ed6bbfe07199b`.
+- [Release checks](https://github.com/9vibes/EVENCOMMS/actions/runs/36478033627) passed,
+  including the Linux native-runtime checks and persistent-data upgrades through 0.4.4.
+- App/init: `ghcr.io/9vibes/evencomms:0.4.5@sha256:e5659a28b4625b4052b4a74cadec55fde76af055cdae88c83cf1fddbfba02fe4`.
+- Codex bridge: `ghcr.io/9vibes/evencomms:0.4.5-codex@sha256:57a8a06ba027f1b2807c109a94c689e308f8bee79d45b06607d4cfb03d1f6978`.
+- Streaming/UI checks use synthetic replies and do not establish live account
+  availability or physical glasses acceptance. Existing gallery images show an
+  earlier UI; the actual Research tab now uses code login only.
 
 ## Previous 0.4.2 Verification (Historical)
 
@@ -267,7 +240,7 @@ the binding. Keep the server's `RTMP_PORT` and published host port identical.
 | `OLLAMA_URL` | Empty | Disables suggestions; otherwise an existing reachable local Ollama base URL, without `/api/chat`. |
 | `OLLAMA_MODEL` | `llama3.2:3b` | Must already be installed on that Ollama server; never pulled by this app. Explicitly empty also disables suggestions. |
 | `OLLAMA_TIMEOUT` | `30` | Suggestion request deadline in seconds. |
-| `OPENAI_API_KEY` | Empty | Advanced optional server environment secret shared across operators. Prefer current-sign-in Key Connect over HTTPS; deliberately not a plain manifest form field. |
+| `OPENAI_API_KEY` | Empty | Advanced optional server environment secret shared across operators. Retained for legacy API endpoints; not used by the code-login Research UI. |
 | `OPENAI_TIMEOUT` | `90` | Optional nonsecret Research provider timeout in seconds; use 1..110. |
 | `OPENAI_MAX_OUTPUT_TOKENS` | `2048` | Optional nonsecret Research output cap, integer 256..8192; API usage is billable. |
 | `MAX_SESSIONS` | `100` | Maximum stored conversations. |
@@ -285,181 +258,29 @@ on a shared network. This package does not install Ollama, join its private
 network, configure a host gateway or download `llama3.2:3b`. Manual replies work
 without Ollama and remain available after suggestion failures.
 
-### API Research And Privacy
+### Research Code Login And Streaming
 
-RESEARCH is an opt-in cloud workflow, **not an Ollama replacement**. Open the
-Research tab, keep the default **OpenAI API key** provider and use **Key Connect**
-for the current operator sign-in over trusted HTTPS (or exact localhost/loopback
-for local development). The HTTP Codex exception does not relax API-key entry.
-API mode requires an OpenAI API key; a ChatGPT subscription is not API credit.
-Experimental Codex is a separate explicit choice, not an automatic fallback in
-either direction.
-The key is scoped to that operator token and kept only in server RAM, never
-browser `localStorage` or `sessionStorage`. Logout, token expiry, disconnect or a
-server restart clears it; the API does not return it.
+Open Research and choose **Get Codex login code**. On the normal HTTP Umbrel
+console, confirm that you trust the network. Complete sign-in on OpenAI's HTTPS
+device page, then select a model and choose **Send via Codex**. The reply appears
+progressively. Account connection and model selection do not submit your draft.
 
-For advanced deployments, inject `OPENAI_API_KEY` using the deployment's protected
-server environment mechanism, then recreate `server`. It is empty by default and
-is deliberately absent from the plain manifest form. This key is **shared across
-operators**, including its API budget; environment/deployment administrators can
-access it. A disconnected sign-in key falls back to the server key if configured.
-Remove the environment key and recreate the server to disable that shared access.
-Never put keys in frontend variables, committed files, screenshots or logs, and
-do not share resolved Compose output containing secrets.
+Capture adds a reviewed video still to your local draft. Only Send submits the
+conversation and selected stills. Limits are 3 images per turn, 6 per chat and
+20 messages. No continuous video/audio, stream credentials or automatic wearer
+replies. Interrupted replies preserve the question and frames for manual retry.
+New chat ignores late streaming updates and clears local history.
 
-The model dropdown fetches the actual account's OpenAI `/models` list. Listed
-availability is not proof of Responses API or image capability. Explicitly select
-a compatible vision/image model when attaching captures; the app does not silently
-substitute another model. Connecting/listing models contacts OpenAI to check
-availability but does not submit chat content.
+An eligible ChatGPT account is required; plan allowance and account data controls
+apply. There is no paid API or model fallback. Two signed-in operators and eight
+fresh requests per login bound bridge memory. OAuth credentials stay in isolated
+RAM; disconnect, logout, expiry or restart clears the runtime. Local browser
+history clears on reload or New chat, while submitted temporary threads remain
+until runtime cleanup. The response budget is bounded by OPENAI_TIMEOUT and the
+bridge's 85-second deadline. OPENAI_MAX_OUTPUT_TOKENS is a legacy API-only setting.
 
-1. In the Research preview, zoom/pan to the area of interest and capture a decoded
-   frame. The JPEG contains only the currently visible video crop, not page UI or
-   playback controls. Capture is local: it only adds a draft attachment.
-2. Review removable thumbnails and timestamps, then write the prompt. Limits are
-   **3 images per turn, 6 images per chat and 20 messages**. Each JPEG is at most
-   1 MiB decoded and 1280 pixels per side. Use **New chat** when the chat is full;
-   history is not silently dropped to fit a request.
-3. Only explicit **Send to OpenAI** submits the prompt, selected stills and displayed
-   Research history, including prior attached images. No continuous video/audio,
-   stream credentials or unsent wearer drafts are automatically sent. No web-search
-   or other external tools are enabled, and replies never automatically go to glasses.
-
-OpenAI API usage is billable and provider data-retention rules apply. Requests set
-`store: false`; this is **not a zero-retention guarantee**. Cancelling browser
-waiting does not guarantee the provider stops processing or billing. There is no
-automatic billable retry. Consider consent and footage sensitivity before Send.
-
-Research history and captures remain in browser RAM across app-tab changes, not
-in the app database or browser storage. Reload, **New chat** and sign-out clear
-them. A bounded server retry cache can briefly hold results. These ephemeral keys,
-images and history are not part of persistent-data backup or migration.
-
-### Experimental Codex Research
-
-The official pinned **Codex 0.157.1** app-server runs in a separate bridge, installed
-and running idle by default, with **no `CODEX_ENABLED` setting**. Startup does run
-offline/synthetic loopback probe processes, not real account login or inference.
-A failed bridge or safety gate leaves normal conversations, CPU STT, Ollama, API
-Research and streaming available. Merely installing it does not permit account use.
-
-1. Strongly prefer trusted HTTPS for operator privacy, with `COOKIE_SECURE=true`
-   only behind HTTPS and the entire exact `ALLOWED_ORIGINS` list. Since 0.4.1,
-   Codex device login at `http://umbrel.local:28097` is permitted after explicit
-   trusted-network confirmation before every login POST. HTTP still exposes the
-   operator session, one-time code and chat to interception; never use it on an
-   untrusted/public network. Keep `COOKIE_SECURE=false` on HTTP or playback breaks.
-   API-key entry still requires HTTPS or exact localhost/loopback.
-2. In Research explicitly select **ChatGPT account (Experimental Codex)** and
-   confirm clearing any current local chat. Choose **Get Codex login code** and
-   confirm the HTTP warning for each login attempt when shown; cancelling sends
-   no login POST. Always open `https://auth.openai.com/codex/device` and enter the
-   displayed code unchanged. OpenAI issues it: nine-digit numeric codes and other
-   supported formats are preserved, never generated or reformatted locally.
-   This is the same device-code flow as `codex login --device-auth`; a code from
-   a separate CLI process authorizes that process, not EVENCOMMS. If required,
-   enable device-code authentication in ChatGPT security settings or ask the
-   workspace administrator. Never paste a password, browser cookie or OAuth token
-   into EVENCOMMS; sign in personally on OpenAI's HTTPS page.
-3. After connection, explicitly choose a model. The pinned `gpt-6-luna` and
-   `gpt-6-astra` selectors support image inputs in the tested runtime contract;
-   they are not a live entitlement list or proof that your account can use them.
-   Connecting, polling and model selection never send prompts or frames.
-4. Review the prompt, displayed history and selected still frames, then use
-   **Send via Codex**. Capture remains local until Send. The same image/chat bounds
-   apply as in API Research. No continuous video/audio, stream secrets or unsent
-   wearer drafts are sent; no reply automatically goes to glasses.
-5. Use **Cancel sign-in** or **Disconnect ChatGPT** when finished. Disconnect
-   leaves Codex selected with Send disabled. Switching provider clears the local
-   chat after confirmation; it never replays it to another provider.
-
-An eligible **ChatGPT plan/workspace** is required. Requests consume Codex plan
-allowance and may incur purchased-credit costs; this is not unlimited/free API
-access. ChatGPT account/workspace privacy controls apply, **not API `store: false`**.
-Local ephemeral storage is not a zero-retention guarantee. Model access,
-tenant-specific routing, actual costs and provider retention are unverified.
-
-There is **no automatic API, model or provider fallback**, even if an API key is
-configured. EVENCOMMS does not automatically resubmit failed generation. Normal
-bounded OAuth 401 recovery by the pinned runtime is allowed, up to three Responses
-attempts. A private thread-bound relay reopens a request budget only after a
-confirmed 401, forwarding at most one non-401 request per explicit Send. Extra
-agent continuations/tool-error loops, overlapping requests and uncertain network
-failures cannot create another upstream turn. Manual retries can consume allowance.
-Shell, browsing, MCP/plugins, tools and agents must not be enabled to bypass a probe.
-
-Limits are **two signed-in operators** and **eight fresh requests per login**.
-The eighth result destroys that login's runtime; sign in again to continue. Login
-expires after eight hours or the operator's earlier expiry; pending device login
-has a 15-minute deadline. These bound application RAM, not provider plan usage.
-`OPENAI_TIMEOUT` also bounds backend waiting for Codex; the bridge waits at most
-85 seconds. `OPENAI_MAX_OUTPUT_TOKENS` remains API-only. Codex output is capped at
-16,000 characters; an unsafe/oversized result fails without an extra agent turn.
-
-OAuth access/refresh tokens stay in **bridge/runtime RAM**, never the app database,
-browser storage, backups or logs. The browser/main app receive state and a bounded
-device code, not OAuth tokens or account email. Submitted history/stills remain
-in ephemeral bridge threads until runtime cleanup; **New chat** or clearing the
-browser view does not erase those threads. Each Send uses exactly the displayed
-history, not hidden prior turns. Bounded RAM caches can briefly retain results.
-Disconnect/logout, expiry, the request cap or restart destroy runtime state;
-cleanup is best-effort, with a 120-second lease renewed every 30 seconds to expire
-orphaned sessions. The 0.4.1 heartbeat ignores absent IDs across an unacknowledged
-login or newer creation than its snapshot, avoiding accidental cancellation;
-uncertain creation retains its cleanup obligation. Closing a tab or switching
-providers is not logout. Local cleanup does not guarantee remote token revocation
-or sign out the ChatGPT website.
-
-### 0.4.2 Reply Compatibility And Diagnostics
-
-Both `gpt-6-luna` and `gpt-6-astra` retain official Codex **0.157.1** and the same
-binary hashes. The sanitized native catalog restores `use_responses_lite: true`
-and `default_reasoning_summary: "none"`. Requests use the native `version: 0.157.1`
-header, not app version 0.4.2, and one `additional_tools` input item with an empty
-`tools` list, not a top-level `tools` field. Known bounded metadata scoped to the
-active thread/turn and validated reasoning/text deltas no longer abort valid
-replies. Metadata/reasoning are not returned as the answer; tools, approvals,
-unknown events and actual model reroutes still fail closed.
-
-Before **every upstream inference attempt**, including 401 recovery after OAuth
-refresh, native `account/read` must confirm `workspaceRouting` for the same account,
-the fixed `https://chatgpt.com` origin and `NO_CONSTRAINT`. Missing, ambiguous or
-unsupported regional routing fails with `[codex:unsupported_workspace]`, even when
-the loopback provider suppresses routing headers. It cannot silently send a
-restricted workspace to the fixed global endpoint. The one-non-401 request budget
-and at most three total Responses attempts during authentication recovery remain;
-no extra agent turns or automatic application resubmission are allowed. The hidden
-15-second relay read cutoff is removed, not the overall **85-second** deadline.
-
-Recognized failures now carry stable markers and fixed messages, never raw provider
-error bodies, account details, credentials or native logs. The old generic message
-cannot retrospectively identify the user's exact cause. Report the installed
-version, selected model, HTTP status and marker, not prompts, screenshots or raw logs.
-Do not repeatedly retry: an accepted request may already consume plan allowance.
-
-| Marker | Meaning / Next Step |
-| --- | --- |
-| `[codex:rate_limit]` | Check ChatGPT usage limits and wait for reset. |
-| `[codex:model_unavailable]` | Check the selected model's account entitlement. |
-| `[codex:request_rejected]`, `[codex:context_limit]` | Check input/model compatibility or start a smaller chat. |
-| `[codex:account_auth]` | Disconnect ChatGPT and sign in again; the operator is not logged out. |
-| `[codex:account_permission]`, `[codex:policy_rejected]` | Account/workspace permissions or provider policy denied the request; controls are not bypassed. |
-| `[codex:unsupported_workspace]`, `[codex:model_changed]` | Unsupported routing or an actual model change was rejected, without fallback. |
-| `[codex:bridge_auth]` | Recreate the matching app/bridge stack; do not rotate the private token or replace ChatGPT credentials. |
-| `[codex:bridge_http_error]` | Unclassified bridge HTTP status; report status and marker. |
-| `[codex:bridge_unavailable]`, `[codex:provider_unavailable]`, `[codex:network_error]`, `[codex:timeout]` | Check service/network availability or the response deadline before another explicit Send. |
-| `[codex:generation_disabled]` | The safety proof did not pass; never bypass it. |
-| `[codex:protocol_mismatch]`, `[codex:response_encoding]`, `[codex:stream_incomplete]`, `[codex:runtime_error]`, `[codex:tool_rejected]` | Report the marker for protocol, stream, runtime or forbidden-tool/approval failure. |
-
-The **Get Codex login code** and `codex login --device-auth` instructions above,
-HTTP confirmation and API-key HTTPS/loopback guard are unchanged. Codex does not
-require entering an API key again or changing existing API configuration.
-Live account entitlement, routing, allowance/billing and retention remain unverified;
-synthetic success is not a guarantee that a particular account's reply will succeed.
-
-The [0.4.2 Codex protocol, limits and privacy guide](https://github.com/9vibes/EVENCOMMS/blob/13e1b49cce70894dcd574fac953e6501a0934ab1/docs/codex.md)
-and [native protocol evidence](https://github.com/9vibes/EVENCOMMS/blob/13e1b49cce70894dcd574fac953e6501a0934ab1/codex_bridge/PROTOCOL.md)
-are pinned to the prior 0.4.2 source revision; that behavior is retained.
+The legacy API endpoints remain for compatibility, but the Research UI has no
+API-key login or provider selector. See the [current guide](https://github.com/9vibes/EVENCOMMS/blob/v0.4.5/docs/codex.md).
 
 ### Exact Origins And TLS
 
