@@ -4,7 +4,7 @@ name: LINE MTC
 tagline: Shared aircraft logs with live Even G2 glasses updates
 icon: https://raw.githubusercontent.com/9vibes/LINE-MTC/v1.0.1/assets/icon.svg
 category: productivity
-version: "1.0.1"
+version: "1.0.2"
 port: 28110
 description: >-
   LINE MTC is a shared aircraft maintenance running log. Operators and phone users
@@ -22,7 +22,8 @@ description: >-
   For access from phones outside your LAN, configure your Cloudflare Tunnel with
   hostname mtc.kunas.pro and HTTP service 10.12.12.12:28110. Then use the Even
   Realities Prototype Mode QR for https://mtc.kunas.pro/companion. The app does not
-  create or manage your Cloudflare tunnel. The phone companion must remain active
+  create or manage your Cloudflare tunnel. The installable Even Hub 1.0.2 app
+  also connects directly to mtc.kunas.pro using your existing team account. The phone companion must remain active
   for real-time glasses updates; it refreshes after reconnecting.
 
 
@@ -37,9 +38,10 @@ repo: https://github.com/9vibes/LINE-MTC
 support: https://github.com/9vibes/LINE-MTC/issues
 gallery: []
 releaseNotes: >-
-  Initial release with persistent SQLite storage, individual team accounts,
-  real-time updates, conflict detection, shared phone editing, and the
-  Super Platano Log display for Even G2 glasses.
+  Adds authenticated connections for the installable Super Platano Log Even Hub
+  app, with live shared updates and existing team permissions. Public address
+  defaults to mtc.kunas.pro. Existing aircraft data and accounts are preserved.
+  Upload the 1.0.2 .ehpk to Even Hub Private builds to install on your phone.
 dependencies: []
 path: ""
 defaultUsername: operator
