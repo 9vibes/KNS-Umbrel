@@ -1,0 +1,41 @@
+services:
+  app_proxy:
+    environment:
+      APP_HOST: kunas-line-mtc_server_1
+      APP_PORT: 3000
+      PROXY_AUTH_ADD: "false"
+  data_init:
+    image: ghcr.io/9vibes/line-mtc:1.0.1@sha256:b208ba172585b74659c8052aae68e58b236768cb18cc81ea808c0f2e1e7f504a
+    user: "0:0"
+    command: [node, server-build/init-data.mjs]
+    network_mode: none
+    read_only: true
+    restart: "no"
+    security_opt: ["no-new-privileges:true"]
+    healthcheck:
+      disable: true
+    volumes:
+      - ${APP_DATA_DIR}/data:/data
+  server:
+    image: ghcr.io/9vibes/line-mtc:1.0.1@sha256:b208ba172585b74659c8052aae68e58b236768cb18cc81ea808c0f2e1e7f504a
+    user: "1000:1000"
+    init: true
+    restart: unless-stopped
+    depends_on:
+      data_init:
+        condition: service_completed_successfully
+    environment:
+      LINE_MTC_ADMIN_PASSWORD: ${APP_PASSWORD:?Umbrel must provide APP_PASSWORD}
+      PUBLIC_ORIGIN: ${PUBLIC_ORIGIN:-https://rl.kunas.pro}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://${DEVICE_DOMAIN_NAME:-umbrel.local}:28110,http://umbrel.local:28110,http://10.12.12.12:28110}
+      TZ: ${TZ:-America/New_York}
+      DB_PATH: /data/line-mtc.sqlite
+    volumes:
+      - ${APP_DATA_DIR}/data:/data
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    logging:
+      driver: json-file
+      options: {max-size: "10m", max-file: "3"}

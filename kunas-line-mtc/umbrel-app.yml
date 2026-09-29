@@ -1,0 +1,60 @@
+manifestVersion: 1
+id: kunas-line-mtc
+name: LINE MTC
+tagline: Shared aircraft logs with live Even G2 glasses updates
+icon: https://raw.githubusercontent.com/9vibes/LINE-MTC/v1.0.1/assets/icon.svg
+category: productivity
+version: "1.0.1"
+port: 28110
+description: >-
+  LINE MTC is a shared aircraft maintenance running log. Operators and phone users
+  can add aircraft, enter ETAs and gates, organize multiple discrepancy logs,
+  and update C/W, DEF, SUPP, PEND or -- status. Updates are delivered live to all
+  connected phones and their paired Even Realities G2 glasses.
+
+
+  Sign in as operator with the password shown by Umbrel. Create individual editor
+  accounts using Team accounts. Everyone with editor access can update shared
+  entries. Changes are stored on Umbrel, with conflict detection and persistent
+  accounts. No cloud database or GPU is required.
+
+
+  For access from phones outside your LAN, configure your Cloudflare Tunnel with
+  hostname rl.kunas.pro and HTTP service 10.12.12.12:28110. Then use the Even
+  Realities Prototype Mode QR for https://rl.kunas.pro/companion. The app does not
+  create or manage your Cloudflare tunnel. The phone companion must remain active
+  for real-time glasses updates; it refreshes after reconnecting.
+
+
+  Import your prototype JSON backup to migrate existing records. Shared mode does
+  not automatically import browser storage or load demo aircraft. This app is a
+  personal organizer and does not update an airline maintenance system.
+developer: 9vibes
+website: https://github.com/9vibes/LINE-MTC
+submitter: 9vibes
+submission: https://github.com/9vibes/KNS-Umbrel
+repo: https://github.com/9vibes/LINE-MTC
+support: https://github.com/9vibes/LINE-MTC/issues
+gallery: []
+releaseNotes: >-
+  Initial release with persistent SQLite storage, individual team accounts,
+  real-time updates, conflict detection, shared phone editing, and the
+  Super Platano Log display for Even G2 glasses.
+dependencies: []
+path: ""
+defaultUsername: operator
+deterministicPassword: true
+permissions: []
+environmentVariables:
+  - name: PUBLIC_ORIGIN
+    services: [server]
+    default: https://rl.kunas.pro
+    note: Exact public HTTPS origin for the Cloudflare Tunnel hostname.
+  - name: ALLOWED_ORIGINS
+    services: [server]
+    default: http://umbrel.local:28110,http://10.12.12.12:28110
+    note: Comma-separated additional exact browser origins for local access. Public origin is always allowed.
+  - name: TZ
+    services: [server]
+    default: America/New_York
+    note: Time zone used for off-plane timestamps recorded by the server.

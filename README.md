@@ -12,6 +12,10 @@ https://github.com/9vibes/KNS-Umbrel
 
 ## Apps
 
+- **LINE MTC** (`kunas-line-mtc`)
+  Shared aircraft running log with real-time phone and Even G2 glasses updates.
+  App source: [`9vibes/LINE-MTC`](https://github.com/9vibes/LINE-MTC)
+
 - **Qobuz Sync** (`kunas-qobuz-sync`)  
   Sync purchased Qobuz music to `Downloads/QobuzSync`.  
   App source: [`9vibes/QobuzSync`](https://github.com/9vibes/QobuzSync)
