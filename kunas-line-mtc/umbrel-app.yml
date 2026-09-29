@@ -20,8 +20,8 @@ description: >-
 
 
   For access from phones outside your LAN, configure your Cloudflare Tunnel with
-  hostname rl.kunas.pro and HTTP service 10.12.12.12:28110. Then use the Even
-  Realities Prototype Mode QR for https://rl.kunas.pro/companion. The app does not
+  hostname mtc.kunas.pro and HTTP service 10.12.12.12:28110. Then use the Even
+  Realities Prototype Mode QR for https://mtc.kunas.pro/companion. The app does not
   create or manage your Cloudflare tunnel. The phone companion must remain active
   for real-time glasses updates; it refreshes after reconnecting.
 
@@ -48,7 +48,7 @@ permissions: []
 environmentVariables:
   - name: PUBLIC_ORIGIN
     services: [server]
-    default: https://rl.kunas.pro
+    default: https://mtc.kunas.pro
     note: Exact public HTTPS origin for the Cloudflare Tunnel hostname.
   - name: ALLOWED_ORIGINS
     services: [server]

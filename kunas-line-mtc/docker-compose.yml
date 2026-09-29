@@ -26,7 +26,7 @@ services:
         condition: service_completed_successfully
     environment:
       LINE_MTC_ADMIN_PASSWORD: ${APP_PASSWORD:?Umbrel must provide APP_PASSWORD}
-      PUBLIC_ORIGIN: ${PUBLIC_ORIGIN:-https://rl.kunas.pro}
+      PUBLIC_ORIGIN: ${PUBLIC_ORIGIN:-https://mtc.kunas.pro}
       ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://${DEVICE_DOMAIN_NAME:-umbrel.local}:28110,http://umbrel.local:28110,http://10.12.12.12:28110}
       TZ: ${TZ:-America/New_York}
       DB_PATH: /data/line-mtc.sqlite
