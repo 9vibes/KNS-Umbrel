@@ -4,7 +4,7 @@ name: LINE MTC
 tagline: Shared aircraft logs with live Even G2 glasses updates
 icon: https://raw.githubusercontent.com/9vibes/LINE-MTC/v1.0.1/assets/icon.svg
 category: productivity
-version: "1.0.11"
+version: "1.0.12"
 port: 28110
 description: >-
   LINE MTC is a shared aircraft maintenance running log. Operators and phone users
@@ -38,10 +38,9 @@ repo: https://github.com/9vibes/LINE-MTC
 support: https://github.com/9vibes/LINE-MTC/issues
 gallery: []
 releaseNotes: >-
-  The operator website defaults to the current local date when opened or resumed
-  and advances at midnight. Past entries are preserved and remain available in
-  the shift date picker. Open forms retain their original date during rollover.
-  Install companion 1.0.11 for the same behavior on the phone and glasses.
+  The server website's clear button now removes only the selected shift date's
+  aircraft and discrepancy logs, matching the phone app. Confirmation shows the
+  target date; other dates are preserved. Existing phone companions remain compatible.
 dependencies: []
 path: ""
 defaultUsername: operator
