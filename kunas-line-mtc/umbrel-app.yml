@@ -4,7 +4,7 @@ name: LINE MTC
 tagline: Shared aircraft logs with live Even G2 glasses updates
 icon: https://raw.githubusercontent.com/9vibes/LINE-MTC/v1.0.1/assets/icon.svg
 category: productivity
-version: "1.0.8"
+version: "1.0.9"
 port: 28110
 description: >-
   LINE MTC is a shared aircraft maintenance running log. Operators and phone users
@@ -38,10 +38,9 @@ repo: https://github.com/9vibes/LINE-MTC
 support: https://github.com/9vibes/LINE-MTC/issues
 gallery: []
 releaseNotes: >-
-  DEF status tags on the operator website are now red instead of purple.
-  Includes the confirmed Clear all aircraft action beneath the glasses preview.
-  Existing aircraft data and accounts are preserved; installed Even Hub companions
-  remain compatible.
+  Removes the Add demo aircraft button from the operator website.
+  DEF status tags remain red. Existing aircraft data and accounts are preserved;
+  installed Even Hub companions remain compatible.
 dependencies: []
 path: ""
 defaultUsername: operator
