@@ -4,7 +4,7 @@ name: LINE MTC
 tagline: Shared aircraft logs with live Even G2 glasses updates
 icon: https://raw.githubusercontent.com/9vibes/LINE-MTC/v1.0.1/assets/icon.svg
 category: productivity
-version: "1.0.14"
+version: "1.0.15"
 port: 28110
 description: >-
   LINE MTC is a shared aircraft maintenance running log. Operators and phone users
@@ -38,11 +38,10 @@ repo: https://github.com/9vibes/LINE-MTC
 support: https://github.com/9vibes/LINE-MTC/issues
 gallery: []
 releaseNotes: >-
-  The operator website now shows a full-width daily aircraft list without the
-  glasses preview, and log numbers are plain text. Adding another entry for a
-  ship number already on the selected day appends its discrepancy logs to the
-  existing aircraft while preserving its ETA and gate. The phone glasses view
-  and selected-day clear action remain available.
+  The server operator's Clear this day's aircraft action now sits beside the
+  backup controls in the footer, with red text, a red outline and extra spacing.
+  The confirmation prompt still names the selected day and preserves other dates.
+  Phone companion placement remains unchanged.
 dependencies: []
 path: ""
 defaultUsername: operator
