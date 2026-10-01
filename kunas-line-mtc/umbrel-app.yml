@@ -2,9 +2,9 @@ manifestVersion: 1
 id: kunas-line-mtc
 name: LINE MTC
 tagline: Shared aircraft logs with live Even G2 glasses updates
-icon: https://raw.githubusercontent.com/9vibes/LINE-MTC/v1.0.17/assets/apple-touch-icon.png
+icon: https://raw.githubusercontent.com/9vibes/LINE-MTC/v1.0.18/assets/apple-touch-icon.png
 category: productivity
-version: "1.0.17"
+version: "1.0.18"
 port: 28110
 description: >-
   LINE MTC is a shared aircraft maintenance running log. Operators and phone users
@@ -22,7 +22,7 @@ description: >-
   For access from phones outside your LAN, configure your Cloudflare Tunnel with
   hostname mtc.kunas.pro and HTTP service 10.12.12.12:28110. Then use the Even
   Realities Prototype Mode QR for https://mtc.kunas.pro/companion. The app does not
-  create or manage your Cloudflare tunnel. The installable Even Hub 1.0.17 app
+  create or manage your Cloudflare tunnel. The installable Even Hub 1.0.21 app
   also connects directly to mtc.kunas.pro using your existing team account. The phone companion must remain active
   for real-time glasses updates; it refreshes after reconnecting.
 
@@ -38,13 +38,11 @@ repo: https://github.com/9vibes/LINE-MTC
 support: https://github.com/9vibes/LINE-MTC/issues
 gallery: []
 releaseNotes: >-
-  Adds ETD beside ETA on server aircraft cards, with Departure time directly below
-  Arrival time in the editor. Removes off-plane time and log status controls from
-  the server editor while preserving saved values. Off-plane entry remains on the
-  phone, and aircraft-card status controls remain available. Older phone edits
-  preserve ETD. The companion removes its clear-day button and SHARED header text,
-  adopts the banana and SUPER PLATANO A/C ROUTING branding, and uses a shorter
-  app-list name for Even Hub. Existing aircraft, reports and accounts are retained.
+  Keeps ETA, ETD and Gate beside the aircraft number when viewing the server on a
+  phone, with compact spacing and no horizontal overflow on narrow screens.
+  The companion now supports ETD and displays read-only log type beside the log
+  number, separated by a vertical bar. MEL and OPEN are red, NEF is yellow, and
+  unused log-type spacing has been removed. Existing records and accounts are kept.
 dependencies: []
 path: ""
 defaultUsername: operator
