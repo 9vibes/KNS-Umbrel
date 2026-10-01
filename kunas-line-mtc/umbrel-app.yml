@@ -2,9 +2,9 @@ manifestVersion: 1
 id: kunas-line-mtc
 name: LINE MTC
 tagline: Shared aircraft logs with live Even G2 glasses updates
-icon: https://raw.githubusercontent.com/9vibes/LINE-MTC/v1.0.18/assets/apple-touch-icon.png
+icon: https://raw.githubusercontent.com/9vibes/LINE-MTC/v1.0.20/assets/apple-touch-icon.png
 category: productivity
-version: "1.0.18"
+version: "1.0.20"
 port: 28110
 description: >-
   LINE MTC is a shared aircraft maintenance running log. Operators and phone users
@@ -22,7 +22,7 @@ description: >-
   For access from phones outside your LAN, configure your Cloudflare Tunnel with
   hostname mtc.kunas.pro and HTTP service 10.12.12.12:28110. Then use the Even
   Realities Prototype Mode QR for https://mtc.kunas.pro/companion. The app does not
-  create or manage your Cloudflare tunnel. The installable Even Hub 1.0.21 app
+  create or manage your Cloudflare tunnel. The installable Even Hub 1.0.35 app
   also connects directly to mtc.kunas.pro using your existing team account. The phone companion must remain active
   for real-time glasses updates; it refreshes after reconnecting.
 
@@ -38,11 +38,13 @@ repo: https://github.com/9vibes/LINE-MTC
 support: https://github.com/9vibes/LINE-MTC/issues
 gallery: []
 releaseNotes: >-
-  Keeps ETA, ETD and Gate beside the aircraft number when viewing the server on a
-  phone, with compact spacing and no horizontal overflow on narrow screens.
-  The companion now supports ETD and displays read-only log type beside the log
-  number, separated by a vertical bar. MEL and OPEN are red, NEF is yellow, and
-  unused log-type spacing has been removed. Existing records and accounts are kept.
+  Adds LOG TIME OFF PLANE as an explicit glasses action. Changing C/W, DEF or SUPP
+  no longer records off-plane time. Moves log type editing beside the log number
+  in the aircraft editor; daily rows show colored log types beside log numbers.
+  Glasses show six rows, improved discrepancy scrolling, a small blinking arrow,
+  both clock formats, ETD and the ETA-to-ETD interval, and log types in the status
+  page. Install companion 1.0.35 alongside this server update. Existing aircraft,
+  recorded times and accounts are preserved.
 dependencies: []
 path: ""
 defaultUsername: operator
