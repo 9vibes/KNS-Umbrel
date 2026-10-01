@@ -5,7 +5,7 @@ services:
       APP_PORT: 3000
       PROXY_AUTH_ADD: "false"
   data_init:
-    image: ghcr.io/9vibes/line-mtc:1.0.15@sha256:ecc2536e1d1b29a05f6cb090ff3ef809b5841f2ff274648322ea08eab3ab42a4
+    image: ghcr.io/9vibes/line-mtc:1.0.16@sha256:53e5f260515718fe759c5b21d27bcb7f9d99dc93bccdea9d03872f5ccbc9fd74
     user: "0:0"
     command: [node, server-build/init-data.mjs]
     network_mode: none
@@ -17,7 +17,7 @@ services:
     volumes:
       - ${APP_DATA_DIR}/data:/data
   server:
-    image: ghcr.io/9vibes/line-mtc:1.0.15@sha256:ecc2536e1d1b29a05f6cb090ff3ef809b5841f2ff274648322ea08eab3ab42a4
+    image: ghcr.io/9vibes/line-mtc:1.0.16@sha256:53e5f260515718fe759c5b21d27bcb7f9d99dc93bccdea9d03872f5ccbc9fd74
     user: "1000:1000"
     init: true
     restart: unless-stopped

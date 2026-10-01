@@ -2,9 +2,9 @@ manifestVersion: 1
 id: kunas-line-mtc
 name: LINE MTC
 tagline: Shared aircraft logs with live Even G2 glasses updates
-icon: https://raw.githubusercontent.com/9vibes/LINE-MTC/v1.0.1/assets/icon.svg
+icon: https://raw.githubusercontent.com/9vibes/LINE-MTC/v1.0.16/assets/apple-touch-icon.png
 category: productivity
-version: "1.0.15"
+version: "1.0.16"
 port: 28110
 description: >-
   LINE MTC is a shared aircraft maintenance running log. Operators and phone users
@@ -22,7 +22,7 @@ description: >-
   For access from phones outside your LAN, configure your Cloudflare Tunnel with
   hostname mtc.kunas.pro and HTTP service 10.12.12.12:28110. Then use the Even
   Realities Prototype Mode QR for https://mtc.kunas.pro/companion. The app does not
-  create or manage your Cloudflare tunnel. The installable Even Hub 1.0.2 app
+  create or manage your Cloudflare tunnel. The installable Even Hub 1.0.16 app
   also connects directly to mtc.kunas.pro using your existing team account. The phone companion must remain active
   for real-time glasses updates; it refreshes after reconnecting.
 
@@ -38,10 +38,13 @@ repo: https://github.com/9vibes/LINE-MTC
 support: https://github.com/9vibes/LINE-MTC/issues
 gallery: []
 releaseNotes: >-
-  The server operator's Clear this day's aircraft action now sits beside the
-  backup controls in the footer, with red text, a red outline and extra spacing.
-  The confirmation prompt still names the selected day and preserves other dates.
-  Phone companion placement remains unchanged.
+  Adds Print Report beside Add aircraft to download a formatted daily Excel report
+  with a MM/DD/YY date heading. Each server log row now includes a NEF, MEL or OPEN
+  log type dropdown and decimal health points, aligned with its status control.
+  Report fields are preserved when older phone clients edit logs. The app header
+  is now SUPER PLATANO A/C ROUTING, with banana branding and matching browser and
+  iOS home-screen icons. The companion defaults to -- in its status menu and uses
+  neutral filter tabs and plain log numbers. Existing records and accounts are kept.
 dependencies: []
 path: ""
 defaultUsername: operator
