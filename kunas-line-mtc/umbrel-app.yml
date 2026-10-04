@@ -19,14 +19,6 @@ description: >-
   accounts. No cloud database or GPU is required.
 
 
-  For access from phones outside your LAN, configure your Cloudflare Tunnel with
-  hostname mtc.kunas.pro and HTTP service 10.12.12.12:28110. Then use the Even
-  Realities Prototype Mode QR for https://mtc.kunas.pro/companion. The app does not
-  create or manage your Cloudflare tunnel. The installable Even Hub 1.0.37 app
-  also connects directly to mtc.kunas.pro using your existing team account. The phone companion must remain active
-  for real-time glasses updates; it refreshes after reconnecting.
-
-
   Import your prototype JSON backup to migrate existing records. Shared mode does
   not automatically import browser storage or load demo aircraft. This app is a
   personal organizer and does not update an airline maintenance system.
@@ -52,11 +44,11 @@ permissions: []
 environmentVariables:
   - name: PUBLIC_ORIGIN
     services: [server]
-    default: https://mtc.kunas.pro
+    default: https://example.com
     note: Exact public HTTPS origin for the Cloudflare Tunnel hostname.
   - name: ALLOWED_ORIGINS
     services: [server]
-    default: http://umbrel.local:28110,http://10.12.12.12:28110
+    default: http://umbrel.local:28110
     note: Comma-separated additional exact browser origins for local access. Public origin is always allowed.
   - name: TZ
     services: [server]
