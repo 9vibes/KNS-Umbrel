@@ -1,0 +1,44 @@
+manifestVersion: 1
+id: kunas-yue
+name: YuE2 GPU
+tagline: Create songs from your lyrics with local AI
+icon: https://raw.githubusercontent.com/9vibes/KNS-Umbrel/master/kunas-yue/icon.svg
+category: ai
+version: "0.1.0"
+port: 27860
+description: >-
+  Turn lyrics and a musical style into songs with vocals and accompaniment.
+  YuE2 creates an editable melody-and-chord score and renders it as stereo
+  audio. This KUNAS package provides a simple browser interface, playback,
+  FLAC downloads, and a persistent song library.
+
+
+  Requires an AMD64 Linux Umbrel host with an NVIDIA GPU supporting BF16,
+  NVIDIA Container Toolkit, and a CUDA 12.6-compatible driver. A GPU with
+  24 GB VRAM is recommended. The app uses the first GPU; it does not combine
+  multiple GPUs. Other AI apps may need to release GPU memory before use.
+
+
+  Models download from Hugging Face on first generation and remain cached.
+  Songs, scores, and generation metadata persist across restarts and updates.
+  One song generates at a time. Closing the browser does not stop generation;
+  restarting the app does. GPU memory is released between jobs.
+
+
+  Based on YuE2 0.1.6. Upstream code uses Apache-2.0; model weights have
+  separate licensing terms, including terms for company commercial use.
+  See the upstream repository for details.
+developer: M·A·P / YuE authors
+website: https://map-yue2.github.io/
+submitter: 9vibes
+submission: https://github.com/9vibes/KNS-Umbrel
+repo: https://github.com/multimodal-art-projection/YuE
+support: https://github.com/9vibes/KNS-Umbrel/issues
+gallery: []
+releaseNotes: >-
+  Initial KUNAS package with a browser music studio, NVIDIA GPU support,
+  persistent model and song storage, saved scores and metadata, and single-job
+  processing. Code and model revisions are pinned. The container and
+  browser adapter are tested in CI; full GPU generation requires validation
+  on your NVIDIA host.
+dependencies: []

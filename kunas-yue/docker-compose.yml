@@ -1,0 +1,26 @@
+version: "3.7"
+services:
+  app_proxy:
+    environment:
+      APP_HOST: kunas-yue_server_1
+      APP_PORT: 7860
+      # Umbrel login protects the UI; do not disable proxy authentication.
+  server:
+    image: ghcr.io/9vibes/kunas-yue:0.1.0@sha256:aa908a366552f990d6806a89d67fec970554f325c022ccab03e7dabd321484a1
+    platform: linux/amd64
+    init: true
+    restart: on-failure
+    runtime: nvidia
+    environment:
+      NVIDIA_VISIBLE_DEVICES: "0"
+      NVIDIA_DRIVER_CAPABILITIES: compute,utility
+      YUE_MEMORY_GIB: "24"
+    volumes:
+      - ${APP_DATA_DIR}/data:/data
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ["0"]
+              capabilities: [gpu]

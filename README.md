@@ -12,6 +12,13 @@ https://github.com/9vibes/KNS-Umbrel
 
 ## Apps
 
+- **YuE2 GPU** (`kunas-yue`)
+  Generate songs from lyrics and a style prompt using YuE2, with a browser
+  studio, audio playback, and persistent scores/models/outputs. Requires an
+  AMD64 NVIDIA host; 24 GB VRAM recommended.
+  App source: [`multimodal-art-projection/YuE`](https://github.com/multimodal-art-projection/YuE).
+  [Setup and validation notes](kunas-yue/README.md).
+
 - **LINE MTC** (`kunas-line-mtc`)
   Shared aircraft running log with real-time phone and Even G2 glasses updates.
   App source: [`9vibes/LINE-MTC`](https://github.com/9vibes/LINE-MTC)
